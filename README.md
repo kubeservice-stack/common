@@ -1,2 +1,2 @@
 # golang common library
-[![Build Status](https://github.com/kubeservice-stack/common/actions/workflows/go.yml/badge.svg)](https://github.com/kubeservice-stack/common/actions/workflows/go.yml)
+[![Build Status](https://github.com/kubeservice-stack/common/actions/workflows/go.yml/badge.svg)](https://github.com/kubeservice-stack/common/actions/workflows/go.yml)[![Go Report Card](https://goreportcard.com/badge/github.com/kubeservice-stack/common)](https://goreportcard.com/report/github.com/kubeservice-stack/common)[![Github release](https://img.shields.io/github/v/release/kubeservice-stack/common)](https://github.com/kubeservice-stack/common/releases)
