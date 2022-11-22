@@ -59,8 +59,7 @@ func TestUtil_MapSort(t *testing.T) {
 
 func TestUtil_MapSortKey(t *testing.T) {
 	assert := assert.New(t)
-	maps := make([]string, 0)
-	maps = []string{"1", "10", "9"}
+	maps := []string{"1", "10", "9"}
 
 	vs := SortKey(maps)
 

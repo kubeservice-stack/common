@@ -8,7 +8,7 @@ import (
 
 func Keys(maps map[string]interface{}) []string {
 	var keys []string
-	for k, _ := range maps {
+	for k := range maps {
 		keys = append(keys, k)
 	}
 	return keys
@@ -26,7 +26,7 @@ func Sort(maps map[string]string) map[string]string {
 	ret := make(map[string]string)
 
 	priorities := make([]string, 0)
-	for key, _ := range maps {
+	for key := range maps {
 		priorities = append(priorities, key)
 	}
 	sort.Strings(priorities)
@@ -61,8 +61,7 @@ func Merge(mapsA map[string]string, mapsB map[string]string) (map[string]string,
 	if mapsA == nil && mapsB == nil {
 		return nil, nil
 	}
-	ret := make(map[string]string)
-	ret = mapsA
+	ret := mapsA
 	if mapsB == nil {
 		return ret, nil
 	}

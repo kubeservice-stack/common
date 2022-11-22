@@ -42,6 +42,7 @@ func TestSearchFile(t *testing.T) {
 	t.Log(path)
 
 	path, err = SearchFile(noExistedFile, ".")
+	t.Log(path)
 
 	assert.NotNil(err, "没有发生错误")
 }

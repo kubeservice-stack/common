@@ -195,7 +195,7 @@ func (c *LFUPlugin) evict(count int) {
 		if entry == nil {
 			return
 		} else {
-			for item, _ := range entry.Value.(*freqEntry).items {
+			for item := range entry.Value.(*freqEntry).items {
 				if i >= count {
 					return
 				}

@@ -22,7 +22,6 @@ package configloader
 import (
 	"github.com/kubeservice-stack/common/pkg/config"
 	"github.com/kubeservice-stack/common/pkg/logger"
-	"github.com/kubeservice-stack/common/pkg/metrics"
 )
 
 func LoadConfig(cfgPath string) (err error) {

@@ -57,10 +57,7 @@ jobs:
         run: go install honnef.co/go/tools/cmd/staticcheck@2022.1
 
       - name: Static Check
-        run: staticcheck ./...
-
-      - name: License Header Check
-        run: make check-license-header
+        run: staticcheck -tests=false ./...
 
   lint:
     runs-on: ubuntu-latest
@@ -94,7 +91,7 @@ jobs:
         with:
           version: ${{ env.GOLANGCI_VERSION }}
 
-  check-diff:
+  unittest:
     runs-on: ubuntu-latest
     needs: detect-noop
     if: needs.detect-noop.outputs.noop != 'true'
@@ -110,11 +107,6 @@ jobs:
         with:
           go-version: ${{ env.GO_VERSION }}
 
-      - name: Setup node
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-
       - name: Install StaticCheck
         run: go install honnef.co/go/tools/cmd/staticcheck@2022.1
 
@@ -125,17 +117,5 @@ jobs:
           key: ${{ runner.os }}-pkg-${{ hashFiles('**/go.sum') }}
           restore-keys: ${{ runner.os }}-pkg-
 
-      - name: Check code formatting
-        run: go install golang.org/x/tools/cmd/goimports && make fmt
-
-      - name: Run cross-build
-        run: make cross-build
-
-      - name: Check Diff
-        run: |
-          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s v1.49.0
-          export PATH=$(pwd)/bin/:$PATH
-          make check-diff
-              
-      - name: Cleanup binary
-        run: make build-cleanup
+      - name: unittest
+        run: go test ./...
