@@ -1,13 +1,8 @@
 linters:
   disable-all: true
   enable:
-    - deadcode
-    - dupl
-    - godot
-    - goimports
     - gosimple
     - ineffassign
-    - misspell
     - revive
     - structcheck
     - typecheck
