@@ -17,7 +17,7 @@ env:
 jobs:
 
   detect-noop:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     outputs:
       noop: ${{ steps.noop.outputs.should_skip }}
     steps:
@@ -31,7 +31,7 @@ jobs:
           concurrent_skipping: false
 
   staticcheck:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     needs: detect-noop
     if: needs.detect-noop.outputs.noop != 'true'
 
@@ -63,7 +63,7 @@ jobs:
         run: make check-license-header
 
   lint:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     needs: detect-noop
     if: needs.detect-noop.outputs.noop != 'true'
 
@@ -95,7 +95,7 @@ jobs:
           version: ${{ env.GOLANGCI_VERSION }}
 
   unittest:
-    runs-on: aliyun
+    runs-on: ubuntu-latest
     needs: detect-noop
     if: needs.detect-noop.outputs.noop != 'true'
 
