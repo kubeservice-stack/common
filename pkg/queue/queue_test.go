@@ -87,6 +87,8 @@ func TestLfQueueConsistency(t *testing.T) {
 			_, present := seen[s]
 			if present {
 				t.FailNow()
+				wg.Done()
+				return
 			}
 			seen[s] = s
 
