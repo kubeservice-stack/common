@@ -121,7 +121,7 @@ jobs:
         run: go test ./...
         
       - name: Test
-        run: go test -race -coverprofile=cover.out -coverpkg=./... ./... && go tool cover -html=cover.out -o cover.html
+        run: go test -race -coverprofile=cover.out -coverpkg=./... ./... && go tool cover -html=cover.out -o cover.html && true
 
       - name: Upload coverage to codecov.io
         uses: codecov/codecov-action@v1
