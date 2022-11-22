@@ -24,8 +24,8 @@ import (
 type Temporary struct {
 	MaxBufferSize int64  `toml:"max_buffer_size" json:"max_buffer_size" env:"TEMPORARY_MAX_BUFFER_SIZE"` // 最大使用内存空间, 超过时则转化成文件
 	FileDir       string `toml:"file_dir" json:"file_dir" env:"TEMPORARY_FILE_DIR"`                      // 临时文件目录
-	FilePattern   string `toml:"file_pattern" json:"file_pattern" env "TEMPORARY_FILE_PATTERN"`          // 临时文件名格式
-	MaxUploadSize int64  `toml:"max_upload_size" json:"max_upload_size" env "TEMPORARY_MAX_UPLOAD_SIZE"` // 最大上传文件大小
+	FilePattern   string `toml:"file_pattern" json:"file_pattern" env:"TEMPORARY_FILE_PATTERN"`          // 临时文件名格式
+	MaxUploadSize int64  `toml:"max_upload_size" json:"max_upload_size" env:"TEMPORARY_MAX_UPLOAD_SIZE"` // 最大上传文件大小
 }
 
 func (l Temporary) TOML() string {

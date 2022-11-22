@@ -43,7 +43,7 @@ func InSliceIfaceToLower(v string, sl interface{}) (bool, error) {
 	alSArr := ToStrings(slArr)
 
 	for _, vv := range alSArr {
-		if strings.ToLower(vv) == strings.ToLower(v) {
+		if strings.EqualFold(v, vv) {
 			return true, nil
 		}
 	}
@@ -141,7 +141,7 @@ func ToStringDict(items []interface{}, key string) ([]string, error) {
 	for _, item := range items {
 		it, ok := item.(map[string]interface{})
 		if !ok {
-			return nil, errors.New("interface{} to map[string]string err!")
+			return nil, errors.New("interface{} to map[string]string err")
 		}
 		ret = append(ret, it[key].(string))
 	}

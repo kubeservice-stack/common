@@ -9,6 +9,7 @@ import (
 	"github.com/kubeservice-stack/common/pkg/config"
 	"github.com/kubeservice-stack/common/pkg/logger"
 	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/collectors"
 	"github.com/uber-go/tally"
 	promreporter "github.com/uber-go/tally/prometheus"
 )
@@ -44,14 +45,14 @@ var DefaultTallyScope *TallyScope
 func NewTallyScope(cfg *config.Metrics) *TallyScope {
 	if cfg.EnableGoRuntimeMetrics {
 		onceEnable.Do(func() {
-			DefaultRegistry().Register(prometheus.NewProcessCollector(prometheus.ProcessCollectorOpts{}))
-			DefaultRegistry().Register(prometheus.NewGoCollector())
+			DefaultRegistry().Register(collectors.NewProcessCollector(collectors.ProcessCollectorOpts{}))
+			DefaultRegistry().Register(collectors.NewGoCollector())
 			prometheusLogger.Info("go runtime metrics is exported")
 		})
 	} else {
 		onceEnable.Do(func() {
-			DefaultRegistry().Unregister(prometheus.NewProcessCollector(prometheus.ProcessCollectorOpts{}))
-			DefaultRegistry().Unregister(prometheus.NewGoCollector())
+			DefaultRegistry().Unregister(collectors.NewProcessCollector(collectors.ProcessCollectorOpts{}))
+			DefaultRegistry().Unregister(collectors.NewGoCollector())
 		})
 	}
 

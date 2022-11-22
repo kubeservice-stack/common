@@ -201,6 +201,7 @@ func TestLRUGetIFPresent(t *testing.T) {
 
 	v, err := cache.GetIFPresent("key")
 	assert.Equal(err, ErrCacheKeyNotFind)
+	assert.Equal(v, nil)
 
 	time.Sleep(20 * time.Millisecond) //时间够长，case稳定
 

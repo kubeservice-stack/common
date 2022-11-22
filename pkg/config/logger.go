@@ -34,7 +34,7 @@ type Logging struct {
 	Level      string `toml:"level" json:"level" env:"LOGGING_LEVEL"`                //打印日志等级
 	MaxSize    uint16 `toml:"maxsize" json:"maxsize" env:"LOGGING_MAXSIZE"`          //单日志尺寸
 	MaxBackups uint16 `toml:"maxbackups" json:"maxbackups" env:"LOGGING_MAXBACKUPS"` //日志备份数
-	MaxAge     uint16 `toml:"maxage"json:"maxage" env:"LOGGING_MAXAGE"`              //留旧日志文件的最大天数
+	MaxAge     uint16 `toml:"maxage" json:"maxage" env:"LOGGING_MAXAGE"`             //留旧日志文件的最大天数
 }
 
 func (l Logging) TOML() string {
