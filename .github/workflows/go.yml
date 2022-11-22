@@ -124,4 +124,4 @@ jobs:
         run: go test -coverprofile=cover.out -coverpkg=./... ./... && go tool cover -html=cover.out -o cover.html && true
 
       - name: Upload coverage to codecov.io
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v3
