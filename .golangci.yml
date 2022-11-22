@@ -3,7 +3,6 @@ linters:
   enable:
     - gosimple
     - ineffassign
-    - revive
     - structcheck
     - typecheck
     - unused
