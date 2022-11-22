@@ -91,7 +91,7 @@ jobs:
         with:
           version: ${{ env.GOLANGCI_VERSION }}
 
-  unittest:
+  unittest-report:
     runs-on: ubuntu-latest
     needs: detect-noop
     if: needs.detect-noop.outputs.noop != 'true'
@@ -119,3 +119,9 @@ jobs:
 
       - name: unittest
         run: go test ./...
+        
+      - name: Test
+        run: go test -race -coverprofile=cover.out -coverpkg=./... ./... && go tool cover -html=cover.out -o cover.html
+
+      - name: Upload coverage to codecov.io
+        uses: codecov/codecov-action@v1
