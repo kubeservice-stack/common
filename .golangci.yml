@@ -2,7 +2,6 @@ linters:
   disable-all: true
   enable:
     - gosimple
-    - ineffassign
     - structcheck
     - typecheck
     - unused
