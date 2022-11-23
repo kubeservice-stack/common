@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Unreleased
 - No changes yet.
 
-## v1.0.0 - 2022-11-22
+## [v1.0.0](https://github.com/kubeservice-stack/common/releases/tag/v1.0.0) - 2022-11-22
 
 ### Added
 #### Cache 内存缓存

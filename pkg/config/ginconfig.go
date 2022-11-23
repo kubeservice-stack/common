@@ -49,8 +49,8 @@ func (gcf GinConfig) TOML() string {
 [gin]
   ## APP name
   app = "%s"
-  ## 多媒体类型，支持image,video,audio,file,preview, 默认image
-  media_type = "%s"
+  ## 服务类型，支持frontend/backend, 默认backend
+  server_type = "%s"
   ## 是否打开pprof
   enable_pprof = %v
   ## 是否开启Health check
