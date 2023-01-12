@@ -63,6 +63,14 @@ func (cb *Setting) LFU() *Setting {
 	return cb.EvictType(LFU)
 }
 
+func (cb *Setting) Simple() *Setting {
+	return cb.EvictType(SIMPLE)
+}
+
+func (cb *Setting) ARC() *Setting {
+	return cb.EvictType(ARC)
+}
+
 func (cb *Setting) EvictedFunc(evictedFunc EvictedFunc) *Setting {
 	cb.evictedFunc = &evictedFunc
 	return cb
