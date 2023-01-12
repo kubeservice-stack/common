@@ -57,7 +57,7 @@ func TestLFUGet(t *testing.T) {
 	gc := optionsLFUCache(size)
 	//set
 	for i := 0; i < numbers; i++ {
-		key := fmt.Sprintf("Key-%d", i)
+		key := "Key-" + strconv.Itoa(i)
 		value, err := loader(key)
 		if err != nil {
 			t.Error(err)
@@ -68,7 +68,7 @@ func TestLFUGet(t *testing.T) {
 
 	//get
 	for i := 0; i < numbers; i++ {
-		key := fmt.Sprintf("Key-%d", i)
+		key := "Key-" + strconv.Itoa(i)
 		v, err := gc.Get(key)
 		assert.Nil(err)
 		expectedV, _ := loader(key)
@@ -85,7 +85,7 @@ func TestLFUGetWithTimeout(t *testing.T) {
 	gc := optionsLoadingLFUCache(size, loader)
 	//set
 	for i := 0; i < numbers; i++ {
-		key := fmt.Sprintf("Key-%d", i)
+		key := "Key-" + strconv.Itoa(i)
 		value, err := loader(key)
 		if err != nil {
 			t.Error(err)
@@ -96,7 +96,7 @@ func TestLFUGetWithTimeout(t *testing.T) {
 
 	//get
 	for i := 0; i < numbers; i++ {
-		key := fmt.Sprintf("Key-%d", i)
+		key := "Key-" + strconv.Itoa(i)
 		v, err := gc.Get(key)
 		assert.Nil(err)
 		expectedV, _ := loader(key)
@@ -114,7 +114,7 @@ func TestLoadingLFUGet(t *testing.T) {
 
 	//get
 	for i := 0; i < numbers; i++ {
-		key := fmt.Sprintf("Key-%d", i)
+		key := "Key-" + strconv.Itoa(i)
 		v, err := gc.Get(key)
 		assert.Nil(err)
 		expectedV, _ := loader(key)
@@ -158,7 +158,7 @@ func TestLFUEvictItem(t *testing.T) {
 	gc := optionsLFUCache(cacheSize)
 
 	for i := 0; i < numbers; i++ {
-		_, err := gc.Get(fmt.Sprintf("Key-%d", i))
+		_, err := gc.Get("Key-" + strconv.Itoa(i))
 		assert.Nil(err)
 	}
 }
@@ -170,7 +170,7 @@ func TestLFUEvictItemWithTimeout(t *testing.T) {
 	gc := optionsLoadingLFUCache(cacheSize, loader)
 
 	for i := 0; i < numbers; i++ {
-		_, err := gc.Get(fmt.Sprintf("Key-%d", i))
+		_, err := gc.Get("Key-" + strconv.Itoa(i))
 		assert.Nil(err)
 	}
 }

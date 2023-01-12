@@ -19,6 +19,7 @@ package cache
 import (
 	"fmt"
 	"log"
+	"strconv"
 	"testing"
 	"time"
 
@@ -52,7 +53,7 @@ func TestSimpleGet(t *testing.T) {
 
 	//set
 	for i := 0; i < size; i++ {
-		key := fmt.Sprintf("Key-%d", i)
+		key := "Key-" + strconv.Itoa(i)
 		value, err := loader(key)
 		if err != nil {
 			t.Error(err)
@@ -63,7 +64,7 @@ func TestSimpleGet(t *testing.T) {
 
 	//get
 	for i := 0; i < size; i++ {
-		key := fmt.Sprintf("Key-%d", i)
+		key := "Key-" + strconv.Itoa(i)
 		v, err := gc.Get(key)
 		assert.Nil(err)
 		expectedV, _ := loader(key)
@@ -79,7 +80,7 @@ func TestSimpleGetBig(t *testing.T) {
 
 	//set
 	for i := 0; i < size+10; i++ {
-		key := fmt.Sprintf("Key-%d", i)
+		key := "Key-" + strconv.Itoa(i)
 		value, err := loader(key)
 		if err != nil {
 			t.Error(err)
@@ -100,7 +101,7 @@ func TestLoadingSimpleGet(t *testing.T) {
 
 	//get
 	for i := 0; i < size; i++ {
-		key := fmt.Sprintf("Key-%d", i)
+		key := "Key-" + strconv.Itoa(i)
 		v, err := gc.Get(key)
 		assert.Nil(err)
 		expectedV, _ := loader(key)
@@ -142,7 +143,7 @@ func TestSimpleEvictItem(t *testing.T) {
 	gc := buildLoadingSimpleCache(cacheSize, loader)
 
 	for i := 0; i < numbers; i++ {
-		_, err := gc.Get(fmt.Sprintf("Key-%d", i))
+		_, err := gc.Get("Key-" + strconv.Itoa(i))
 		assert.Nil(err)
 	}
 }

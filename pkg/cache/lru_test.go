@@ -18,6 +18,7 @@ package cache
 
 import (
 	"fmt"
+	"strconv"
 	"testing"
 	"time"
 
@@ -53,7 +54,7 @@ func TestLRUGet(t *testing.T) {
 	gc := optionsLRUCache(size, loader)
 	//set
 	for i := 0; i < numbers; i++ {
-		key := fmt.Sprintf("Key-%d", i)
+		key := "Key-" + strconv.Itoa(i)
 		value, err := loader(key)
 		if err != nil {
 			t.Error(err)
@@ -64,7 +65,7 @@ func TestLRUGet(t *testing.T) {
 
 	//get
 	for i := 0; i < numbers; i++ {
-		key := fmt.Sprintf("Key-%d", i)
+		key := "Key-" + strconv.Itoa(i)
 		v, err := gc.Get(key)
 		assert.Nil(err)
 		expectedV, _ := loader(key)
@@ -80,7 +81,7 @@ func TestLRUGetWithTimeout(t *testing.T) {
 	gc := buildLoadingLRUCache(size, loader)
 	//set
 	for i := 0; i < numbers; i++ {
-		key := fmt.Sprintf("Key-%d", i)
+		key := "Key-" + strconv.Itoa(i)
 		value, err := loader(key)
 		if err != nil {
 			t.Error(err)
@@ -91,7 +92,7 @@ func TestLRUGetWithTimeout(t *testing.T) {
 
 	//get
 	for i := 0; i < numbers; i++ {
-		key := fmt.Sprintf("Key-%d", i)
+		key := "Key-" + strconv.Itoa(i)
 		v, err := gc.Get(key)
 		assert.Nil(err)
 		expectedV, _ := loader(key)
@@ -106,7 +107,7 @@ func TestLoadingLRUGet(t *testing.T) {
 	gc := optionsLRUCache(size, loader)
 	//get
 	for i := 0; i < size; i++ {
-		key := fmt.Sprintf("Key-%d", i)
+		key := "Key-" + strconv.Itoa(i)
 		v, err := gc.Get(key)
 		assert.Nil(err)
 		expectedV, _ := loader(key)
@@ -121,7 +122,7 @@ func TestLoadingLRUGetWithTimeout(t *testing.T) {
 	gc := buildLoadingLRUCache(size, loader)
 	//get
 	for i := 0; i < size; i++ {
-		key := fmt.Sprintf("Key-%d", i)
+		key := "Key-" + strconv.Itoa(i)
 		v, err := gc.Get(key)
 		assert.Nil(err)
 		expectedV, _ := loader(key)
@@ -169,7 +170,7 @@ func TestLRUEvictItem(t *testing.T) {
 	gc := optionsLRUCache(cacheSize, loader)
 
 	for i := 0; i < numbers; i++ {
-		_, err := gc.Get(fmt.Sprintf("Key-%d", i))
+		_, err := gc.Get("Key-" + strconv.Itoa(i))
 		assert.Nil(err)
 	}
 }
@@ -182,7 +183,7 @@ func TestLRUEvictItemWithTimeout(t *testing.T) {
 	gc := buildLoadingLRUCache(cacheSize, loader)
 
 	for i := 0; i < numbers; i++ {
-		_, err := gc.Get(fmt.Sprintf("Key-%d", i))
+		_, err := gc.Get("Key-" + strconv.Itoa(i))
 		assert.Nil(err)
 	}
 }

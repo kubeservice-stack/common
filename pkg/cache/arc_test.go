@@ -18,6 +18,7 @@ package cache
 
 import (
 	"fmt"
+	"strconv"
 	"testing"
 	"time"
 
@@ -60,7 +61,7 @@ func TestARCGet(t *testing.T) {
 
 	//set
 	for i := 0; i < size; i++ {
-		key := fmt.Sprintf("Key-%d", i)
+		key := "Key-" + strconv.Itoa(i)
 		value, err := loader(key)
 		if err != nil {
 			t.Error(err)
@@ -71,7 +72,7 @@ func TestARCGet(t *testing.T) {
 
 	//get
 	for i := 0; i < size; i++ {
-		key := fmt.Sprintf("Key-%d", i)
+		key := "Key-" + strconv.Itoa(i)
 		v, err := gc.Get(key)
 		assert.Nil(err)
 		expectedV, _ := loader(key)
@@ -87,18 +88,18 @@ func TestARCGetBig(t *testing.T) {
 
 	//set
 	for i := 0; i < size+10; i++ {
-		key := fmt.Sprintf("Key-%d", i)
+		key := "Key-" + strconv.Itoa(i)
 		value, err := loader(key)
 		assert.Nil(err)
 		gc.Set(key, value)
-		gc.Get(fmt.Sprintf("Key-1"))
+		gc.Get("Key-1")
 	}
 
 	//get
 	assert.Equal(gc.Len(), size)
 
 	for i := 0; i < 10; i++ {
-		key := fmt.Sprintf("Key-%d", i+size)
+		key := "Key-" + strconv.Itoa(i+size)
 		v, err := gc.Get(key)
 		assert.Nil(err)
 		expectedV, _ := loader(key)
@@ -106,7 +107,7 @@ func TestARCGetBig(t *testing.T) {
 	}
 
 	for i := 11; i < size; i++ {
-		key := fmt.Sprintf("Key-%d", i)
+		key := "Key-" + strconv.Itoa(i)
 		v, err := gc.Get(key)
 		assert.Nil(err)
 		expectedV, _ := loader(key)
@@ -122,7 +123,7 @@ func TestLoadingARCGet(t *testing.T) {
 
 	//set
 	for i := 0; i < size; i++ {
-		key := fmt.Sprintf("Key-%d", i)
+		key := "Key-" + strconv.Itoa(i)
 		value, err := loader(key)
 		assert.Nil(err)
 		gc.Set(key, value)
@@ -130,7 +131,7 @@ func TestLoadingARCGet(t *testing.T) {
 
 	//get
 	for i := 0; i < size; i++ {
-		key := fmt.Sprintf("Key-%d", i)
+		key := "Key-" + strconv.Itoa(i)
 		v, err := gc.Get(key)
 		assert.Nil(err)
 		expectedV, _ := loader(key)
@@ -146,7 +147,7 @@ func TestLoadingARCGetWithExpiration(t *testing.T) {
 
 	//set
 	for i := 0; i < size; i++ {
-		key := fmt.Sprintf("Key-%d", i)
+		key := "Key-" + strconv.Itoa(i)
 		value, err := loader(key)
 		assert.Nil(err)
 		gc.Set(key, value)
@@ -154,7 +155,7 @@ func TestLoadingARCGetWithExpiration(t *testing.T) {
 
 	//get
 	for i := 0; i < size; i++ {
-		key := fmt.Sprintf("Key-%d", i)
+		key := "Key-" + strconv.Itoa(i)
 		v, err := gc.Get(key)
 		assert.Nil(err)
 		expectedV, _ := loader(key)
@@ -186,7 +187,7 @@ func TestARCEvictItem(t *testing.T) {
 	gc := buildLoadingARCache(cacheSize)
 
 	for i := 0; i < numbers; i++ {
-		_, err := gc.Get(fmt.Sprintf("Key-%d", i))
+		_, err := gc.Get("Key-" + strconv.Itoa(i))
 		assert.Nil(err)
 	}
 }
