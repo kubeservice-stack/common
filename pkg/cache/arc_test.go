@@ -167,14 +167,14 @@ func TestARCLength(t *testing.T) {
 	assert := assert.New(t)
 
 	gc := buildLoadingARCacheWithExpiration(2, time.Millisecond)
-	gc.Get("test1")
-	gc.Get("test2")
-	gc.Get("test3")
+	gc.Set("test1", "aa")
+	gc.Set("test2", "aa")
+	gc.Set("test3", "aa")
 	length := gc.Len()
 	assert.Equal(length, 2)
 
 	time.Sleep(time.Millisecond * 5)
-	gc.Get("test4")
+	gc.Set("test4", "aa")
 	length = gc.Len()
 	assert.Equal(length, 1)
 }
