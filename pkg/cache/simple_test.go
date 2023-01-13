@@ -38,11 +38,16 @@ func buildLoadingSimpleCache(size int, loader LoaderFunc) Cache {
 		LoaderFunc(loader).
 		Simple().
 		EvictedFunc(evictedFuncForSimple).
+		AddedFunc(addFuncForSimple).
 		Setting()
 }
 
 func evictedFuncForSimple(key, value interface{}) {
 	fmt.Printf("[Simple] Key:%v Value:%v will evicted.\n", key, value)
+}
+
+func addFuncForSimple(key, value interface{}) {
+	fmt.Printf("[Simple] Add Key:%v Value:%v \n", key, value)
 }
 
 func TestSimpleGet(t *testing.T) {
@@ -133,6 +138,23 @@ func TestSimpleLength2(t *testing.T) {
 	expectedLength := 0
 	assert.Equal(length, expectedLength)
 	log.Println("dongjiang123", gc.GetALL())
+}
+
+func TestSimpleKeys(t *testing.T) {
+	assert := assert.New(t)
+
+	gc := buildSimpleCache(1)
+	gc.Set("test1", "aa")
+	gc.Set("test2", "aa")
+
+	ks := gc.Keys()
+	assert.Equal(ks, []interface{}{"test2"})
+
+	b := gc.Remove("test2")
+	assert.True(b)
+
+	aa := gc.HasKey("test2")
+	assert.False(aa)
 }
 
 func TestSimpleEvictItem(t *testing.T) {

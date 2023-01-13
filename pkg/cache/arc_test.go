@@ -46,11 +46,16 @@ func buildLoadingARCacheWithExpiration(size int, ep time.Duration) Cache {
 		Expiration(ep).
 		LoaderFunc(loader).
 		EvictedFunc(evictedFuncForARC).
+		AddedFunc(addFuncForARC).
 		Setting()
 }
 
 func evictedFuncForARC(key, value interface{}) {
 	fmt.Printf("[ARC] Key:%v Value:%v will evicted.\n", key, value)
+}
+
+func addFuncForARC(key, value interface{}) {
+	fmt.Printf("[ARC] Add Key:%v Value:%v \n", key, value)
 }
 
 func TestARCGet(t *testing.T) {
@@ -166,17 +171,34 @@ func TestLoadingARCGetWithExpiration(t *testing.T) {
 func TestARCLength(t *testing.T) {
 	assert := assert.New(t)
 
-	gc := buildLoadingARCacheWithExpiration(2, time.Millisecond)
+	gc := buildLoadingARCacheWithExpiration(2, 5*time.Second)
 	gc.Set("test1", "aa")
 	gc.Set("test2", "aa")
 	gc.Set("test3", "aa")
 	length := gc.Len()
 	assert.Equal(length, 2)
 
-	time.Sleep(time.Millisecond * 5)
+	time.Sleep(time.Second * 6)
 	gc.Set("test4", "aa")
 	length = gc.Len()
 	assert.Equal(length, 1)
+}
+
+func TestARCKeys(t *testing.T) {
+	assert := assert.New(t)
+
+	gc := buildARCache(1)
+	gc.Set("test1", "aa")
+	gc.Set("test2", "aa")
+
+	ks := gc.Keys()
+	assert.Equal(ks, []interface{}{"test2"})
+
+	b := gc.Remove("test2")
+	assert.True(b)
+
+	aa := gc.HasKey("test2")
+	assert.False(aa)
 }
 
 func TestARCEvictItem(t *testing.T) {

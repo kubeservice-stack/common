@@ -37,7 +37,7 @@ func (it *LfuItem) IsExpired(now *time.Time) bool {
 		t := time.Now()
 		now = &t
 	}
-	return it.Expiration.Before(*now)
+	return it.Expire().Before(*now)
 }
 
 func (it *LfuItem) Expire() *time.Time {

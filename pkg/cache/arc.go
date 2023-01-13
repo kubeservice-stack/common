@@ -248,7 +248,7 @@ func (c *ARCPlugin) Remove(key interface{}) bool {
 
 func (c *ARCPlugin) remove(key interface{}) bool {
 	if elt := c.t1.Lookup(key); elt != nil {
-		v := elt.Value.(*item.ArcItem).Value
+		v := elt.Value
 		c.t1.Remove(key, elt)
 		if c.evictedFunc != nil {
 			(*c.evictedFunc)(key, v)
@@ -257,7 +257,7 @@ func (c *ARCPlugin) remove(key interface{}) bool {
 	}
 
 	if elt := c.t2.Lookup(key); elt != nil {
-		v := elt.Value.(*item.ArcItem).Value
+		v := elt.Value
 		c.t2.Remove(key, elt)
 		if c.evictedFunc != nil {
 			(*c.evictedFunc)(key, v)

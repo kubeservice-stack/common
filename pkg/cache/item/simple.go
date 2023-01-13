@@ -34,7 +34,7 @@ func (si *SimpleItem) IsExpired(now *time.Time) bool {
 		t := time.Now()
 		now = &t
 	}
-	return si.Expiration.Before(*now)
+	return si.Expire().Before(*now)
 }
 
 func (it *SimpleItem) Expire() *time.Time {
