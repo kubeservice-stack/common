@@ -1,5 +1,5 @@
 /*
-Copyright 2022 The KubeService-Stack Authors.
+Copyright 2023 The KubeService-Stack Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -20,24 +20,23 @@ import (
 	"time"
 )
 
-type LruItem struct {
-	Key        interface{}
+type SimpleItem struct {
 	Value      interface{}
 	Expiration *time.Time
 }
 
 // returns boolean value whether this item is expired or not.
-func (it *LruItem) IsExpired(now *time.Time) bool {
-	if it.Expiration == nil {
+func (si *SimpleItem) IsExpired(now *time.Time) bool {
+	if si.Expiration == nil {
 		return false
 	}
 	if now == nil {
 		t := time.Now()
 		now = &t
 	}
-	return it.Expire().Before(*now)
+	return si.Expire().Before(*now)
 }
 
-func (it *LruItem) Expire() *time.Time {
+func (it *SimpleItem) Expire() *time.Time {
 	return it.Expiration
 }

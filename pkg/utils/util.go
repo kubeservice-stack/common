@@ -1,6 +1,6 @@
 package utils
 
-func Mix(a, b int) int {
+func Min(a, b int) int {
 	if a <= b {
 		return a
 	}

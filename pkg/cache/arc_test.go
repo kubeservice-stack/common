@@ -1,5 +1,5 @@
 /*
-Copyright 2022 The KubeService-Stack Authors.
+Copyright 2023 The KubeService-Stack Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -25,35 +25,47 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func evictedFuncForLRU(key, value interface{}) {
-	fmt.Printf("[LRU] Key:%v Value:%v will evicted.\n", key, value)
-}
-
-func optionsLRUCache(size int, loader LoaderFunc) Cache {
+func buildARCache(size int) Cache {
 	return New(size).
-		LRU().
-		LoaderFunc(loader).
-		EvictedFunc(evictedFuncForLRU).
+		ARC().
+		EvictedFunc(evictedFuncForARC).
 		Setting()
 }
 
-func buildLoadingLRUCache(size int, loader LoaderFunc) Cache {
+func buildLoadingARCache(size int) Cache {
 	return New(size).
-		LRU().
+		ARC().
 		LoaderFunc(loader).
-		EvictedFunc(evictedFuncForLRU).
-		Expiration(time.Second).
+		EvictedFunc(evictedFuncForARC).
 		Setting()
 }
 
-func TestLRUGet(t *testing.T) {
+func buildLoadingARCacheWithExpiration(size int, ep time.Duration) Cache {
+	return New(size).
+		ARC().
+		Expiration(ep).
+		LoaderFunc(loader).
+		EvictedFunc(evictedFuncForARC).
+		AddedFunc(addFuncForARC).
+		Setting()
+}
+
+func evictedFuncForARC(key, value interface{}) {
+	fmt.Printf("[ARC] Key:%v Value:%v will evicted.\n", key, value)
+}
+
+func addFuncForARC(key, value interface{}) {
+	fmt.Printf("[ARC] Add Key:%v Value:%v \n", key, value)
+}
+
+func TestARCGet(t *testing.T) {
 	assert := assert.New(t)
 
 	size := 1000
-	numbers := 1000
-	gc := optionsLRUCache(size, loader)
+	gc := buildARCache(size)
+
 	//set
-	for i := 0; i < numbers; i++ {
+	for i := 0; i < size; i++ {
 		key := "Key-" + strconv.Itoa(i)
 		value, err := loader(key)
 		if err != nil {
@@ -64,7 +76,7 @@ func TestLRUGet(t *testing.T) {
 	}
 
 	//get
-	for i := 0; i < numbers; i++ {
+	for i := 0; i < size; i++ {
 		key := "Key-" + strconv.Itoa(i)
 		v, err := gc.Get(key)
 		assert.Nil(err)
@@ -73,25 +85,57 @@ func TestLRUGet(t *testing.T) {
 	}
 }
 
-func TestLRUGetWithTimeout(t *testing.T) {
+func TestARCGetBig(t *testing.T) {
 	assert := assert.New(t)
 
 	size := 1000
-	numbers := 1000
-	gc := buildLoadingLRUCache(size, loader)
+	gc := buildARCache(size)
+
 	//set
-	for i := 0; i < numbers; i++ {
+	for i := 0; i < size+10; i++ {
 		key := "Key-" + strconv.Itoa(i)
 		value, err := loader(key)
-		if err != nil {
-			t.Error(err)
-			return
-		}
+		assert.Nil(err)
+		gc.Set(key, value)
+		gc.Get("Key-1")
+	}
+
+	//get
+	assert.Equal(gc.Len(), size)
+
+	for i := 0; i < 10; i++ {
+		key := "Key-" + strconv.Itoa(i+size)
+		v, err := gc.Get(key)
+		assert.Nil(err)
+		expectedV, _ := loader(key)
+		assert.Equal(v, expectedV)
+	}
+
+	for i := 11; i < size; i++ {
+		key := "Key-" + strconv.Itoa(i)
+		v, err := gc.Get(key)
+		assert.Nil(err)
+		expectedV, _ := loader(key)
+		assert.Equal(v, expectedV)
+	}
+}
+
+func TestLoadingARCGet(t *testing.T) {
+	assert := assert.New(t)
+
+	size := 1000
+	gc := buildLoadingARCache(size)
+
+	//set
+	for i := 0; i < size; i++ {
+		key := "Key-" + strconv.Itoa(i)
+		value, err := loader(key)
+		assert.Nil(err)
 		gc.Set(key, value)
 	}
 
 	//get
-	for i := 0; i < numbers; i++ {
+	for i := 0; i < size; i++ {
 		key := "Key-" + strconv.Itoa(i)
 		v, err := gc.Get(key)
 		assert.Nil(err)
@@ -100,11 +144,20 @@ func TestLRUGetWithTimeout(t *testing.T) {
 	}
 }
 
-func TestLoadingLRUGet(t *testing.T) {
+func TestLoadingARCGetWithExpiration(t *testing.T) {
 	assert := assert.New(t)
 
 	size := 1000
-	gc := optionsLRUCache(size, loader)
+	gc := buildLoadingARCacheWithExpiration(size, 1*time.Nanosecond)
+
+	//set
+	for i := 0; i < size; i++ {
+		key := "Key-" + strconv.Itoa(i)
+		value, err := loader(key)
+		assert.Nil(err)
+		gc.Set(key, value)
+	}
+
 	//get
 	for i := 0; i < size; i++ {
 		key := "Key-" + strconv.Itoa(i)
@@ -115,59 +168,45 @@ func TestLoadingLRUGet(t *testing.T) {
 	}
 }
 
-func TestLoadingLRUGetWithTimeout(t *testing.T) {
+func TestARCLength(t *testing.T) {
 	assert := assert.New(t)
 
-	size := 1000
-	gc := buildLoadingLRUCache(size, loader)
-	//get
-	for i := 0; i < size; i++ {
-		key := "Key-" + strconv.Itoa(i)
-		v, err := gc.Get(key)
-		assert.Nil(err)
-		expectedV, _ := loader(key)
-		assert.Equal(v, expectedV)
-	}
-}
-
-func TestLRULength(t *testing.T) {
-	assert := assert.New(t)
-
-	gc := optionsLRUCache(1000, loader)
-	gc.Get("test1")
-	gc.Get("test2")
+	gc := buildLoadingARCacheWithExpiration(2, 5*time.Second)
+	gc.Set("test1", "aa")
+	gc.Set("test2", "aa")
+	gc.Set("test3", "aa")
 	length := gc.Len()
 	assert.Equal(length, 2)
 
-	time.Sleep(time.Second)
-
+	time.Sleep(time.Second * 6)
+	gc.Set("test4", "aa")
 	length = gc.Len()
-	assert.Equal(length, 2)
-
+	assert.Equal(length, 1)
 }
 
-func TestLRULengthWithTimeout(t *testing.T) {
+func TestARCKeys(t *testing.T) {
 	assert := assert.New(t)
 
-	gc := buildLoadingLRUCache(1000, loader)
-	gc.Get("test1")
-	gc.Get("test2")
-	length := gc.Len()
-	assert.Equal(length, 2)
+	gc := buildARCache(1)
+	gc.Set("test1", "aa")
+	gc.Set("test2", "aa")
 
-	time.Sleep(time.Second)
+	ks := gc.Keys()
+	assert.Equal(ks, []interface{}{"test2"})
 
-	length = gc.Len()
-	assert.Equal(length, 0)
+	b := gc.Remove("test2")
+	assert.True(b)
 
+	aa := gc.HasKey("test2")
+	assert.False(aa)
 }
 
-func TestLRUEvictItem(t *testing.T) {
+func TestARCEvictItem(t *testing.T) {
 	assert := assert.New(t)
 
 	cacheSize := 10
 	numbers := 11
-	gc := optionsLRUCache(cacheSize, loader)
+	gc := buildLoadingARCache(cacheSize)
 
 	for i := 0; i < numbers; i++ {
 		_, err := gc.Get("Key-" + strconv.Itoa(i))
@@ -175,24 +214,11 @@ func TestLRUEvictItem(t *testing.T) {
 	}
 }
 
-func TestLRUEvictItemWithTimeout(t *testing.T) {
-	assert := assert.New(t)
-
-	cacheSize := 10
-	numbers := 11
-	gc := buildLoadingLRUCache(cacheSize, loader)
-
-	for i := 0; i < numbers; i++ {
-		_, err := gc.Get("Key-" + strconv.Itoa(i))
-		assert.Nil(err)
-	}
-}
-
-func TestLRUGetIFPresent(t *testing.T) {
+func TestARCGetIFPresent(t *testing.T) {
 	assert := assert.New(t)
 
 	cache := New(8).
-		LRU().
+		ARC().
 		LoaderFunc(
 			func(key interface{}) (interface{}, error) {
 				time.Sleep(time.Millisecond)
@@ -202,9 +228,8 @@ func TestLRUGetIFPresent(t *testing.T) {
 
 	v, err := cache.GetIFPresent("key")
 	assert.Equal(err, ErrCacheKeyNotFind)
-	assert.Equal(v, nil)
 
-	time.Sleep(20 * time.Millisecond) //时间够长，case稳定
+	time.Sleep(2 * time.Millisecond)
 
 	v, err = cache.GetIFPresent("key")
 	assert.Nil(err)
@@ -212,13 +237,13 @@ func TestLRUGetIFPresent(t *testing.T) {
 	assert.Equal(v, "value")
 }
 
-func TestLRUGetALL(t *testing.T) {
+func TestARCGetALL(t *testing.T) {
 	assert := assert.New(t)
 
 	size := 8
 	cache := New(size).
 		Expiration(time.Millisecond).
-		LRU().
+		ARC().
 		Setting()
 
 	for i := 0; i < size; i++ {
@@ -231,44 +256,6 @@ func TestLRUGetALL(t *testing.T) {
 		assert.True(ok)
 		assert.Equal(v, i*i)
 	}
-	time.Sleep(time.Millisecond)
-
-	cache.Set(size, size*size)
-	m = cache.GetALL()
-
-	assert.Equal(len(m), 1)
-
-	v1, ok := m[size]
-	assert.True(ok)
-	assert.Equal(v1, size*size)
-}
-
-func Test_LRUNew(t *testing.T) {
-	assert := assert.New(t)
-	size := 8
-	cache := NewLRUPlugin(New(size).
-		LRU().
-		EvictedFunc(evictedFuncForLRU).
-		Expiration(time.Millisecond))
-
-	for i := 0; i < size; i++ {
-		cache.Set(i, i*i)
-	}
-
-	ret, err := cache.Get(0)
-	assert.Nil(err)
-	assert.Equal(ret, 0)
-
-	m := cache.GetALL()
-	for i := 0; i < size; i++ {
-		v, ok := m[i]
-		assert.True(ok)
-		assert.Equal(v, i*i)
-	}
-	r := cache.HasKey(1)
-	assert.True(r)
-	r = cache.Remove(1)
-	assert.True(r)
 	time.Sleep(time.Millisecond)
 
 	cache.Set(size, size*size)
