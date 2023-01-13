@@ -18,7 +18,7 @@ func Test_Max(t *testing.T) {
 	assert.Equal(Max(1, 2), 2)
 }
 
-func Test_MimFloat64(t *testing.T) {
+func Test_MinFloat64(t *testing.T) {
 	assert := assert.New(t)
 	assert.Equal(MinFloat64(1.2, 5.1), 1.2)
 	assert.Equal(MinFloat64(1.2, 1.20), 1.2)

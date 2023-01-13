@@ -8,6 +8,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Unreleased
 - No changes yet.
 
+## [v1.0.2](https://github.com/kubeservice-stack/common/compare/v1.0.1...v1.0.2) - 2023-01-05
+
+- [Feat] Add simple cache & arc cache mode
+
+## [v1.0.1](https://github.com/kubeservice-stack/common/compare/v1.0.0...v1.0.1) - 2023-01-05
+
+- [Feat] Add stream reader & writer package 
+- [Feat] Add Bitmap reader & writer package 
+
 ## [v1.0.0](https://github.com/kubeservice-stack/common/releases/tag/v1.0.0) - 2022-11-22
 
 ### Added
