@@ -25,3 +25,7 @@
 ## 依赖管理
 
 基于`go mod`支持多golang语言版本编译： `最小golang`版本支持 `1.12`
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fkubeservice-stack%2Fcommon.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fkubeservice-stack%2Fcommon?ref=badge_large)
