@@ -1,5 +1,5 @@
 /*
-Copyright 2022 The KubeService-Stack Authors.
+Copyright 2023 The KubeService-Stack Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package utils
+package sets
 
 import (
 	"testing"
@@ -22,26 +22,17 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_Min(t *testing.T) {
+func Test_New(t *testing.T) {
 	assert := assert.New(t)
-	assert.Equal(Min(1, 1), 1)
-	assert.Equal(Min(1, 2), 1)
-}
 
-func Test_Max(t *testing.T) {
-	assert := assert.New(t)
-	assert.Equal(Max(1, 1), 1)
-	assert.Equal(Max(1, 2), 2)
-}
+	s := New(1, 2, 3)
+	s2 := New(3, 2, 1)
 
-func Test_MinFloat64(t *testing.T) {
-	assert := assert.New(t)
-	assert.Equal(MinFloat64(1.2, 5.1), 1.2)
-	assert.Equal(MinFloat64(1.2, 1.20), 1.2)
-}
+	assert.True(s.Equal(s2))
 
-func Test_MaxFloat64(t *testing.T) {
-	assert := assert.New(t)
-	assert.Equal(MaxFloat64(1.2, 5.1), 5.1)
-	assert.Equal(MaxFloat64(1.2, 1.20), 1.2)
+	s3 := New("1", "2", "")
+	s4 := New("1", "2", "2")
+	s5 := New("1", "2")
+	assert.False(s4.Equal(s3))
+	assert.True(s4.Equal(s5))
 }
