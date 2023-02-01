@@ -55,12 +55,6 @@ func (d *decodeState) error(err error) {
 	panic(err)
 }
 
-func (d *decodeState) saveError(err error) {
-	if d.savedError == nil {
-		d.savedError = err
-	}
-}
-
 func (d *decodeState) unmarshal(v interface{}) (err error) {
 	defer func() {
 		if r := recover(); r != nil {
