@@ -36,9 +36,8 @@ func Marshal(v interface{}) ([]byte, error) {
 }
 
 type encodeState struct {
-	data    []byte
-	off     int
-	scratch [64]byte
+	data []byte
+	off  int
 }
 
 func max(l, r int) int {
@@ -79,7 +78,7 @@ func (e *encodeState) setKey(k string, l int) {
 func (e *encodeState) resizeIfNeeded(n int) {
 	if e.off+n >= cap(e.data) {
 		newcap := max(cap(e.data)*2, e.off+n)
-		newdata := make([]byte, newcap, newcap)
+		newdata := make([]byte, newcap)
 		copy(newdata, e.data)
 		e.data = newdata
 	}

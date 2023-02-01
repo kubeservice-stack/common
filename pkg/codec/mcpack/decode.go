@@ -42,7 +42,6 @@ type decodeState struct {
 	data       []byte
 	off        int
 	savedError error
-	tempstr    string
 }
 
 func (d *decodeState) init(data []byte) *decodeState {
