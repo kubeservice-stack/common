@@ -21,19 +21,22 @@ import (
 	"math"
 )
 
-/*func Int8(b []byte) int8 {
+func Int8(b []byte) int8 {
 	return int8(b[0])
 }
+
 func PutInt8(b []byte, v int8) {
 	b[0] = byte(uint8(v))
 }
+
 func Int16(b []byte) int16 {
 	return int16(uint16(b[0]) + uint16(b[1])<<8)
 }
+
 func PutInt16(b []byte, v int16) {
 	b[0] = byte(uint16(v))
 	b[1] = byte(uint16(v) >> 8)
-}*/
+}
 
 func Int32(b []byte) int32 {
 	return int32(uint32(b[0]) | uint32(b[1])<<8 | uint32(b[2])<<16 | uint32(b[3])<<24)
@@ -70,13 +73,13 @@ func PutUint8(b []byte, v uint8) {
 	b[0] = byte(v)
 }
 
-/*func Uint16(b []byte) uint16 {
+func Uint16(b []byte) uint16 {
 	return uint16(b[0]) | uint16(b[1])<<8
 }
 func PutUint16(b []byte, v uint16) {
 	b[0] = byte(v)
 	b[1] = byte(v >> 8)
-}*/
+}
 
 func Uint32(b []byte) uint32 {
 	return uint32(b[0]) | uint32(b[1])<<8 | uint32(b[2])<<16 | uint32(b[3])<<24

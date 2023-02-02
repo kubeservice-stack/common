@@ -14,14 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package mcpack_test
+package mcpack
 
 import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-
-	. "github.com/kubeservice-stack/common/pkg/codec/mcpack"
 )
 
 func TestDecodeEncodeMap(t *testing.T) {
