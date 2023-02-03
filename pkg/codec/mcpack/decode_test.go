@@ -35,10 +35,11 @@ type obj struct {
 	Foo string `json:"foo"`
 }
 
+/*
 type arr struct {
 	Arr []string `json:"arr"`
 }
-
+*/
 type ping struct {
 	Data string
 }
