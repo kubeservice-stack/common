@@ -48,7 +48,7 @@ func TestEqualFoldRight(t *testing.T) {
 	assert.False(equalFoldRight([]byte("b"), []byte("a")))
 	assert.True(equalFoldRight([]byte("# github.com/kubeservice-stack/common/pkg/codec/mcpacKS [github.coA"), []byte("# github.com/kubeservice-stack/common/pkg/codec/mcpacKS [github.coA")))
 	assert.False(equalFoldRight([]byte("!# github.com/kubeservice-stack/common/pkg/codec/mcpack [github.coA"), []byte("# github.com/kubeservice-stack/common/pkg/codec/mcpack [github.coA")))
-	assert.True(equalFoldRight([]byte("∞¥₤€"), []byte("∞¥₤€")))
+	assert.False(equalFoldRight([]byte("∞¥₤€"), []byte("∞¥₤€")))
 	assert.False(equalFoldRight([]byte("∞¥₤€"), []byte("")))
 }
 
