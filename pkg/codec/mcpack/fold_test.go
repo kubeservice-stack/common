@@ -42,10 +42,14 @@ func TestFoldFunc(t *testing.T) {
 func TestEqualFoldRight(t *testing.T) {
 	assert := assert.New(t)
 	assert.True(equalFoldRight([]byte("a"), []byte("a")))
+	assert.True(equalFoldRight([]byte(""), []byte("")))
+	assert.False(equalFoldRight([]byte(""), []byte("11")))
 	assert.True(equalFoldRight([]byte("A"), []byte("a")))
 	assert.False(equalFoldRight([]byte("b"), []byte("a")))
 	assert.True(equalFoldRight([]byte("# github.com/kubeservice-stack/common/pkg/codec/mcpacKS [github.coA"), []byte("# github.com/kubeservice-stack/common/pkg/codec/mcpacKS [github.coA")))
 	assert.False(equalFoldRight([]byte("!# github.com/kubeservice-stack/common/pkg/codec/mcpack [github.coA"), []byte("# github.com/kubeservice-stack/common/pkg/codec/mcpack [github.coA")))
+	assert.True(equalFoldRight([]byte("∞¥₤€"), []byte("∞¥₤€")))
+	assert.False(equalFoldRight([]byte("∞¥₤€"), []byte("")))
 }
 
 func TestAsciiEqualFold(t *testing.T) {
