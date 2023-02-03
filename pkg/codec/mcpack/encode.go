@@ -606,7 +606,7 @@ func typeFields(t reflect.Type) []field {
 	next := []field{{typ: t}}
 
 	var count map[reflect.Type]int
-	nextCount := map[reflect.Type]int{}
+	var nextCount map[reflect.Type]int
 
 	visited := map[reflect.Type]bool{}
 
