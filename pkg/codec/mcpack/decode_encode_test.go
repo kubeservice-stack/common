@@ -53,6 +53,7 @@ type Person struct {
 	Info info
 	Ptr  uintptr
 	Num  uint
+	P    *int
 }
 
 func TestDecodeEncodeStruct(t *testing.T) {
@@ -84,4 +85,26 @@ func TestDecodeEncodeStruct(t *testing.T) {
 	assert.Equal("!$_&-  éè  ;∞¥₤€", p.Str)
 	assert.Equal(uint8(18), p.Age)
 	assert.Equal(uintptr(1), p.Ptr)
+}
+
+func TestDecodeEncodeNil(t *testing.T) {
+	assert := assert.New(t)
+	data, err := Marshal(
+		Person{
+			Name: "dongjiang",
+			P:    nil,
+		})
+	assert.NoError(err)
+	p := &Person{}
+	err = Unmarshal(data, p)
+	assert.NoError(err)
+	assert.Equal("dongjiang", p.Name)
+
+	p1 := &Person{}
+	data[10] = 'k'
+	err = Unmarshal(data, p1)
+	assert.Error(err)
+	assert.Equal("dongjiang", p.Name)
+	assert.Equal((*int)(nil), p.P)
+
 }

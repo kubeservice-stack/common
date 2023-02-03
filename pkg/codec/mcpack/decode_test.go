@@ -35,6 +35,10 @@ type obj struct {
 	Foo string `json:"foo"`
 }
 
+type arr struct {
+	Arr []string `json:"arr"`
+}
+
 type ping struct {
 	Data string
 }
@@ -65,7 +69,6 @@ var unmarshalTests = []unmarshalTest{
 			return bytes.Equal(ll.Data, rr.Data)
 		},
 	},
-
 	{
 		in:  []byte{MCPACKV2_STRING, 0, 4, 0, 0, 0, 'f', 'o', 'o', 0},
 		ptr: new(string),
@@ -77,8 +80,29 @@ var unmarshalTests = []unmarshalTest{
 		out: int32(4),
 	},
 	{
+		in:  []byte{MCPACKV2_INT64, 0, 4, 0, 0, 0, 0, 0, 0, 0},
+		ptr: new(int64),
+		out: int64(4),
+	},
+	{
+		in:  []byte{MCPACKV2_BOOL, 0, 1},
+		ptr: new(bool),
+		out: bool(true),
+	},
+	{
+		in:  []byte{MCPACKV2_BOOL, 0, 0},
+		ptr: new(bool),
+		out: bool(false),
+	},
+	{
 		in: []byte{MCPACKV2_OBJECT, 0, 0, 0, 0, 0, 1, 0, 0, 0,
 			MCPACKV2_STRING, 4, 4, 0, 0, 0, 'f', 'o', 'o', 0, 'b', 'a', 'r', 0},
+		ptr: new(obj),
+		out: obj{Foo: "bar"},
+	},
+	{
+		in: []byte{MCPACKV2_OBJECT, 0, 0, 0, 0, 0, 1, 0, 0, 0,
+			MCPACKV2_SHORT_STRING, 4, 4, 'f', 'o', 'o', 0, 'b', 'a', 'r', 0},
 		ptr: new(obj),
 		out: obj{Foo: "bar"},
 	},
@@ -88,7 +112,6 @@ var unmarshalTests = []unmarshalTest{
 		ptr: new([]string),
 		out: []string{"foo"},
 	},
-
 	{
 		in:  []byte{MCPACKV2_OBJECT, 0, 17, 0, 0, 0, 1, 0, 0, 0, 208, 5, 5, 'D', 'a', 't', 'a', 0, 'p', 'i', 'n', 'g', 0},
 		ptr: new(ping),
