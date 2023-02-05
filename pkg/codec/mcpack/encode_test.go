@@ -316,3 +316,16 @@ func TestUnsupportedTypeEncoder(t *testing.T) {
 	invalidValueEncoder(&e, "dfasdvsdghhd", reflect.ValueOf(s))
 	assert.Equal(e.off, 1)
 }
+
+func TestIsValidTag(t *testing.T) {
+	assert := assert.New(t)
+	ok := isValidTag("adff")
+	assert.True(ok)
+	ok = isValidTag("!#$%&()*+-./:<=>?@[]^_{|}~ ")
+	assert.True(ok)
+	ok = isValidTag("AAA")
+	assert.True(ok)
+	ok = isValidTag("0x13df")
+	assert.True(ok)
+
+}
