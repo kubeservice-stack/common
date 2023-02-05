@@ -19,6 +19,7 @@ package mcpack
 import (
 	"bytes"
 	"fmt"
+	"reflect"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -183,4 +184,103 @@ func TestMarshal(t *testing.T) {
 		}
 
 	}
+}
+
+func TestDominantField(t *testing.T) {
+	assert := assert.New(t)
+	aa, ok := dominantField([]field{
+		field{
+			name:      "aa",
+			nameBytes: []byte("aa"),
+		},
+	})
+	assert.True(ok)
+	assert.Equal(aa, field{
+		name:      "aa",
+		nameBytes: []byte("aa"),
+	})
+
+	bb, ok := dominantField([]field{
+		field{
+			name:      "aa",
+			nameBytes: []byte("aa"),
+		},
+		field{
+			name:      "bb",
+			nameBytes: []byte("bb"),
+		},
+	})
+	assert.False(ok)
+	assert.Equal(bb, field{})
+
+	cc, ok := dominantField([]field{
+		field{
+			index: []int{10, 11, 12},
+		},
+	})
+	assert.True(ok)
+	assert.Equal(cc, field{
+		index: []int{10, 11, 12},
+	})
+}
+
+func TestIsEmptyValue(t *testing.T) {
+	assert := assert.New(t)
+	var s []string
+	s = []string{"aa", "bb"}
+	ok := isEmptyValue(reflect.ValueOf(s))
+	assert.False(ok)
+
+	var a int
+	ok = isEmptyValue(reflect.ValueOf(a))
+	assert.True(ok)
+
+	var b map[string]string
+	ok = isEmptyValue(reflect.ValueOf(b))
+	assert.True(ok)
+
+	var c bool
+	ok = isEmptyValue(reflect.ValueOf(c))
+	assert.True(ok)
+
+	var d uint32
+	ok = isEmptyValue(reflect.ValueOf(d))
+	assert.True(ok)
+
+	var e float32
+	ok = isEmptyValue(reflect.ValueOf(e))
+	assert.True(ok)
+
+	var f interface{}
+	ok = isEmptyValue(reflect.ValueOf(f))
+	assert.False(ok)
+
+	var g T
+	ok = isEmptyValue(reflect.ValueOf(g))
+	assert.False(ok)
+
+	var h []int
+	ok = isEmptyValue(reflect.ValueOf(h))
+	assert.True(ok)
+
+	var i rune
+	ok = isEmptyValue(reflect.ValueOf(i))
+	assert.True(ok)
+}
+
+func TestBinaryEncoder(t *testing.T) {
+	assert := assert.New(t)
+	e := encodeState{
+		data: []byte("aaaaaaaä"),
+		off:  1,
+	}
+	var s []byte
+	s = []byte("adfasdf")
+	binaryEncoder(&e, "dfasdvsdghhd", reflect.ValueOf(s))
+	assert.Equal(e.off, 24)
+
+	var ss []byte
+	ss = []byte("adfassdfasdfsdfsdfdfgsadfasdfsdfdf/opt/homebrew/Cellar/go/1.19.4/libexec/bin/go test -v [/Users/dongjiang/Documentsdfasdntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasdfasdf")
+	binaryEncoder(&e, "dff", reflect.ValueOf(ss))
+	assert.Equal(e.off, 1192)
 }
