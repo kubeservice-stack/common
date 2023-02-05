@@ -133,3 +133,33 @@ func TestUnmarshal(t *testing.T) {
 		}
 	}
 }
+
+func TestUnmarshalObeject(t *testing.T) {
+	assert := assert.New(t)
+	obj := new(T)
+	err := Unmarshal([]byte{MCPACKV2_OBJECT, 0, 28, 0, 0, 0,
+		3, 0, 0, 0,
+		MCPACKV2_BOOL, 2, 'A', 0, 1,
+		MCPACKV2_SHORT_STRING, 2, 2, 'X', 0, 'x', 0,
+		MCPACKV2_INT64, 2, 'Y', 0, 1, 0, 0, 0, 0, 0, 0, 0}, obj)
+	assert.Nil(err)
+	assert.Equal(obj, &T{A: true, X: "x", Y: 1, Z: 0})
+
+	objv := new(V)
+	err = Unmarshal([]byte{MCPACKV2_OBJECT, 0, 52, 0, 0, 0,
+		3, 0, 0, 0,
+		MCPACKV2_OBJECT, 3, 17, 0, 0, 0, 'F', '1', 0, 1, 0, 0, 0, MCPACKV2_SHORT_STRING, 6, 4, 'a', 'l', 'p', 'h', 'a', 0, 'a', '-', 'z', 0,
+		MCPACKV2_INT32, 3, 'F', '2', 0, 1, 0, 0, 0,
+		MCPACKV2_INT64, 3, 'F', '3', 0, 1, 0, 0, 0, 0, 0, 0, 0}, objv)
+	assert.Nil(err)
+	assert.Equal(objv, &V{F1: map[string]interface{}{"alpha": "a-z"}, F2: 1, F3: Number(1)})
+
+	objy := new(Y)
+	err = Unmarshal([]byte{MCPACKV2_OBJECT, 0, 20, 0, 0, 0,
+		1, 0, 0, 0,
+		MCPACKV2_ARRAY, 6, 4, 0, 0, 0, 'E', 'm', 'p', 't', 'y', 0, 0, 0, 0, 0,
+	}, objy)
+	assert.Nil(err)
+	assert.Equal(objy, &Y{Empty: []string{}})
+
+}

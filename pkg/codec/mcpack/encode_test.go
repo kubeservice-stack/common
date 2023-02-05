@@ -222,6 +222,19 @@ func TestDominantField(t *testing.T) {
 	assert.Equal(cc, field{
 		index: []int{10, 11, 12},
 	})
+
+	dd, ok := dominantField([]field{
+		field{
+			index: []int{1},
+			tag:   true,
+		},
+		field{
+			index: []int{1, 2, 3},
+			tag:   true,
+		},
+	})
+	assert.True(ok)
+	assert.Equal(dd, field{tag: true, index: []int{1}})
 }
 
 func TestIsEmptyValue(t *testing.T) {
@@ -266,6 +279,10 @@ func TestIsEmptyValue(t *testing.T) {
 	var i rune
 	ok = isEmptyValue(reflect.ValueOf(i))
 	assert.True(ok)
+
+	var j *int
+	ok = isEmptyValue(reflect.ValueOf(j))
+	assert.True(ok)
 }
 
 func TestBinaryEncoder(t *testing.T) {
@@ -283,4 +300,19 @@ func TestBinaryEncoder(t *testing.T) {
 	ss = []byte("adfassdfasdfsdfsdfdfgsadfasdfsdfdf/opt/homebrew/Cellar/go/1.19.4/libexec/bin/go test -v [/Users/dongjiang/Documentsdfasdntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasdfasdf")
 	binaryEncoder(&e, "dff", reflect.ValueOf(ss))
 	assert.Equal(e.off, 1192)
+}
+
+func TestUnsupportedTypeEncoder(t *testing.T) {
+	assert := assert.New(t)
+	e := encodeState{
+		data: []byte("aaaaaaaä"),
+		off:  1,
+	}
+	var s []byte
+	s = []byte("adfasdf")
+	unsupportedTypeEncoder(&e, "dfasdvsdghhd", reflect.ValueOf(s))
+	assert.Equal(e.off, 1)
+
+	invalidValueEncoder(&e, "dfasdvsdghhd", reflect.ValueOf(s))
+	assert.Equal(e.off, 1)
 }
