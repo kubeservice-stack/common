@@ -239,8 +239,7 @@ func TestDominantField(t *testing.T) {
 
 func TestIsEmptyValue(t *testing.T) {
 	assert := assert.New(t)
-	var s []string
-	s = []string{"aa", "bb"}
+	s := []string{"aa", "bb"}
 	ok := isEmptyValue(reflect.ValueOf(s))
 	assert.False(ok)
 
@@ -291,13 +290,11 @@ func TestBinaryEncoder(t *testing.T) {
 		data: []byte("aaaaaaaä"),
 		off:  1,
 	}
-	var s []byte
-	s = []byte("adfasdf")
+	s := []byte("adfasdf")
 	binaryEncoder(&e, "dfasdvsdghhd", reflect.ValueOf(s))
 	assert.Equal(e.off, 24)
 
-	var ss []byte
-	ss = []byte("adfassdfasdfsdfsdfdfgsadfasdfsdfdf/opt/homebrew/Cellar/go/1.19.4/libexec/bin/go test -v [/Users/dongjiang/Documentsdfasdntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasdfasdf")
+	ss := []byte("adfassdfasdfsdfsdfdfgsadfasdfsdfdf/opt/homebrew/Cellar/go/1.19.4/libexec/bin/go test -v [/Users/dongjiang/Documentsdfasdntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasdfasdf")
 	binaryEncoder(&e, "dff", reflect.ValueOf(ss))
 	assert.Equal(e.off, 1192)
 }
@@ -308,8 +305,7 @@ func TestUnsupportedTypeEncoder(t *testing.T) {
 		data: []byte("aaaaaaaä"),
 		off:  1,
 	}
-	var s []byte
-	s = []byte("adfasdf")
+	s := []byte("adfasdf")
 	unsupportedTypeEncoder(&e, "dfasdvsdghhd", reflect.ValueOf(s))
 	assert.Equal(e.off, 1)
 
@@ -327,5 +323,4 @@ func TestIsValidTag(t *testing.T) {
 	assert.True(ok)
 	ok = isValidTag("0x13df")
 	assert.True(ok)
-
 }
