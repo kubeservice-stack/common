@@ -230,6 +230,8 @@ func TestFloat32Decodex(t *testing.T) {
 	*va = 1
 	str := new(string)
 	*str = "aadd"
+	str1 := new(string)
+	*str1 = "Users/dongjiang/Documentsdfasdntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github.com/kubeservice-stack/common/pkg/codec/mcpack]asdfasntsdfasdfsdgs/go/src/github"
 	a := &V{
 		F1: map[string]interface{}{
 			"ui64":  uint64(0xFFFFFFFFFFFFFFFF),
@@ -239,7 +241,9 @@ func TestFloat32Decodex(t *testing.T) {
 			"a":     1,
 			"is":    true,
 			"str":   str,
+			"tttt":  str1,
 			"dd":    float64(1.11),
+			"ff":    float32(1.11),
 			"b":     va,
 			"c":     reflect.ValueOf(va),
 			"d":     map[string]interface{}{"aa": "bb"},
@@ -262,8 +266,10 @@ func TestFloat32Decodex(t *testing.T) {
 			"ui32":  uint32(4294967295),
 			"alpha": "a-z",
 			"str":   "aadd",
+			"tttt":  *str1,
 			"is":    true,
 			"dd":    float64(1.11),
+			"ff":    float32(1.11),
 			"b":     int64(1),
 			"c":     map[string]interface{}{},
 			"d":     map[string]interface{}{"aa": "bb"},
@@ -273,4 +279,19 @@ func TestFloat32Decodex(t *testing.T) {
 		F2: 1,
 		F3: 1,
 	})
+
+	c := make([]byte, 5)
+	err = Unmarshal([]byte{MCPACKV2_BINARY, 0, 4, 0, 0, 0, 'f', 'o', 'o', 0}, &c)
+	assert.Nil(err)
+	assert.Equal(c, []byte{'f', 'o', 'o', 0})
+
+	d := make([]byte, 10)
+	err = Unmarshal([]byte{MCPACKV2_SHORT_BINARY, 4, 4, 'f', 'o', 'o', 0, 'b', 'a', 'r', 0}, &d)
+	assert.Nil(err)
+	assert.Equal(d, []byte{'b', 'a', 'r', 0})
+
+	e := make([]byte, 10)
+	err = Unmarshal([]byte{MCPACKV2_NULL, 0, 0}, &e)
+	assert.Nil(err)
+	assert.Equal(e, []byte(nil))
 }
