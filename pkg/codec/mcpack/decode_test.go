@@ -155,8 +155,7 @@ func TestUnmarshalObeject(t *testing.T) {
 	assert.Equal(obj, &T{A: true, X: "x", Y: 1, Z: 0})
 
 	objv := new(V)
-	err = Unmarshal([]byte{MCPACKV2_OBJECT, 0, 52, 0, 0, 0,
-		3, 0, 0, 0,
+	err = Unmarshal([]byte{MCPACKV2_OBJECT, 0, 52, 0, 0, 0, 3, 0, 0, 0,
 		MCPACKV2_OBJECT, 3, 17, 0, 0, 0, 'F', '1', 0, 1, 0, 0, 0, MCPACKV2_SHORT_STRING, 6, 4, 'a', 'l', 'p', 'h', 'a', 0, 'a', '-', 'z', 0,
 		MCPACKV2_INT32, 3, 'F', '2', 0, 1, 0, 0, 0,
 		MCPACKV2_INT64, 3, 'F', '3', 0, 1, 0, 0, 0, 0, 0, 0, 0}, objv)
@@ -179,7 +178,17 @@ func TestUnmarshalObeject(t *testing.T) {
 	var b []interface{}
 	err = Unmarshal([]byte{0x20, 0x0, 0x1b, 0x0, 0x0, 0x0, 0x2, 0x0, 0x0, 0x0, 0x10, 0x0, 0xe, 0x0, 0x0, 0x0, 0x1, 0x0, 0x0, 0x0, 0xd0, 0x5, 0x2, 0x44, 0x61, 0x74, 0x61, 0x0, 0x61, 0x0, 0x61, 0x0, 0x0}, b)
 	assert.NotNil(err)
+	assert.Equal(err.Error(), "mcpack: Unmarshal(non-pointer []interface {})")
 
+	var c *int
+	err = Unmarshal([]byte{0x20, 0x0, 0x1b, 0x0, 0x0, 0x0, 0x2, 0x0, 0x0, 0x0, 0x10, 0x0, 0xe, 0x0, 0x0, 0x0, 0x1, 0x0, 0x0, 0x0, 0xd0, 0x5, 0x2, 0x44, 0x61, 0x74, 0x61, 0x0, 0x61, 0x0, 0x61, 0x0, 0x0}, c)
+	assert.NotNil(err)
+	assert.Equal(err.Error(), "mcpack: Unmarshal(nil *int)")
+
+	var d []*interface{}
+	err = Unmarshal([]byte{0x20, 0x0, 0x1b, 0x0, 0x0, 0x0, 0x2, 0x0, 0x0, 0x0, 0x10, 0x0, 0xe, 0x0, 0x0, 0x0, 0x1, 0x0, 0x0, 0x0, 0xd0, 0x5, 0x2, 0x44, 0x61, 0x74, 0x61, 0x0, 0x61, 0x0, 0x61, 0x0, 0x0}, d)
+	assert.NotNil(err)
+	assert.Equal(err.Error(), "mcpack: Unmarshal(non-pointer []*interface {})")
 }
 
 func TestUV(t *testing.T) {
@@ -213,4 +222,17 @@ func TestPrt(t *testing.T) {
 	assert.Equal(*b.I8, int8(1))
 	assert.Equal(b.I16, (*int16)(nil))
 	assert.Equal(b.Arr, []*int{})
+}
+
+func TestFloat32Decodex(t *testing.T) {
+	assert := assert.New(t)
+	va := new(int)
+	*va = 1
+	a := &V{F1: map[string]interface{}{"alpha": "a-z", "a": 1, "b": va, "c": reflect.ValueOf(va), "d": map[string]interface{}{}}, F2: 1, F3: Number(1)}
+	te, err := Marshal(a)
+	assert.Nil(err)
+	b := new(V)
+	err = Unmarshal(te, b)
+	assert.Nil(err)
+	assert.Equal(b, &V{F1: map[string]interface{}{"a": int64(1), "alpha": "a-z", "b": int64(1), "c": map[string]interface{}{}, "d": map[string]interface{}{}}, F2: 1, F3: 1})
 }
