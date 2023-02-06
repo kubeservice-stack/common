@@ -228,11 +228,11 @@ func TestFloat32Decodex(t *testing.T) {
 	assert := assert.New(t)
 	va := new(int)
 	*va = 1
-	a := &V{F1: map[string]interface{}{"ui64": uint64(0xFFFFFFFFFFFFFFFF), "alpha": "a-z", "a": 1, "b": va, "c": reflect.ValueOf(va), "d": map[string]interface{}{}, "e": []interface{}{"aa", 1, va}}, F2: 1, F3: Number(1)}
+	a := &V{F1: map[string]interface{}{"ui64": uint64(0xFFFFFFFFFFFFFFFF), "bys": bytes.Runes([]byte("dasdf")), "alpha": "a-z", "a": 1, "b": va, "c": reflect.ValueOf(va), "d": map[string]interface{}{}, "e": []interface{}{"aa", 1, va}}, F2: 1, F3: Number(1)}
 	te, err := Marshal(a)
 	assert.Nil(err)
 	b := new(V)
 	err = Unmarshal(te, b)
 	assert.Nil(err)
-	assert.Equal(b, &V{F1: map[string]interface{}{"a": int64(1), "ui64": uint64(18446744073709551615), "alpha": "a-z", "b": int64(1), "c": map[string]interface{}{}, "d": map[string]interface{}{}, "e": []interface{}{"aa", int64(1), int64(1)}}, F2: 1, F3: 1})
+	assert.Equal(b, &V{F1: map[string]interface{}{"a": int64(1), "bys": []interface{}{int32(100), int32(97), int32(115), int32(100), int32(102)}, "ui64": uint64(18446744073709551615), "alpha": "a-z", "b": int64(1), "c": map[string]interface{}{}, "d": map[string]interface{}{}, "e": []interface{}{"aa", int64(1), int64(1)}}, F2: 1, F3: 1})
 }
