@@ -22,6 +22,7 @@ import (
 	"testing"
 
 	"github.com/kubeservice-stack/common/pkg/codec"
+	"github.com/stretchr/testify/assert"
 )
 
 func BenchmarkMCPack(b *testing.B) {
@@ -54,4 +55,21 @@ func BenchmarkMCPack(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		codec.PluginInstance(codec.MCPACK).Marshal(a)
 	}
+}
+
+func TestRegister(t *testing.T) {
+	assert := assert.New(t)
+	aa := codec.HasRegister(codec.PACK("aaa"))
+	assert.False(aa)
+	aa = codec.HasRegister(codec.MCPACK)
+	assert.True(aa)
+
+	codec.Register("dfdf", codec.NewMCPack)
+	aa = codec.HasRegister(codec.PACK("dfdf"))
+	assert.True(aa)
+	adp := codec.PluginInstance(codec.PACK("dfdf"))
+	assert.NotNil(adp)
+
+	adp = codec.PluginInstance(codec.PACK("gh"))
+	assert.Nil(adp)
 }
