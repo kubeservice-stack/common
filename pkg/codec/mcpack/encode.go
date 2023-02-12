@@ -228,25 +228,21 @@ func boolEncoder(e *encodeState, k string, v reflect.Value) {
 // type(1) | name length(1) | raw name bytes | 0x00 | value bytes
 func int8Encoder(e *encodeState, k string, v reflect.Value) {
 	// unsupported in libmcpack, uint32 employed
-	/*e.resizeIfNeeded(1 + 1 + len(k) + 1 + 8)
+	e.resizeIfNeeded(1 + 1 + len(k) + 1 + 8)
 	e.setType(MCPACKV2_INT8)
 	e.setKey(k, e.setKeyLen(k))
 	PutInt8(e.data[e.off:], int8(v.Int()))
-	e.off += 1*/
-
-	int32Encoder(e, k, v)
+	e.off += 1
 }
 
 // type(1) | name length(1) | raw name bytes | 0x00 | value bytes
 func int16Encoder(e *encodeState, k string, v reflect.Value) {
 	// unsupported in libmcpack, int32 employed
-	/*e.resizeIfNeeded(1 + 1 + len(k) + 1 + 8)
+	e.resizeIfNeeded(1 + 1 + len(k) + 1 + 8)
 	e.setType(MCPACKV2_INT16)
 	e.setKey(k, e.setKeyLen(k))
 	PutInt16(e.data[e.off:], int16(v.Int()))
-	e.off += 2*/
-
-	int32Encoder(e, k, v)
+	e.off += 2
 }
 
 // type(1) | name length(1) | raw name bytes | 0x00 | value bytes
@@ -273,24 +269,20 @@ func int64Encoder(e *encodeState, k string, v reflect.Value) {
 
 func uint8Encoder(e *encodeState, k string, v reflect.Value) {
 	// unsupported in libmcpack, uint32 employed
-	/*e.resizeIfNeeded(1 + 1 + len(k) + 1 + 8)
+	e.resizeIfNeeded(1 + 1 + len(k) + 1 + 8)
 	e.setType(MCPACKV2_UINT8)
 	e.setKey(k, e.setKeyLen(k))
 	PutUint8(e.data[e.off:], uint8(v.Uint()))
-	e.off += 1*/
-
-	uint32Encoder(e, k, v)
+	e.off += 1
 }
 
 func uint16Encoder(e *encodeState, k string, v reflect.Value) {
 	// unsupported in libmcpack, uint32 employed
-	/*e.resizeIfNeeded(1 + 1 + len(k) + 1 + 8)
+	e.resizeIfNeeded(1 + 1 + len(k) + 1 + 8)
 	e.setType(MCPACKV2_UINT16)
 	e.setKey(k, e.setKeyLen(k))
 	PutUint16(e.data[e.off:], uint16(v.Uint()))
-	e.off += 2*/
-
-	uint32Encoder(e, k, v)
+	e.off += 2
 }
 func uint32Encoder(e *encodeState, k string, v reflect.Value) {
 	e.resizeIfNeeded(1 + 1 + len(k) + 1 + 8)
