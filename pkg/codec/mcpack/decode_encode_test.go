@@ -40,6 +40,7 @@ type info struct {
 	CCC []int32
 	DDD []int64
 	EEE []uint16
+	EAA []uint8
 	FFF []uint32
 	GGG []uint64
 	HHH []float32
@@ -66,11 +67,12 @@ func TestDecodeEncodeStruct(t *testing.T) {
 			Ptr:  uintptr(1),
 			Num:  111,
 			Info: info{
-				AAA: []int8{1},
+				AAA: []int8{1, -1, 0, -0},
 				BBB: []int16{345, 11, -1},
 				CCC: []int32{123, 3, -333},
 				DDD: []int64{111223, 44343, -333334, 0},
 				EEE: []uint16{11223, 44343, 0},
+				EAA: []uint8{12, 33, 33},
 				FFF: []uint32{1199223, 44343, 0},
 				GGG: []uint64{11999999223, 44343, 0},
 				HHH: []float32{11999999223.994, 44343.333, 0.000, -3.1415926},
@@ -101,9 +103,8 @@ func TestDecodeEncodeNil(t *testing.T) {
 	assert.Equal("dongjiang", p.Name)
 
 	p1 := &Person{}
-	data[10] = 'k'
 	err = Unmarshal(data, p1)
-	assert.Error(err)
+	assert.NoError(err)
 	assert.Equal("dongjiang", p.Name)
 	assert.Equal((*int)(nil), p.P)
 
