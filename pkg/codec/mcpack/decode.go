@@ -92,7 +92,7 @@ func (d *decodeState) indirect(v reflect.Value, decodingNull bool) (Unmarshaler,
 	// If v is a named type and is addressable
 	// start with its address, so that is the type has pointer
 	// methods, we find them
-	if v.Kind() != reflect.Ptr && v.Type().Name() != "" && v.CanAddr() {
+	if v.CanAddr() && v.Kind() != reflect.Ptr && v.Type().Name() != "" {
 		v = v.Addr()
 	}
 
