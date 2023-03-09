@@ -12,6 +12,7 @@ require (
 	github.com/prometheus/client_golang v1.12.1
 	github.com/stretchr/testify v1.8.0
 	github.com/uber-go/tally v3.5.0+incompatible
+	github.com/vmihailenco/msgpack/v5 v5.3.5
 	go.etcd.io/etcd v0.5.0-alpha.5.0.20200320040136-0eee733220fc
 	go.uber.org/atomic v1.6.0
 	go.uber.org/zap v1.14.1
@@ -62,6 +63,7 @@ require (
 	github.com/tmc/grpc-websocket-proxy v0.0.0-20170815181823-89b8d40f7ca8 // indirect
 	github.com/twmb/murmur3 v1.1.6 // indirect
 	github.com/ugorji/go/codec v1.2.7 // indirect
+	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
 	github.com/xiang90/probing v0.0.0-20190116061207-43a291ad63a2 // indirect
 	go.etcd.io/bbolt v1.3.4 // indirect
 	go.uber.org/multierr v1.5.0 // indirect
