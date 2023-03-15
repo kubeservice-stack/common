@@ -16,9 +16,24 @@ limitations under the License.
 
 package codec
 
-type PACK string
-
-const (
-	MCPACK  PACK = "mcpack"  //mcpack 算法: like Json decode/encode
-	MSGPACK PACK = "msgpack" //msgpack https://msgpack.uptrace.dev/
+import (
+	"github.com/vmihailenco/msgpack/v5"
 )
+
+type MSGPack struct{}
+
+func NewMSGPack() Codec {
+	return &MSGPack{}
+}
+
+func (mc *MSGPack) Marshal(v interface{}) ([]byte, error) {
+	return msgpack.Marshal(v)
+}
+
+func (mc *MSGPack) Unmarshal(data []byte, v interface{}) error {
+	return msgpack.Unmarshal(data, v)
+}
+
+func init() {
+	Register(MSGPACK, NewMSGPack)
+}
