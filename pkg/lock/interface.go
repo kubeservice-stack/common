@@ -21,4 +21,6 @@ type Locker interface {
 	Lock() error
 	// Unlock unlock object lock, if fail return err
 	Unlock() error
+	// TryLock will try to lock object and return whether it succeed or not without blocking.
+	TryLock() bool
 }

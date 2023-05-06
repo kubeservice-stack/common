@@ -26,16 +26,26 @@ type MemoryLock struct {
 	_flag uint32
 }
 
+// NewMemoryLock create new memory lock instance
+func NewMemoryLock() (Locker, error) {
+	return &MemoryLock{
+		_flag: 0,
+	}, nil
+}
+
 // Lock locks memory. If the lock is locked before, the caller will be blocked until unlocked.
-func (sl *MemoryLock) Lock() {
+func (sl *MemoryLock) Lock() error {
 	for !sl.TryLock() {
 		runtime.Gosched() // allow other goroutines to do stuff.
 	}
+	return nil
 }
 
 // Unlock unlocks memory, this operation is reentrant。
-func (sl *MemoryLock) Unlock() {
+func (sl *MemoryLock) Unlock() error {
 	atomic.StoreUint32(&sl._flag, 0)
+	return nil
+
 }
 
 // TryLock will try to lock memory and return whether it succeed or not without blocking.

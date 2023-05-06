@@ -21,6 +21,7 @@ package lock
 
 import (
 	"fmt"
+	"os"
 	"syscall"
 )
 
@@ -36,4 +37,12 @@ func (l *fileLock) lock() error {
 // Unlock unlock file lock, if fail return err
 func (l *fileLock) unlock() error {
 	return syscall.Flock(int(l.file.Fd()), syscall.LOCK_UN)
+}
+
+func (l *fileLock) trylock() bool {
+	fileInfo, err := os.Stat(l.fileName)
+	if err == nil && fileInfo != nil {
+		return false
+	}
+	return true
 }

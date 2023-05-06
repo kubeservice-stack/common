@@ -24,13 +24,13 @@ import (
 )
 
 func TestMemoryLock_TryLock(t *testing.T) {
-	var sl MemoryLock
+	sl, _ := NewMemoryLock()
 	assert.True(t, sl.TryLock())
 	assert.False(t, sl.TryLock())
 }
 
 func TestMemoryLock_Lock_Unlock(t *testing.T) {
-	var sl MemoryLock
+	sl, _ := NewMemoryLock()
 	sl.Lock()
 	assert.False(t, sl.TryLock())
 

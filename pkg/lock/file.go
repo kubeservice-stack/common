@@ -69,3 +69,9 @@ func (l *fileLock) Unlock() error {
 	}()
 	return l.unlock()
 }
+
+//  TryLock will try to lock file and return whether it succeed or not without blocking.
+
+func (l *fileLock) TryLock() bool {
+	return l.trylock()
+}

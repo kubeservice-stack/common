@@ -54,3 +54,7 @@ func (l *fileLock) unlock() error {
 	}
 	return nil
 }
+
+func (l *fileLock) trylock() bool {
+	return false
+}
