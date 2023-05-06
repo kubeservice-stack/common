@@ -50,3 +50,25 @@ func TestFileLock(t *testing.T) {
 	assert.Error(t, err)
 	assert.Nil(t, lock)
 }
+
+func TestFileLockError(t *testing.T) {
+	defer func() {
+		openFileFn = os.OpenFile
+	}()
+	lock, err := NewFileLock("t.lock")
+	assert.NoError(t, err)
+	assert.NotNil(t, lock)
+	err = lock.Lock()
+	assert.Nil(t, err, "lock error")
+	fileInfo, _ := os.Stat("t.lock")
+	assert.NotNil(t, fileInfo, "lock file not exist")
+
+	err = lock.Unlock()
+	assert.NoError(t, err)
+
+	fileInfo, _ = os.Stat("t.lock")
+	assert.Nil(t, fileInfo, "lock file exist")
+
+	err = lock.Unlock()
+	assert.Error(t, err)
+}
