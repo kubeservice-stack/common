@@ -35,4 +35,5 @@ const (
 	LFU    MODE = "lfu"    // Least Frequently Used mode 最小频繁使用模式
 	SIMPLE MODE = "simple" // Simple mode: Random 随机
 	ARC    MODE = "arc"    // Adjustable Replacement Cache mode 可调换缓存模式
+	FIFO   MODE = "fifo"   // First In, First Out 先入先出模式
 )
