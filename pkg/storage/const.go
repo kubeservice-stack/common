@@ -55,7 +55,6 @@ const (
 	defaultRetention             = 24 * time.Hour   //时间保留时间，通过checkExpiredInterval进行数据淘汰，数据最大保留时间 = defaultRetention+checkExpiredInterval
 	defaultTimestampPrecision    = Seconds          //默认时间戳精度
 	defaultWriteTimeout          = 30 * time.Second //数据写入超时时间
-	defaultcheckExpiredInterval  = 1 * time.Minute  //1min做数据淘汰处理
 	defaultWorkersLimit          = 1                //默认处理的goroutine数
 	defaultwritablePartitionsNum = 2                //默认可写入的Partition个数. 超过这时间数据丢弃
 )

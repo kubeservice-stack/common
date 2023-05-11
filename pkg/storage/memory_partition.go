@@ -249,6 +249,7 @@ func (m *memoryMetric) selectPoints(start, end int64) []*DataPoint {
 	return m.points[startIdx:endIdx]
 }
 
+/*
 // encodeAllPoints uses the given seriesEncoder to encode all metric data points in order by timestamp,
 // including outOfOrderPoints.
 func (m *memoryMetric) encodeAllPoints(encoder seriesEncoder) error {
@@ -285,3 +286,4 @@ func (m *memoryMetric) encodeAllPoints(encoder seriesEncoder) error {
 
 	return nil
 }
+*/

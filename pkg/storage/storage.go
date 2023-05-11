@@ -69,7 +69,7 @@ func NewStorage(opts ...Option) (StorageInterface, error) {
 		retention:          defaultRetention,
 		timestampPrecision: defaultTimestampPrecision,
 		writeTimeout:       defaultWriteTimeout,
-		doneCh:             make(chan struct{}, 0),
+		doneCh:             make(chan struct{}),
 		timerpool:          utils.NewTimerPool(),
 	}
 
