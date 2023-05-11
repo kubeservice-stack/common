@@ -1,5 +1,5 @@
 /*
-Copyright 2022 The KubeService-Stack Authors.
+Copyright 2023 The KubeService-Stack Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -29,11 +29,16 @@ func evictedFuncForFIFO(key, value interface{}) {
 	fmt.Printf("[FIFO] Key:%v Value:%v will evicted.\n", key, value)
 }
 
+func addFuncForFIFO(key, value interface{}) {
+	fmt.Printf("[FIFO] add Key:%v Value:%v\n", key, value)
+}
+
 func optionsFIFOCache(size int, loader LoaderFunc) Cache {
 	return New(size).
 		FIFO().
 		LoaderFunc(loader).
 		EvictedFunc(evictedFuncForFIFO).
+		AddedFunc(addFuncForFIFO).
 		Setting()
 }
 
@@ -42,6 +47,7 @@ func buildLoadingFIFOCache(size int, loader LoaderFunc) Cache {
 		FIFO().
 		LoaderFunc(loader).
 		EvictedFunc(evictedFuncForFIFO).
+		AddedFunc(addFuncForFIFO).
 		Expiration(time.Second).
 		Setting()
 }
@@ -299,4 +305,6 @@ func Test_FIFONew(t *testing.T) {
 	v1, ok = m[size]
 	assert.True(ok)
 	assert.Equal(v1, size*size)
+
+	cache.Purge()
 }
