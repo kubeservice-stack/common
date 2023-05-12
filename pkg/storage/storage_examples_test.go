@@ -30,7 +30,7 @@ import (
 var logging = logger.GetLogger("pkg/common/storage", "storage_test")
 
 func ExampleNewStorage_withPartitionDuration() {
-	storage, err := storage.NewStorage(
+	stg, err := storage.NewStorage(
 		storage.WithPartitionDuration(30*time.Minute),
 		storage.WithTimestampPrecision(storage.Seconds),
 		storage.WithWriteTimeout(15*time.Second),
@@ -41,12 +41,15 @@ func ExampleNewStorage_withPartitionDuration() {
 	if err != nil {
 		panic(err)
 	}
-	defer storage.Close()
+	defer stg.Close()
 }
 
 func ExampleStorage_InsertRows() {
 	stg, err := storage.NewStorage(
 		storage.WithTimestampPrecision(storage.Seconds),
+		storage.WithWriteTimeout(15*time.Second),
+		storage.WithRetention(1*time.Hour),
+		storage.WithLogger(logging),
 	)
 	if err != nil {
 		panic(err)
@@ -81,6 +84,9 @@ func ExampleStorage_InsertRows_Select_concurrent() {
 	stg, err := storage.NewStorage(
 		storage.WithPartitionDuration(5*time.Hour),
 		storage.WithTimestampPrecision(storage.Seconds),
+		storage.WithWriteTimeout(15*time.Second),
+		storage.WithRetention(1*time.Hour),
+		storage.WithLogger(logging),
 	)
 	if err != nil {
 		panic(err)
@@ -145,6 +151,9 @@ func ExampleStorage_Select_from_memory() {
 	stg, err := storage.NewStorage(
 		storage.WithPartitionDuration(2*time.Hour),
 		storage.WithTimestampPrecision(storage.Seconds),
+		storage.WithWriteTimeout(15*time.Second),
+		storage.WithRetention(1*time.Hour),
+		storage.WithLogger(logging),
 	)
 	if err != nil {
 		panic(err)

@@ -25,11 +25,11 @@ import (
 const (
 	// The maximum length of label name.
 	// Longer names are truncated.
-	maxLabelNameLen = 256
+	maxLabelNameLen = 64
 
 	// The maximum length of label value.
 	// Longer values are truncated.
-	maxLabelValueLen = 16 * 1024
+	maxLabelValueLen = 256
 )
 
 // Label is a time-series label.
