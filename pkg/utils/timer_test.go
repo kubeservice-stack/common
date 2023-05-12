@@ -32,3 +32,13 @@ func Test_Timer(t *testing.T) {
 	assert.NotNil(a)
 	assert.Equal(a, b)
 }
+
+func Test_TimerTimeout(t *testing.T) {
+	assert := assert.New(t)
+	tp := NewTimerPool()
+	a := time.NewTimer(10 * time.Second)
+	tp.Put(a)
+	tp.Put(a)
+	tp.Put(a)
+	assert.NotEmpty(tp.Get(10 * time.Second))
+}
