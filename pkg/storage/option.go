@@ -53,7 +53,7 @@ func WithWriteTimeout(timeout time.Duration) Option {
 }
 
 // Defaults to a logger implementation that does nothing.
-func WithLogger(logger logger.Logger) Option {
+func WithLogger(logger *logger.Logger) Option {
 	return func(s *Storage) {
 		s.logger = logger
 	}

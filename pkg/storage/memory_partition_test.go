@@ -66,6 +66,35 @@ func Test_memoryPartition_InsertRows(t *testing.T) {
 				{Name: "metric1", DataPoint: DataPoint{Timestamp: 1, Value: 0.1}},
 			},
 		},
+		{
+			name:               "insert empty rows",
+			memoryPartition:    NewMemoryPartition(0, TimestampPrecision(1000)).(*memoryPartition),
+			rows:               []Row{},
+			wantDataPoints:     []*DataPoint{},
+			wantErr:            true,
+			wantOutOfOrderRows: nil,
+		},
+		{
+			name: "insert rows timestamp = 0",
+			memoryPartition: func() *memoryPartition {
+				m := NewMemoryPartition(0, TimestampPrecision(1000)).(*memoryPartition)
+				m.insertRows([]Row{
+					{Name: "metric1", DataPoint: DataPoint{Timestamp: 2, Value: 0.1}},
+				})
+				return m
+			}(),
+			rows: []Row{
+				{Name: "metric1", DataPoint: DataPoint{Timestamp: 1, Value: 0.1}},
+				{Name: "metric1", DataPoint: DataPoint{Timestamp: 0, Value: 0.1}},
+			},
+			wantDataPoints: []*DataPoint{
+				{Timestamp: 2, Value: 0.1},
+			},
+			wantOutOfOrderRows: []Row{
+				{Name: "metric1", DataPoint: DataPoint{Timestamp: 1, Value: 0.1}},
+				{Name: "metric1", DataPoint: DataPoint{Timestamp: 0, Value: 0.1}},
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -201,6 +230,12 @@ func Test_toUnix(t *testing.T) {
 			t:         time.Unix(1600000000, 0),
 			precision: Seconds,
 			want:      1600000000,
+		},
+		{
+			name:      "to default",
+			t:         time.Unix(1600000000, 0),
+			precision: TimestampPrecision(100),
+			want:      1600000000000000000,
 		},
 	}
 	for _, tt := range tests {

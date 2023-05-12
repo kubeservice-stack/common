@@ -23,14 +23,21 @@ import (
 	"sync"
 	"time"
 
+	"github.com/kubeservice-stack/common/pkg/logger"
 	"github.com/kubeservice-stack/common/pkg/storage"
 )
+
+var logging = logger.GetLogger("pkg/common/storage", "storage_test")
 
 func ExampleNewStorage_withPartitionDuration() {
 	storage, err := storage.NewStorage(
 		storage.WithPartitionDuration(30*time.Minute),
 		storage.WithTimestampPrecision(storage.Seconds),
+		storage.WithWriteTimeout(15*time.Second),
+		storage.WithRetention(1*time.Hour),
+		storage.WithLogger(logging),
 	)
+
 	if err != nil {
 		panic(err)
 	}

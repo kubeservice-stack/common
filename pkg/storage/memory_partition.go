@@ -17,7 +17,6 @@ limitations under the License.
 package storage
 
 import (
-	"fmt"
 	"sort"
 	"sync"
 	"sync/atomic"
@@ -65,7 +64,7 @@ func NewMemoryPartition(partitionDuration time.Duration, precision TimestampPrec
 // insertRows inserts the given rows to partition.
 func (m *memoryPartition) insertRows(rows []Row) ([]Row, error) {
 	if len(rows) == 0 {
-		return nil, fmt.Errorf("no rows given")
+		return nil, ErrNoRowsData
 	}
 
 	// Set min timestamp at only first.

@@ -54,12 +54,33 @@ func TestMarshalMetricName(t *testing.T) {
 			want: "\x00\ametric1",
 		},
 		{
+			name:   "muti label values",
+			metric: "metric1",
+			labels: []Label{
+				{Key: "bb", Value: "1"},
+				{Key: "aa", Value: "a"},
+			},
+
+			want: "\x00\ametric1\x00\x02aa\x00\x01a\x00\x02bb\x00\x011",
+		},
+		{
 			name:   "metric with a single label",
 			metric: "metric1",
 			labels: []Label{
 				{Key: "name1", Value: "value1"},
 			},
 			want: "\x00\ametric1\x00\x05name1\x00\x06value1",
+		},
+		{
+			name:   "metric with long key and long value",
+			metric: "metric1",
+			labels: []Label{
+				{
+					Key:   "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+					Value: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+				},
+			},
+			want: "\x00\ametric1\x00aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\x01\x10bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
 		},
 	}
 	for _, tt := range tests {

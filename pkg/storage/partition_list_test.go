@@ -251,6 +251,7 @@ func Test_partitionList_Remove(t *testing.T) {
 			err := tt.partitionList.remove(tt.target)
 			assert.Equal(t, tt.wantErr, err != nil)
 			assert.Equal(t, tt.wantPartitionList, tt.partitionList)
+			tt.partitionList.String()
 		})
 	}
 }
@@ -468,6 +469,7 @@ func Test_partitionList_Swap(t *testing.T) {
 			err := tt.partitionList.swap(tt.old, tt.new)
 			assert.Equal(t, tt.wantErr, err != nil)
 			assert.Equal(t, tt.wantPartitionList, tt.partitionList)
+			tt.partitionList.String()
 		})
 	}
 }

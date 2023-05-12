@@ -51,7 +51,7 @@ type Storage struct {
 	timestampPrecision TimestampPrecision
 	writeTimeout       time.Duration
 
-	logger         logger.Logger
+	logger         *logger.Logger
 	workersLimitCh chan struct{}
 	// be incremented to guarantee all writes are done gracefully.
 	wg sync.WaitGroup

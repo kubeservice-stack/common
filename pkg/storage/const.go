@@ -23,6 +23,7 @@ import (
 
 var (
 	ErrNoDataPoints = errors.New("no data points found") //数据不存在
+	ErrNoRowsData   = errors.New("no rows given")        // row empty
 	ErrUnknown      = "UNKNOWN"
 )
 
