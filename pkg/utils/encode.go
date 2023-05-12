@@ -17,9 +17,9 @@ limitations under the License.
 package utils
 
 import (
-	// "fmt"
 	"crypto/md5"
 	"encoding/base64"
+	"encoding/binary"
 	"encoding/hex"
 	"net/url"
 )
@@ -41,4 +41,12 @@ func Urlencode(str string) string {
 
 func Urldecode(str string) (string, error) {
 	return url.QueryUnescape(str)
+}
+
+func Uint16Encode(dst []byte, u uint16) []byte {
+	return append(dst, byte(u>>8), byte(u))
+}
+
+func Uint16Decode(src []byte) uint16 {
+	return binary.BigEndian.Uint16(src)
 }

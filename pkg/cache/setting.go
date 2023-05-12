@@ -71,6 +71,10 @@ func (cb *Setting) ARC() *Setting {
 	return cb.EvictType(ARC)
 }
 
+func (cb *Setting) FIFO() *Setting {
+	return cb.EvictType(FIFO)
+}
+
 func (cb *Setting) EvictedFunc(evictedFunc EvictedFunc) *Setting {
 	cb.evictedFunc = &evictedFunc
 	return cb

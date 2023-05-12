@@ -43,3 +43,17 @@ func Test_urldecode(t *testing.T) {
 	assert.Equal("user=dongjiang&signature=eBA5HZ6lccsp1jsh%2BZ7jtDFXrR61uRHHs7RV88zc2tY%3D&expires=1479390425", aa)
 	assert.Nil(err)
 }
+
+func Test_Uint16Encode(t *testing.T) {
+	assert := assert.New(t)
+	var b []byte
+	aa := Uint16Encode(b, uint16(124))
+	assert.NotEmpty(aa)
+	assert.Equal(aa, []uint8([]byte{0x0, 0x7c}))
+}
+
+func Test_Uint16Decode(t *testing.T) {
+	assert := assert.New(t)
+	aa := Uint16Decode([]byte{0x0, 0x7c})
+	assert.Equal(aa, uint16(124))
+}
