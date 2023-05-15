@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package storage_test
+package storage
 
 import (
 	"errors"
@@ -24,18 +24,17 @@ import (
 	"time"
 
 	"github.com/kubeservice-stack/common/pkg/logger"
-	"github.com/kubeservice-stack/common/pkg/storage"
 )
 
 var logging = logger.GetLogger("pkg/common/storage", "storage_test")
 
 func ExampleNewStorage_withPartitionDuration() {
-	stg, err := storage.NewStorage(
-		storage.WithPartitionDuration(30*time.Minute),
-		storage.WithTimestampPrecision(storage.Seconds),
-		storage.WithWriteTimeout(15*time.Second),
-		storage.WithRetention(1*time.Hour),
-		storage.WithLogger(logging),
+	stg, err := NewStorage(
+		WithPartitionDuration(30*time.Minute),
+		WithTimestampPrecision(Seconds),
+		WithWriteTimeout(15*time.Second),
+		WithRetention(1*time.Hour),
+		WithLogger(logging),
 	)
 
 	if err != nil {
@@ -45,11 +44,11 @@ func ExampleNewStorage_withPartitionDuration() {
 }
 
 func ExampleStorage_InsertRows() {
-	stg, err := storage.NewStorage(
-		storage.WithTimestampPrecision(storage.Seconds),
-		storage.WithWriteTimeout(15*time.Second),
-		storage.WithRetention(1*time.Hour),
-		storage.WithLogger(logging),
+	stg, err := NewStorage(
+		WithTimestampPrecision(Seconds),
+		WithWriteTimeout(15*time.Second),
+		WithRetention(1*time.Hour),
+		WithLogger(logging),
 	)
 	if err != nil {
 		panic(err)
@@ -59,10 +58,10 @@ func ExampleStorage_InsertRows() {
 			panic(err)
 		}
 	}()
-	err = stg.InsertRows([]storage.Row{
-		storage.Row{
+	err = stg.InsertRows([]Row{
+		Row{
 			Name:      "metric1",
-			DataPoint: storage.DataPoint{Timestamp: 1600000000, Value: 0.1},
+			DataPoint: DataPoint{Timestamp: 1600000000, Value: 0.1},
 		},
 	})
 	if err != nil {
@@ -81,12 +80,12 @@ func ExampleStorage_InsertRows() {
 
 // simulates writing and reading in concurrent.
 func ExampleStorage_InsertRows_Select_concurrent() {
-	stg, err := storage.NewStorage(
-		storage.WithPartitionDuration(5*time.Hour),
-		storage.WithTimestampPrecision(storage.Seconds),
-		storage.WithWriteTimeout(15*time.Second),
-		storage.WithRetention(1*time.Hour),
-		storage.WithLogger(logging),
+	stg, err := NewStorage(
+		WithPartitionDuration(5*time.Hour),
+		WithTimestampPrecision(Seconds),
+		WithWriteTimeout(15*time.Second),
+		WithRetention(1*time.Hour),
+		WithLogger(logging),
 	)
 	if err != nil {
 		panic(err)
@@ -107,8 +106,8 @@ func ExampleStorage_InsertRows_Select_concurrent() {
 			wg.Add(1)
 			go func(timestamp int64) {
 				defer wg.Done()
-				if err := stg.InsertRows([]storage.Row{
-					{Name: "metric1", DataPoint: storage.DataPoint{Timestamp: timestamp}},
+				if err := stg.InsertRows([]Row{
+					{Name: "metric1", DataPoint: DataPoint{Timestamp: timestamp}},
 				}); err != nil {
 					panic(err)
 				}
@@ -125,7 +124,7 @@ func ExampleStorage_InsertRows_Select_concurrent() {
 			go func() {
 				defer wg.Done()
 				points, err := stg.Select("metric1", nil, 1600000000, 1600010000)
-				if errors.Is(err, storage.ErrNoDataPoints) {
+				if errors.Is(err, ErrNoDataPoints) {
 					return
 				}
 				if err != nil {
@@ -148,12 +147,12 @@ func ExampleStorage_Select_from_memory() {
 	}
 	defer os.RemoveAll(tmpDir)
 
-	stg, err := storage.NewStorage(
-		storage.WithPartitionDuration(2*time.Hour),
-		storage.WithTimestampPrecision(storage.Seconds),
-		storage.WithWriteTimeout(15*time.Second),
-		storage.WithRetention(1*time.Hour),
-		storage.WithLogger(logging),
+	stg, err := NewStorage(
+		WithPartitionDuration(2*time.Hour),
+		WithTimestampPrecision(Seconds),
+		WithWriteTimeout(15*time.Second),
+		WithRetention(1*time.Hour),
+		WithLogger(logging),
 	)
 	if err != nil {
 		panic(err)
@@ -166,8 +165,8 @@ func ExampleStorage_Select_from_memory() {
 
 	// Ingest data points of metric1
 	for timestamp := int64(1600000000); timestamp < 1600000050; timestamp++ {
-		err := stg.InsertRows([]storage.Row{
-			{Name: "metric1", DataPoint: storage.DataPoint{Timestamp: timestamp, Value: 0.1}},
+		err := stg.InsertRows([]Row{
+			{Name: "metric1", DataPoint: DataPoint{Timestamp: timestamp, Value: 0.1}},
 		})
 		if err != nil {
 			panic(err)
@@ -175,8 +174,8 @@ func ExampleStorage_Select_from_memory() {
 	}
 	// Ingest data points of metric2
 	for timestamp := int64(1600000050); timestamp < 1600000100; timestamp++ {
-		err := stg.InsertRows([]storage.Row{
-			{Name: "metric2", DataPoint: storage.DataPoint{Timestamp: timestamp, Value: 0.2}},
+		err := stg.InsertRows([]Row{
+			{Name: "metric2", DataPoint: DataPoint{Timestamp: timestamp, Value: 0.2}},
 		})
 		if err != nil {
 			panic(err)
@@ -184,7 +183,7 @@ func ExampleStorage_Select_from_memory() {
 	}
 
 	points, err := stg.Select("metric1", nil, 1600000000, 1600000050)
-	if errors.Is(err, storage.ErrNoDataPoints) {
+	if errors.Is(err, ErrNoDataPoints) {
 		return
 	}
 	if err != nil {
@@ -196,7 +195,7 @@ func ExampleStorage_Select_from_memory() {
 	}
 
 	points2, err := stg.Select("metric2", nil, 1600000050, 1600000100)
-	if errors.Is(err, storage.ErrNoDataPoints) {
+	if errors.Is(err, ErrNoDataPoints) {
 		return
 	}
 	if err != nil {
@@ -314,8 +313,8 @@ func ExampleStorage_Select_from_memory() {
 // Out of order data points that are not yet flushed are in the buffer
 // but do not appear in select.
 func ExampleStorage_Select_from_memory_out_of_order() {
-	stg, err := storage.NewStorage(
-		storage.WithTimestampPrecision(storage.Seconds),
+	stg, err := NewStorage(
+		WithTimestampPrecision(Seconds),
 	)
 	if err != nil {
 		panic(err)
@@ -325,11 +324,11 @@ func ExampleStorage_Select_from_memory_out_of_order() {
 			panic(err)
 		}
 	}()
-	err = stg.InsertRows([]storage.Row{
-		{Name: "metric1", DataPoint: storage.DataPoint{Timestamp: 1600000000, Value: 0.1}},
-		{Name: "metric1", DataPoint: storage.DataPoint{Timestamp: 1600000002, Value: 0.1}},
-		{Name: "metric1", DataPoint: storage.DataPoint{Timestamp: 1600000001, Value: 0.1}},
-		{Name: "metric1", DataPoint: storage.DataPoint{Timestamp: 1600000003, Value: 0.1}},
+	err = stg.InsertRows([]Row{
+		{Name: "metric1", DataPoint: DataPoint{Timestamp: 1600000000, Value: 0.1}},
+		{Name: "metric1", DataPoint: DataPoint{Timestamp: 1600000002, Value: 0.1}},
+		{Name: "metric1", DataPoint: DataPoint{Timestamp: 1600000001, Value: 0.1}},
+		{Name: "metric1", DataPoint: DataPoint{Timestamp: 1600000003, Value: 0.1}},
 	})
 	if err != nil {
 		panic(err)
@@ -351,8 +350,8 @@ func ExampleStorage_Select_from_memory_out_of_order() {
 }
 
 func ExampleStorage_InsertRows_concurrent() {
-	stg, err := storage.NewStorage(
-		storage.WithTimestampPrecision(storage.Seconds),
+	stg, err := NewStorage(
+		WithTimestampPrecision(Seconds),
 	)
 	if err != nil {
 		panic(err)
@@ -360,8 +359,8 @@ func ExampleStorage_InsertRows_concurrent() {
 	defer stg.Close()
 
 	// First insert in order to ensure min timestamp
-	if err := stg.InsertRows([]storage.Row{
-		{Name: "metric1", DataPoint: storage.DataPoint{Timestamp: 1600000000}},
+	if err := stg.InsertRows([]Row{
+		{Name: "metric1", DataPoint: DataPoint{Timestamp: 1600000000}},
 	}); err != nil {
 		panic(err)
 	}
@@ -370,8 +369,8 @@ func ExampleStorage_InsertRows_concurrent() {
 	for i := int64(1600000001); i < 1600000100; i++ {
 		wg.Add(1)
 		go func(timestamp int64) {
-			if err := stg.InsertRows([]storage.Row{
-				{Name: "metric1", DataPoint: storage.DataPoint{Timestamp: timestamp}},
+			if err := stg.InsertRows([]Row{
+				{Name: "metric1", DataPoint: DataPoint{Timestamp: timestamp}},
 			}); err != nil {
 				panic(err)
 			}
