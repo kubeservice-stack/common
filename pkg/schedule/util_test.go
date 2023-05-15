@@ -80,8 +80,7 @@ func Test_CallTaskFuncWithParams(t *testing.T) {
 	assert.Nil(err)
 	assert.NotNil(ee)
 
-	var functionNot interface{}
-	functionNot = strings.Fields
+	functionNot := strings.Fields
 	ff, err := callTaskFuncWithParams(functionNot, []interface{}{"dfadf"})
 	assert.Nil(err)
 	assert.NotNil(ff)

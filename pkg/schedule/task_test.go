@@ -27,6 +27,10 @@ func CallBackTest(ss interface{}) interface{} {
 	return ss
 }
 
+func CallBackPanic(ss interface{}) {
+	panic("error panic")
+}
+
 func Test_NewTask(t *testing.T) {
 	assert := assert.New(t)
 	task := NewTask(1)
@@ -47,10 +51,60 @@ func Test_NewTask(t *testing.T) {
 	assert.Nil(err)
 
 	var functionNot interface{}
-	functionNot = "adffdfa"
-	err = task.Hour().Minutes().Minute().Hours().Second().Seconds().Do(functionNot, "df")
+	functionNot = nil
+
+	err = task.Hour().Minutes().Minute().Hours().Second().Seconds().Do("ddd", "df")
 	assert.Equal(err, ErrNotAFunction)
 
 	err = task.Hour().Minutes().Minute().Hours().Second().Seconds().DoSafely(functionNot, "df")
 	assert.Nil(err)
+}
+
+func Test_TaskTags(t *testing.T) {
+	assert := assert.New(t)
+	task := NewTask(1)
+	now := time.Now()
+	err := task.Week().At(now.Format("15:04:05")).Loc(time.UTC).Do(CallBackTest, "aaa")
+	assert.Nil(err)
+
+	task.Tag("dd", "dff", "ddd", "dd")
+	aa := task.Tags()
+	assert.Equal(aa, []string{"dd", "dff", "ddd", "dd"})
+
+	err = task.From(&now).At(now.Format("15:04:05")).Loc(time.UTC).Do(CallBackTest, "aaa")
+	assert.Nil(err)
+
+	task1 := NewTask(1)
+	err = task1.Days().At(now.Format("15:04:05")).Loc(time.UTC).Do(CallBackTest, "aaa")
+	assert.Nil(err)
+
+	aeea := task1.NextScheduledTime()
+	assert.Equal(now.Format("2006-01-02 15:04:05"), aeea.Format("2006-01-02 15:04:05"))
+
+	err = task1.Minute().At(now.Format("15:04:05")).Loc(time.UTC).Do(CallBackTest, "aaa")
+	assert.Nil(err)
+
+	err = task1.Second().At(now.Format("15:04:05")).Loc(time.UTC).Do(CallBackTest, "aaa")
+	assert.Nil(err)
+
+	err = task1.Hour().At(now.Format("15:04:05")).Loc(time.UTC).Do(CallBackTest, "aaa")
+	assert.Nil(err)
+
+	err = task1.Day().At(now.Format("15:04:05")).Loc(time.UTC).Do(CallBackTest, "aaa")
+	assert.Nil(err)
+
+}
+
+func Test_CallPanic(t *testing.T) {
+	assert := assert.New(t)
+	now := time.Now()
+
+	task1 := NewTask(1)
+	err := task1.Seconds().At(now.Format("15:04:05")).Loc(time.UTC).Do(CallBackPanic)
+	time.Sleep(2 * time.Second)
+	assert.Nil(err)
+
+	err = task1.Seconds().At(now.Format("15:04:05")).Loc(time.UTC).DoSafely(CallBackPanic)
+	time.Sleep(2 * time.Second)
+	assert.Equal(err, task1.Err())
 }

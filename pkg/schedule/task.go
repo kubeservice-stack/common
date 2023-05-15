@@ -138,7 +138,7 @@ func (j *Task) At(t string) *Task {
 // GetAt returns the specific time of day the job will run at
 //	s.Every(1).Day().At("10:30").GetAt() == "10:30"
 func (j *Task) GetAt() string {
-	return fmt.Sprintf("%d:%d", j.atTime/time.Hour, (j.atTime%time.Hour)/time.Minute)
+	return fmt.Sprintf("%1.2d:%2.2d", j.atTime/time.Hour, (j.atTime%time.Hour)/time.Minute)
 }
 
 // Loc sets the location for which to interpret "At"

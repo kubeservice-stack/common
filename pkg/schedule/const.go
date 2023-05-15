@@ -39,7 +39,6 @@ const (
 	hours
 	days
 	weeks
-	unknown = -1
 )
 
 func (t timeUnit) String() time.Duration {
