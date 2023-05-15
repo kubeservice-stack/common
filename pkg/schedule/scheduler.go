@@ -176,7 +176,7 @@ func (s *Scheduler) removeByCondition(shouldRemove func(*Task) bool) {
 // Scheduled checks if specific job j was already added
 func (s *Scheduler) Scheduled(j interface{}) bool {
 	for _, job := range s.jobs {
-		if job.taskFunc == getFunctionName(j) {
+		if job != nil && job.taskFunc == getFunctionName(j) {
 			return true
 		}
 	}
@@ -263,7 +263,7 @@ func Remove(j interface{}) {
 // Scheduled checks if specific job j was already added
 func Scheduled(j interface{}) bool {
 	for _, job := range defaultScheduler.jobs {
-		if job.taskFunc == getFunctionName(j) {
+		if job != nil && job.taskFunc == getFunctionName(j) {
 			return true
 		}
 	}

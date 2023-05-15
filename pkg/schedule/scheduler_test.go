@@ -42,11 +42,15 @@ func Test_MutiSchdule(t *testing.T) {
 	assert := assert.New(t)
 	now := time.Now()
 	sched := NewScheduler()
+	task, tm := sched.NextRun()
+	assert.NotEmpty(tm)
+	assert.Nil(task)
 	err := sched.Every(1).At(now.Format("15:04:05")).DoSafely(fmt.Println, "aa")
 	assert.Nil(err)
 	err = sched.Every(1).At(now.Format("15:04:05")).DoSafely(fmt.Println, "bb")
 	assert.Nil(err)
 	sched.RunAll()
+	sched.RunPending()
 
 	l := sched.Len()
 	assert.Equal(l, 2)
@@ -57,7 +61,7 @@ func Test_MutiSchdule(t *testing.T) {
 	sched.ChangeLoc(time.UTC)
 	assert.Equal(sched.loc.String(), "UTC")
 
-	task, tm := sched.NextRun()
+	task, tm = sched.NextRun()
 	assert.NotEmpty(tm)
 	assert.NotNil(task)
 
@@ -65,6 +69,10 @@ func Test_MutiSchdule(t *testing.T) {
 	sched.Remove(fmt.Printf)
 	sched.Remove(fmt.Errorf)
 	sched.RemoveByTag("aa")
+	sched.RemoveByRef(task)
+
+	aaa := sched.Scheduled(functionNameC)
+	assert.False(aaa)
 
 	err = sched.Every(1).At(now.Format("15:04:05")).DoSafely(fmt.Println, "cc")
 	assert.Nil(err)
@@ -84,6 +92,10 @@ func Test_DefaultScheduler(t *testing.T) {
 	assert.Nil(err)
 	err = Every(1).At(now.Format("15:04:05")).DoSafely(fmt.Println, "bb")
 	assert.Nil(err)
+
+	aaa := Scheduled(fmt.Println)
+	assert.False(aaa)
+
 	RunAll()
 	RunAllwithDelay(1)
 	RunPending()
@@ -92,10 +104,15 @@ func Test_DefaultScheduler(t *testing.T) {
 	assert.NotEmpty(tm)
 	assert.NotNil(task)
 
+	aaa = Scheduled(fmt.Println)
+	assert.False(aaa)
+
 	go func() {
 		<-Start()
 	}()
 	time.Sleep(1 * time.Second)
+	aaa = Scheduled(fmt.Println)
+	assert.False(aaa)
 	Remove(fmt.Println)
 	Clear()
 }
