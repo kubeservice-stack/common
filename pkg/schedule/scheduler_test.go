@@ -96,6 +96,6 @@ func Test_DefaultScheduler(t *testing.T) {
 		<-Start()
 	}()
 	time.Sleep(1 * time.Second)
-	Remove(fmt.Append)
+	Remove(fmt.Println)
 	Clear()
 }
