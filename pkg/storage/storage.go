@@ -71,6 +71,7 @@ func NewStorage(opts ...Option) (StorageInterface, error) {
 		writeTimeout:       defaultWriteTimeout,
 		doneCh:             make(chan struct{}),
 		timerpool:          utils.NewTimerPool(),
+		logger:             logger.GetLogger("pkg/common/storage", "storage"),
 	}
 
 	// setting option
