@@ -139,4 +139,6 @@ func Test_TaskLock(t *testing.T) {
 	err := task1.Lock().Minutes().At(now.Format("15:04:05")).Loc(time.UTC).Do(CallBackPanic)
 	assert.Nil(err)
 
+	err = task1.Lock().Hours().At(now.Format("15:04:05")).Loc(time.UTC).Do(CallBackPanic)
+	assert.Nil(err)
 }
