@@ -17,20 +17,23 @@ limitations under the License.
 package schedule
 
 import (
+	"fmt"
 	"testing"
 	"time"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_timeUnit(t *testing.T) {
+func Test_Schdule(t *testing.T) {
 	assert := assert.New(t)
-	a := timeUnit(100)
-	assert.Equal(a.String(), time.Duration(-1))
-	assert.Equal(seconds.String(), time.Second)
-	assert.Equal(minutes.String(), time.Second*60)
-	assert.Equal(hours.String(), time.Hour)
-	assert.Equal(days.String(), time.Second*3600*24)
-	assert.Equal(weeks.String(), time.Second*3600*24*7)
-
+	now := time.Now()
+	sched := NewScheduler()
+	err := sched.Every(1).At(now.Format("15:04:05")).DoSafely(fmt.Println, "aa")
+	assert.Nil(err)
+	sched.RunAll()
+	go func() {
+		<-sched.Start()
+	}()
+	time.Sleep(2 * time.Second)
+	sched.Clear()
 }

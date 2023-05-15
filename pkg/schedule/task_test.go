@@ -1,5 +1,5 @@
 /*
-Copyright 2022 The KubeService-Stack Authors.
+Copyright 2023 The KubeService-Stack Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -50,8 +50,7 @@ func Test_NewTask(t *testing.T) {
 		Sunday().Saturday().Monday().At(time.Now().Add(1*time.Second).Format("15:04:05")).Do(CallBackTest, "aaa")
 	assert.Nil(err)
 
-	var functionNot interface{}
-	functionNot = nil
+	var functionNot interface{} = nil
 
 	err = task.Hour().Minutes().Minute().Hours().Second().Seconds().Do("ddd", "df")
 	assert.Equal(err, ErrNotAFunction)
@@ -106,5 +105,8 @@ func Test_CallPanic(t *testing.T) {
 
 	err = task1.Seconds().At(now.Format("15:04:05")).Loc(time.UTC).DoSafely(CallBackPanic)
 	time.Sleep(2 * time.Second)
+	assert.Equal(err, task1.Err())
+
+	err = task1.Seconds().Lock().At(now.Format("15:04:05")).Loc(time.UTC).DoSafely(CallBackPanic)
 	assert.Equal(err, task1.Err())
 }
