@@ -30,8 +30,17 @@ func CallBackTest(ss interface{}) interface{} {
 func Test_NewTask(t *testing.T) {
 	assert := assert.New(t)
 	task := NewTask(1)
-	err := task.At(time.Now().Add(1*time.Second).Format("15:04:05")).Do(CallBackTest, "aaa")
+	now := time.Now()
+	err := task.At(now.Format("15:04:05")).Do(CallBackTest, "aaa")
 	assert.Nil(err)
+	err = task.At(now.Format("15:04:05")).Do(CallBackTest)
+	assert.Nil(err)
+
+	ddd := task.GetAt()
+	assert.Equal(ddd, now.Format("15:04"))
+
+	eee := task.GetWeekday()
+	assert.Equal(eee, time.Weekday(0))
 
 	err = task.Days().Day().Friday().Weeks().Weekday(time.Monday).Wednesday().Tuesday().Thursday().
 		Sunday().Saturday().Monday().At(time.Now().Add(1*time.Second).Format("15:04:05")).Do(CallBackTest, "aaa")
@@ -42,4 +51,6 @@ func Test_NewTask(t *testing.T) {
 	err = task.Hour().Minutes().Minute().Hours().Second().Seconds().Do(functionNot, "df")
 	assert.Equal(err, ErrNotAFunction)
 
+	err = task.Hour().Minutes().Minute().Hours().Second().Seconds().DoSafely(functionNot, "df")
+	assert.Nil(err)
 }

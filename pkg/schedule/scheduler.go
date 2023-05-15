@@ -114,7 +114,7 @@ func (s *Scheduler) RunAll() {
 func (s *Scheduler) RunAllwithDelay(d int) {
 	for i := 0; i < s.size; i++ {
 		go s.jobs[i].run()
-		if 0 != d {
+		if d != 0 {
 			time.Sleep(time.Duration(d))
 		}
 	}
