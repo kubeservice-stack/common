@@ -123,7 +123,7 @@ func Test_CallPanic(t *testing.T) {
 
 type fakeLocker struct{}
 
-func (s *fakeLocker) Lock(key string) (success bool, err error) {
+func (s *fakeLocker) Lock(key string) (bool, error) {
 	return true, nil
 }
 
