@@ -77,3 +77,7 @@ func formatTime(t string) (hour, min, sec int, err error) {
 
 	return hour, min, sec, nil
 }
+
+func SetLocker(l Locker) {
+	locker = l
+}

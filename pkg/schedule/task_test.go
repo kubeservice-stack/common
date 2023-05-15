@@ -70,6 +70,13 @@ func Test_TaskTags(t *testing.T) {
 	aa := task.Tags()
 	assert.Equal(aa, []string{"dd", "dff", "ddd", "dd"})
 
+	task.Untag("aa")
+	aa = task.Tags()
+	assert.Equal(aa, []string{"dd", "dff", "ddd", "dd"})
+	task.Untag("dd")
+	aa = task.Tags()
+	assert.Equal(aa, []string{"dff", "ddd"})
+
 	err = task.From(&now).At(now.Format("15:04:05")).Loc(time.UTC).Do(CallBackTest, "aaa")
 	assert.Nil(err)
 
@@ -92,6 +99,9 @@ func Test_TaskTags(t *testing.T) {
 	err = task1.Day().At(now.Format("15:04:05")).Loc(time.UTC).Do(CallBackTest, "aaa")
 	assert.Nil(err)
 
+	err = task1.Day().At(now.Format("24:04:05")).Loc(time.UTC).Do(CallBackTest, "aaa")
+	assert.NotNil(err)
+
 }
 
 func Test_CallPanic(t *testing.T) {
@@ -109,4 +119,24 @@ func Test_CallPanic(t *testing.T) {
 
 	err = task1.Seconds().Lock().At(now.Format("15:04:05")).Loc(time.UTC).DoSafely(CallBackPanic)
 	assert.Equal(err, task1.Err())
+}
+
+type fakeLocker struct{}
+
+func (s *fakeLocker) Lock(key string) (success bool, err error) {
+	return true, nil
+}
+
+func (s *fakeLocker) Unlock(key string) error {
+	return nil
+}
+
+func Test_TaskLock(t *testing.T) {
+	assert := assert.New(t)
+	now := time.Now()
+	task1 := NewTask(1)
+	SetLocker(&fakeLocker{})
+	err := task1.Lock().Minutes().At(now.Format("15:04:05")).Loc(time.UTC).Do(CallBackPanic)
+	assert.Nil(err)
+
 }
