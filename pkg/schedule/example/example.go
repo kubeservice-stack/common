@@ -39,7 +39,7 @@ func ExampleTask(name string) {
 		case <-t.C:
 			fmt.Println(".")
 		case <-c:
-			fmt.Println("\n")
+			fmt.Println("")
 			return
 		}
 	}
