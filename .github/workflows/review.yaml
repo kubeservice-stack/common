@@ -9,4 +9,4 @@ jobs:
     steps:
       - uses: kentaro-m/auto-assign-action@v1.2.5
         with:
-          configuration-path: '.github/review.yml'
+          configuration-path: '.github/review.yaml'
