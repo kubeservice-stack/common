@@ -29,7 +29,7 @@ import (
 
 func TestPushPop(t *testing.T) {
 	assert := assert.New(t)
-	q := New(10)
+	q := NewRingQueue(10)
 	q.Push("hello")
 	res, _ := q.Pop()
 	assert.Equal("hello", res)
@@ -39,7 +39,7 @@ func TestPushPop(t *testing.T) {
 func TestPushPopRepeated(t *testing.T) {
 	assert := assert.New(t)
 
-	q := New(10)
+	q := NewRingQueue(10)
 	for i := 0; i < 100; i++ {
 		q.Push("hello")
 		res, _ := q.Pop()
@@ -51,7 +51,7 @@ func TestPushPopRepeated(t *testing.T) {
 func TestPushPopMany(t *testing.T) {
 	assert := assert.New(t)
 
-	q := New(10)
+	q := NewRingQueue(10)
 	for i := 0; i < 10000; i++ {
 		item := fmt.Sprintf("hello%v", i)
 		q.Push(item)
@@ -64,7 +64,7 @@ func TestPushPopMany(t *testing.T) {
 func TestPushPopMany2(t *testing.T) {
 	assert := assert.New(t)
 
-	q := New(10)
+	q := NewRingQueue(10)
 	for i := 0; i < 10000; i++ {
 		item := fmt.Sprintf("hello%v", i)
 		q.Push(item)
@@ -84,7 +84,7 @@ func TestLfQueueConsistency(t *testing.T) {
 	c := 100
 	var wg sync.WaitGroup
 	wg.Add(1)
-	q := New(2)
+	q := NewRingQueue(2)
 	go func(t *testing.T) {
 		i := 0
 		seen := make(map[string]string)
@@ -140,7 +140,7 @@ func TestLfQueueConsistency(t *testing.T) {
 func TestPushPopMany3(t *testing.T) {
 	assert := assert.New(t)
 
-	q := New(10)
+	q := NewRingQueue(10)
 	for i := 0; i < 10000; i++ {
 		item := fmt.Sprintf("hello%v", i)
 		q.Push(item)
@@ -150,5 +150,24 @@ func TestPushPopMany3(t *testing.T) {
 		assert.Equal(ct, true)
 		assert.Equal(len(res), 10)
 	}
+	assert.True(q.IsEmpty())
+}
+
+func TestPushPopMany4(t *testing.T) {
+	assert := assert.New(t)
+
+	q := NewRingQueue(10)
+	for i := 0; i < 10000; i++ {
+		item := fmt.Sprintf("hello%v", i)
+		q.Push(item)
+	}
+	for i := 0; i < 666; i++ {
+		res, ct := q.PopMany(15)
+		assert.Equal(ct, true)
+		assert.Equal(len(res), 15)
+	}
+	res, ct := q.PopMany(15)
+	assert.Equal(ct, true)
+	assert.Equal(len(res), 10)
 	assert.True(q.IsEmpty())
 }
