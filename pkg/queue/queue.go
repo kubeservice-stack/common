@@ -35,7 +35,7 @@ type RingQueue struct {
 	lock    sync.Mutex
 }
 
-func New(initialSize int64) Queue {
+func NewRingQueue(initialSize int64) Queue {
 	return &RingQueue{
 		content: &ringBuffer{
 			buffer: make([]interface{}, initialSize),
@@ -47,7 +47,7 @@ func New(initialSize int64) Queue {
 	}
 }
 
-func (q *RingQueue) Push(item interface{}) {
+func (q *RingQueue) Push(item interface{}) bool {
 	q.lock.Lock()
 	c := q.content
 	c.tail = (c.tail + 1) % c.mod
@@ -73,6 +73,7 @@ func (q *RingQueue) Push(item interface{}) {
 	atomic.AddInt64(&q.len, 1)
 	q.content.buffer[q.content.tail] = item
 	q.lock.Unlock()
+	return true
 }
 
 func (q *RingQueue) Length() int64 {
