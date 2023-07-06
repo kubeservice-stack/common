@@ -107,3 +107,11 @@ func TestLength(t *testing.T) {
 	assert.False(ok)
 	assert.Equal(bb, nil)
 }
+
+func TestPopMany(t *testing.T) {
+	assert := assert.New(t)
+	q := new(UnLockQueue)
+	a, ok := q.PopMany(10)
+	assert.False(ok)
+	assert.Equal(a, []interface{}(nil))
+}

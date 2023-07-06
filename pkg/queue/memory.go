@@ -89,8 +89,6 @@ func (q *UnLockQueue) Push(val interface{}) bool {
 		putBNew = putB + 1
 		if atomic.CompareAndSwapUint64(&q.putB, putB, putBNew) {
 			break
-		} else {
-			runtime.Gosched()
 		}
 	}
 
@@ -101,8 +99,6 @@ func (q *UnLockQueue) Push(val interface{}) bool {
 			men.value = val
 			men.m = true
 			return true
-		} else {
-			runtime.Gosched()
 		}
 	}
 }
@@ -130,8 +126,6 @@ func (q *UnLockQueue) Pop() (val interface{}, ok bool) {
 		getBNew = getB + 1
 		if atomic.CompareAndSwapUint64(&q.getB, getB, getBNew) {
 			break
-		} else {
-			runtime.Gosched()
 		}
 	}
 
@@ -142,8 +136,6 @@ func (q *UnLockQueue) Pop() (val interface{}, ok bool) {
 			val = men.value
 			men.m = false
 			return val, true
-		} else {
-			runtime.Gosched()
 		}
 	}
 }
