@@ -243,7 +243,7 @@ func (c *LRUPlugin) HasKey(key interface{}) bool {
 	return utils.InSliceIface(key, c.Keys())
 }
 
-//init
+// init
 func init() {
 	Register(LRU, NewLRUPlugin)
 }

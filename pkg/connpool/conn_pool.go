@@ -85,7 +85,7 @@ func NewConnectionPool(maxActiveNum int, revIdleNum int, idleTimeout time.Durati
 	}
 }
 
-//pop an connection from pool
+// pop an connection from pool
 func (p *ConnPool) Pop() (*Conn, error) {
 	var c *Conn
 	tryed := false
@@ -170,7 +170,7 @@ func (p *ConnPool) Pop() (*Conn, error) {
 	}
 }
 
-//push an connection to pool. (you shoud not op c after push the conn to pool)
+// push an connection to pool. (you shoud not op c after push the conn to pool)
 func (p *ConnPool) Push(c *Conn) error {
 	if c == nil {
 		return errPoolConnectNil

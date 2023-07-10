@@ -26,22 +26,25 @@ import (
 	"github.com/kubeservice-stack/common/pkg/utils"
 )
 
-/* memory data tree. just for data code list
-  │                 │
-Read              Write
-  │                 │
-  │                 V
-  │      ┌───────────────────┐ max: 1615010800
-  ├─────>   Memory Partition
-  │      └───────────────────┘ min: 1615007201
-  │
-  │      ┌───────────────────┐ max: 1615007200
-  ├─────>   Memory Partition
-  │      └───────────────────┘ min: 1615003601
-  │
-  │      ┌───────────────────┐ max: 1615003600
-  └─────>   Memory Partition
-         └───────────────────┘ min: 1615000000
+/*
+		memory data tree. just for data code list
+		│                 │
+
+	   Read              Write
+
+		│                 │
+		│                 V
+		│      ┌───────────────────┐ max: 1615010800
+		├─────>   Memory Partition
+		│      └───────────────────┘ min: 1615007201
+		│
+		│      ┌───────────────────┐ max: 1615007200
+		├─────>   Memory Partition
+		│      └───────────────────┘ min: 1615003601
+		│
+		│      ┌───────────────────┐ max: 1615003600
+		└─────>   Memory Partition
+		       └───────────────────┘ min: 1615000000
 */
 type Storage struct {
 	partitionList partitionList

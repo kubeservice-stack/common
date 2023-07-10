@@ -855,7 +855,7 @@ func (d *decodeState) objectInterface() map[string]interface{} {
 	return m
 }
 
-//FIXME: fix when v is invalid
+// FIXME: fix when v is invalid
 // type(1) | name length(1) | item size(4) | raw name bytes | 0x00
 // | element number(4) | element1 | ... | elementN
 func (d *decodeState) array(v reflect.Value) {

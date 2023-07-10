@@ -35,11 +35,11 @@ type partitionList interface {
 	String() string
 }
 
+//	for iterator.next() {
+//	  partition, err := iterator.value()
+//	     //Do something with partition
+//	}
 //
-// for iterator.next() {
-//   partition, err := iterator.value()
-//      //Do something with partition
-// }
 // Iterator represents an iterator for partition list.
 type partitionIterator interface {
 	next() bool
