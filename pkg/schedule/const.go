@@ -28,7 +28,7 @@ var (
 	ErrParamsNotAdapted     = errors.New("the number of params is not adapted")
 	ErrNotAFunction         = errors.New("only functions can be schedule into the job queue")
 	ErrPeriodNotSpecified   = errors.New("unspecified job period")
-	ErrParameterCannotBeNil = errors.New("nil paramaters cannot be used with reflection")
+	ErrParameterCannotBeNil = errors.New("nil parameters cannot be used with reflection")
 )
 
 type timeUnit int
