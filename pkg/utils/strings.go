@@ -17,7 +17,9 @@ limitations under the License.
 package utils
 
 import (
+	"reflect"
 	"strings"
+	"unsafe"
 )
 
 func GetBetweenStr(str, start, end string) string {
@@ -62,4 +64,18 @@ func Substr(str string, start, length int) string {
 	}
 
 	return string(rs[start:end])
+}
+
+func Strings2Bytes(s string) (b []byte) {
+	bs := (*reflect.SliceHeader)(unsafe.Pointer(&b))
+	ss := (*reflect.StringHeader)(unsafe.Pointer(&s))
+	bs.Data = ss.Data
+	bs.Len = ss.Len
+	bs.Cap = ss.Len
+	return b
+}
+
+func Bytes2Strings(b []byte) (s string) {
+	s = *(*string)(unsafe.Pointer(&b))
+	return s
 }
