@@ -20,8 +20,6 @@ import (
 	"encoding/json"
 	"testing"
 
-	"log"
-
 	"github.com/stretchr/testify/assert"
 )
 
@@ -35,19 +33,13 @@ func TestUtil_ToStringDict(t *testing.T) {
 	assert.Nil(err, "is not err")
 
 	da, ok := data["data"]
-	if !ok {
-		log.Println("WhiteListUrl resp is not find key data!")
-	}
+	assert.True(ok)
 
 	plist, err := ToSlice(da)
-	if err != nil {
-		log.Println("WhiteListUrl interface to []interface err!")
-	}
+	assert.Nil(err)
 
-	log.Println(plist)
 	aa, err := ToStringDict(plist, "phone")
 	assert.Nil(err, "is not err")
-	log.Println(aa)
 	assert.NotNil(aa, "is not err")
 }
 
