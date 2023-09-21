@@ -78,10 +78,39 @@ func Test_SubStr(t *testing.T) {
 	assert.Equal(substr, "dfddwe", "is true")
 }
 
-//func Test_interface(t *testing.T) {
-//	assert := assert.New(t)
+func Test_Strings2Bytes(t *testing.T) {
+	assert := assert.New(t)
+	b := String2Bytes("adfbd中国 adsf")
+	assert.Equal(b, []byte{0x61, 0x64, 0x66, 0x62, 0x64, 0xe4, 0xb8, 0xad, 0xe5, 0x9b, 0xbd, 0x20, 0x61, 0x64, 0x73, 0x66})
 
-//	var tmp interface{}
-//	tmp = append(tmp, "aaa")
+	b = String2Bytes("")
+	assert.Equal(b, []byte(nil))
 
-//}
+	s := new(string)
+	*s = "aaa"
+	b = String2Bytes(*s)
+	assert.Equal(b, []byte{0x61, 0x61, 0x61})
+
+	*s = ""
+	b = String2Bytes(*s)
+	assert.Equal(b, []byte(nil))
+}
+
+func Test_Bytes2Strings(t *testing.T) {
+	assert := assert.New(t)
+	s := Bytes2String([]byte{0x61, 0x64, 0x66, 0x62, 0x64, 0xe4, 0xb8, 0xad, 0xe5, 0x9b, 0xbd, 0x20, 0x61, 0x64, 0x73, 0x66})
+	assert.Equal(s, "adfbd中国 adsf")
+
+	b := new([]byte)
+	*b = nil
+	s = Bytes2String(*b)
+	assert.Equal(s, "")
+
+	*b = []byte{}
+	s = Bytes2String(*b)
+	assert.Equal(s, "")
+
+	*b = []byte("!$_&-  éè  ;∞¥₤€")
+	s = Bytes2String(*b)
+	assert.Equal(s, "!$_&-  éè  ;∞¥₤€")
+}
