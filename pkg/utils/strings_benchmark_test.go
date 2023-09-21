@@ -44,7 +44,7 @@ func BenchmarkStrings2Bytes(b *testing.B) {
 	b.ReportAllocs()
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		_ = utils.Strings2Bytes(str)
+		_ = utils.String2Bytes(str)
 	}
 }
 
@@ -74,7 +74,7 @@ func BenchmarkBytes2Strings(b *testing.B) {
 	b.ReportAllocs()
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		_ = utils.Bytes2Strings(by)
+		_ = utils.Bytes2String(by)
 	}
 }
 

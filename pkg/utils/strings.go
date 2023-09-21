@@ -66,7 +66,7 @@ func Substr(str string, start, length int) string {
 	return string(rs[start:end])
 }
 
-func Strings2Bytes(s string) (b []byte) {
+func String2Bytes(s string) (b []byte) {
 	bs := (*reflect.SliceHeader)(unsafe.Pointer(&b))
 	ss := (*reflect.StringHeader)(unsafe.Pointer(&s))
 	bs.Data = ss.Data
@@ -75,7 +75,7 @@ func Strings2Bytes(s string) (b []byte) {
 	return b
 }
 
-func Bytes2Strings(b []byte) (s string) {
+func Bytes2String(b []byte) (s string) {
 	s = *(*string)(unsafe.Pointer(&b))
 	return s
 }
