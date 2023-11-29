@@ -28,7 +28,7 @@ type Pool interface {
 	SubmitAndWait(task Task) // 提交任务并等待其执行
 	Stopped() bool           // 如果协程停止，返回true
 	Stop()                   // 停下来优雅地停止所有的勾当，所有挂起的任务将在退出前完成
-	//metrics
+	// metrics
 }
 
 func NewDefaultPool(name string, maxWorkers int, idleTimeout time.Duration) Pool {

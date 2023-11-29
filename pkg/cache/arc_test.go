@@ -64,7 +64,7 @@ func TestARCGet(t *testing.T) {
 	size := 1000
 	gc := buildARCache(size)
 
-	//set
+	// set
 	for i := 0; i < size; i++ {
 		key := "Key-" + strconv.Itoa(i)
 		value, err := loader(key)
@@ -75,7 +75,7 @@ func TestARCGet(t *testing.T) {
 		gc.Set(key, value)
 	}
 
-	//get
+	// get
 	for i := 0; i < size; i++ {
 		key := "Key-" + strconv.Itoa(i)
 		v, err := gc.Get(key)
@@ -91,7 +91,7 @@ func TestARCGetBig(t *testing.T) {
 	size := 1000
 	gc := buildARCache(size)
 
-	//set
+	// set
 	for i := 0; i < size+10; i++ {
 		key := "Key-" + strconv.Itoa(i)
 		value, err := loader(key)
@@ -100,7 +100,7 @@ func TestARCGetBig(t *testing.T) {
 		gc.Get("Key-1")
 	}
 
-	//get
+	// get
 	assert.Equal(gc.Len(), size)
 
 	for i := 0; i < 10; i++ {
@@ -126,7 +126,7 @@ func TestLoadingARCGet(t *testing.T) {
 	size := 1000
 	gc := buildLoadingARCache(size)
 
-	//set
+	// set
 	for i := 0; i < size; i++ {
 		key := "Key-" + strconv.Itoa(i)
 		value, err := loader(key)
@@ -134,7 +134,7 @@ func TestLoadingARCGet(t *testing.T) {
 		gc.Set(key, value)
 	}
 
-	//get
+	// get
 	for i := 0; i < size; i++ {
 		key := "Key-" + strconv.Itoa(i)
 		v, err := gc.Get(key)
@@ -150,7 +150,7 @@ func TestLoadingARCGetWithExpiration(t *testing.T) {
 	size := 1000
 	gc := buildLoadingARCacheWithExpiration(size, 1*time.Nanosecond)
 
-	//set
+	// set
 	for i := 0; i < size; i++ {
 		key := "Key-" + strconv.Itoa(i)
 		value, err := loader(key)
@@ -158,7 +158,7 @@ func TestLoadingARCGetWithExpiration(t *testing.T) {
 		gc.Set(key, value)
 	}
 
-	//get
+	// get
 	for i := 0; i < size; i++ {
 		key := "Key-" + strconv.Itoa(i)
 		v, err := gc.Get(key)

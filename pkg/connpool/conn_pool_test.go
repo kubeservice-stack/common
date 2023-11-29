@@ -112,7 +112,7 @@ func Test_Muti(t *testing.T) {
 func Test_AllConnect(t *testing.T) {
 	assert := assert.New(t)
 
-	maxActiveNum := 0 //不限制
+	maxActiveNum := 0 // 不限制
 	pool := NewConnectionPool(
 		maxActiveNum,
 		0,
@@ -167,7 +167,7 @@ func Test_AllConnect(t *testing.T) {
 
 func Test_GetCounter(t *testing.T) {
 	assert := assert.New(t)
-	maxActiveNum := 0 //不限制
+	maxActiveNum := 0 // 不限制
 	pool := NewConnectionPool(
 		maxActiveNum,
 		0,
@@ -188,12 +188,11 @@ func Test_GetCounter(t *testing.T) {
 	assert.Equal(pool.GetActiveNum(), 0)
 	assert.Equal(pool.GetIdleNum(), 0)
 	assert.Equal(pool.GetWaitNum(), 0)
-
 }
 
 func Test_ClearPool(t *testing.T) {
 	assert := assert.New(t)
-	maxActiveNum := 2 //不限制
+	maxActiveNum := 2 // 不限制
 	pool := NewConnectionPool(
 		maxActiveNum,
 		0,

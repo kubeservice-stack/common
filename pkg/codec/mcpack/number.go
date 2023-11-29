@@ -76,6 +76,7 @@ func PutUint8(b []byte, v uint8) {
 func Uint16(b []byte) uint16 {
 	return uint16(b[0]) | uint16(b[1])<<8
 }
+
 func PutUint16(b []byte, v uint16) {
 	b[0] = byte(v)
 	b[1] = byte(v >> 8)

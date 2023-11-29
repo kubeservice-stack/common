@@ -32,7 +32,7 @@ const (
 )
 
 var (
-	referenceTime = time.Date(2006, 01, 02, 15, 04, 05, 0, time.UTC)
+	referenceTime = time.Date(2006, 0o1, 0o2, 15, 0o4, 0o5, 0, time.UTC)
 	unixOrigin    = time.Unix(0, 0).In(time.UTC)
 )
 
@@ -209,7 +209,6 @@ func TestWrappedTimstamp_Randtime(t *testing.T) {
 	RandSleep(100, 100)
 
 	assert.Empty("", "is true")
-
 }
 
 func TestWrappedTimstamp_Time(t *testing.T) {
@@ -220,5 +219,4 @@ func TestWrappedTimstamp_Time(t *testing.T) {
 	assert.True(ret, "is not true")
 
 	assert.Equal(time.Time{}.String(), "0001-01-01 00:00:00 +0000 UTC")
-
 }

@@ -25,7 +25,7 @@ import (
 func TestStats(t *testing.T) {
 	assert := assert.New(t)
 
-	var cases = []struct {
+	cases := []struct {
 		hit  int
 		all  int
 		rate float64
@@ -46,13 +46,12 @@ func TestStats(t *testing.T) {
 		}
 		assert.Equal(cs.rate, st.HitRate(), "not equal")
 	}
-
 }
 
 func TestStatsAllHitCount(t *testing.T) {
 	assert := assert.New(t)
 
-	var cases = []struct {
+	cases := []struct {
 		hit  int
 		all  int
 		rate float64

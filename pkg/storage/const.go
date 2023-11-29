@@ -22,7 +22,7 @@ import (
 )
 
 var (
-	ErrNoDataPoints = errors.New("no data points found") //数据不存在
+	ErrNoDataPoints = errors.New("no data points found") // 数据不存在
 	ErrNoRowsData   = errors.New("no rows given")        // row empty
 	ErrUnknown      = "UNKNOWN"
 )
@@ -52,10 +52,10 @@ func (p TimestampPrecision) String() string {
 }
 
 const (
-	defaultPartitionDuration     = 5 * time.Minute  //数据块时间块
-	defaultRetention             = 24 * time.Hour   //时间保留时间，通过checkExpiredInterval进行数据淘汰，数据最大保留时间 = defaultRetention+checkExpiredInterval
-	defaultTimestampPrecision    = Seconds          //默认时间戳精度
-	defaultWriteTimeout          = 30 * time.Second //数据写入超时时间
-	defaultWorkersLimit          = 1                //默认处理的goroutine数
-	defaultwritablePartitionsNum = 2                //默认可写入的Partition个数. 超过这时间数据丢弃
+	defaultPartitionDuration     = 5 * time.Minute  // 数据块时间块
+	defaultRetention             = 24 * time.Hour   // 时间保留时间，通过checkExpiredInterval进行数据淘汰，数据最大保留时间 = defaultRetention+checkExpiredInterval
+	defaultTimestampPrecision    = Seconds          // 默认时间戳精度
+	defaultWriteTimeout          = 30 * time.Second // 数据写入超时时间
+	defaultWorkersLimit          = 1                // 默认处理的goroutine数
+	defaultwritablePartitionsNum = 2                // 默认可写入的Partition个数. 超过这时间数据丢弃
 )

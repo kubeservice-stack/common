@@ -58,7 +58,7 @@ func TestFIFOGet(t *testing.T) {
 	size := 1000
 	numbers := 1000
 	gc := optionsFIFOCache(size, loader)
-	//set
+	// set
 	for i := 0; i < numbers; i++ {
 		key := "Key-" + strconv.Itoa(i)
 		value, err := loader(key)
@@ -69,7 +69,7 @@ func TestFIFOGet(t *testing.T) {
 		gc.Set(key, value)
 	}
 
-	//get
+	// get
 	for i := 0; i < numbers; i++ {
 		key := "Key-" + strconv.Itoa(i)
 		v, err := gc.Get(key)
@@ -85,7 +85,7 @@ func TestFIFOGetWithTimeout(t *testing.T) {
 	size := 1000
 	numbers := 1000
 	gc := buildLoadingFIFOCache(size, loader)
-	//set
+	// set
 	for i := 0; i < numbers; i++ {
 		key := "Key-" + strconv.Itoa(i)
 		value, err := loader(key)
@@ -96,7 +96,7 @@ func TestFIFOGetWithTimeout(t *testing.T) {
 		gc.Set(key, value)
 	}
 
-	//get
+	// get
 	for i := 0; i < numbers; i++ {
 		key := "Key-" + strconv.Itoa(i)
 		v, err := gc.Get(key)
@@ -111,7 +111,7 @@ func TestLoadingFIFOGet(t *testing.T) {
 
 	size := 1000
 	gc := optionsFIFOCache(size, loader)
-	//get
+	// get
 	for i := 0; i < size; i++ {
 		key := "Key-" + strconv.Itoa(i)
 		_, err := gc.Get(key)
@@ -124,7 +124,7 @@ func TestLoadingFIFOGetWithTimeout(t *testing.T) {
 
 	size := 1000
 	gc := buildLoadingFIFOCache(size, loader)
-	//get
+	// get
 	for i := 0; i < size; i++ {
 		key := "Key-" + strconv.Itoa(i)
 		_, err := gc.Get(key)
@@ -146,7 +146,6 @@ func TestFIFOLength(t *testing.T) {
 
 	length = gc.Len()
 	assert.Equal(length, 2)
-
 }
 
 func TestFIFOLengthWithTimeout(t *testing.T) {
@@ -172,7 +171,6 @@ func TestFIFOLengthWithTimeout(t *testing.T) {
 
 	length = gc.Len()
 	assert.Equal(length, 2)
-
 }
 
 func TestFIFOEvictItem(t *testing.T) {
@@ -217,7 +215,7 @@ func TestFIFOGetIFPresent(t *testing.T) {
 	assert.Equal(err, ErrCacheKeyNotFind)
 	assert.Equal(v, nil)
 
-	time.Sleep(20 * time.Millisecond) //时间够长，case稳定
+	time.Sleep(20 * time.Millisecond) // 时间够长，case稳定
 
 	v, err = cache.GetIFPresent("key")
 	assert.Nil(err)
@@ -291,7 +289,7 @@ func Test_FIFONew(t *testing.T) {
 	assert.True(ok)
 	assert.Equal(v1, size*size)
 
-	//fmt.Println(size, m)
+	// fmt.Println(size, m)
 	v1, ok = m[0]
 	assert.True(ok)
 	assert.Equal(v1, 0)
@@ -300,7 +298,7 @@ func Test_FIFONew(t *testing.T) {
 	cache.Set(size, size*size)
 	m = cache.GetALL()
 	assert.Equal(len(m), 8)
-	//fmt.Println(size, m)
+	// fmt.Println(size, m)
 
 	v1, ok = m[size]
 	assert.True(ok)

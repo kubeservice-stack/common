@@ -43,8 +43,8 @@ func TestDoLFU(t *testing.T) {
 
 	assert.Equal(want, got)
 	assert.Nil(err)
-
 }
+
 func TestDoLRU(t *testing.T) {
 	assert := assert.New(t)
 
@@ -68,7 +68,6 @@ func TestDoLRU(t *testing.T) {
 
 	assert.Equal(v, g)
 	assert.Nil(err)
-
 }
 
 func TestDoErrLFU(t *testing.T) {
@@ -116,7 +115,7 @@ func TestDoDupSuppressLFU(t *testing.T) {
 	}
 
 	const n = 10
-	var count = 0
+	count := 0
 	var wg sync.WaitGroup
 	for i := 0; i < n; i++ {
 		wg.Add(1)
@@ -150,7 +149,7 @@ func TestDoDupSuppressLRU(t *testing.T) {
 	}
 
 	const n = 10
-	var count = 0
+	count := 0
 	var wg sync.WaitGroup
 	for i := 0; i < n; i++ {
 		wg.Add(1)

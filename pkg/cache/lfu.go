@@ -236,7 +236,7 @@ func (c *LFUPlugin) keys() []interface{} {
 	c.mu.RLock()
 	defer c.mu.RUnlock()
 	keys := make([]interface{}, len(c.items))
-	var i = 0
+	i := 0
 	for k := range c.items {
 		keys[i] = k
 		i++

@@ -45,7 +45,6 @@ func PluginInstance(name PACK) (adapter Codec) {
 }
 
 func HasRegister(name PACK) bool {
-
 	if _, ok := adapters[name]; ok {
 		return true
 	}

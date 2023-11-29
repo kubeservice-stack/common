@@ -32,7 +32,7 @@ func TestLoaderFuncLRU(t *testing.T) {
 
 	size := 2
 
-	var testCaches = []*Setting{
+	testCaches := []*Setting{
 		New(size).LRU(),
 	}
 
@@ -47,7 +47,6 @@ func TestLoaderFuncLRU(t *testing.T) {
 			}).
 			AddedFunc(func(key, value interface{}) {
 				cacheLogger.Info("dongjiang AddedFunc==", logger.Any("key", key), logger.Any("value", value))
-
 			}).
 			EvictedFunc(func(key, value interface{}) {
 				cacheLogger.Info("dongjiang EvictedFunc==", logger.Any("key", key), logger.Any("value", value))
@@ -66,7 +65,6 @@ func TestLoaderFuncLRU(t *testing.T) {
 
 		assert.Equal(testCounter, int64(1))
 	}
-
 }
 
 func TestLoaderFuncLFU(t *testing.T) {
@@ -74,7 +72,7 @@ func TestLoaderFuncLFU(t *testing.T) {
 
 	size := 2
 
-	var testCaches = []*Setting{
+	testCaches := []*Setting{
 		New(size).LFU(),
 	}
 
@@ -106,5 +104,4 @@ func TestLoaderFuncLFU(t *testing.T) {
 		wg.Wait()
 		assert.Equal(testCounter, int64(1))
 	}
-
 }

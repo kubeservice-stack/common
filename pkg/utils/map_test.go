@@ -86,7 +86,6 @@ func TestUtil_MapSortKey(t *testing.T) {
 
 	vs = SortKey(maps)
 	assert.Equal(vs, []string{"1", "2", "9", "10"}, "is not equal")
-
 }
 
 func TestUtil_Strings(t *testing.T) {
@@ -95,7 +94,6 @@ func TestUtil_Strings(t *testing.T) {
 	retaa := make(map[string]string)
 
 	assert.Len(retaa, 0, "dongjiang")
-
 }
 
 func Test_Merge(t *testing.T) {

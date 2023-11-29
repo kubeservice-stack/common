@@ -60,7 +60,6 @@ func PluginInstance(cb *Setting) (adapter Cache) {
 }
 
 func HasRegister(name MODE) bool {
-
 	if _, ok := adapters[name]; ok {
 		return true
 	}

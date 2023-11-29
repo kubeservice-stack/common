@@ -27,7 +27,7 @@ const (
 )
 
 type RateLimiters struct {
-	sync.RWMutex //协程 安全
+	sync.RWMutex // 协程 安全
 	m            map[string]flowcontrol.RateLimiter
 }
 
@@ -48,11 +48,10 @@ func (l *RateLimiters) TryAccept(name string, qps, burst int) bool {
 	limiter, ok := l.m[name]
 	if !ok {
 		l.RUnlock()
-		return l.addLimiter(name, qps, burst) //新增
+		return l.addLimiter(name, qps, burst) // 新增
 	}
 	l.RUnlock()
 	return limiter.TryAccept()
-
 }
 
 func (l *RateLimiters) addLimiter(name string, qps, burst int) bool {

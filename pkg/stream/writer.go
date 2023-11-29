@@ -159,7 +159,8 @@ func NewSliceWriter(buffer []byte) *SliceWriter {
 	length := len(buffer)
 	return &SliceWriter{
 		writer: writer{buf: bytes.NewBuffer(buffer[:0])},
-		maxLen: length}
+		maxLen: length,
+	}
 }
 
 // Error returns the error of BufferWriter

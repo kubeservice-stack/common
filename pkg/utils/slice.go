@@ -25,8 +25,10 @@ import (
 	"time"
 )
 
-type reducetype func(interface{}) interface{}
-type filtertype func(interface{}) bool
+type (
+	reducetype func(interface{}) interface{}
+	filtertype func(interface{}) bool
+)
 
 func InSlice(v string, sl []string) bool {
 	if len(sl) == 0 {
@@ -187,8 +189,10 @@ func ToStrings(arr []interface{}) []string {
 	return ret
 }
 
-var MININTSTR string = "0000000000000000000000"
-var MAXINTSTR string = "9999999999999999999999"
+var (
+	MININTSTR string = "0000000000000000000000"
+	MAXINTSTR string = "9999999999999999999999"
+)
 
 func ReplayStr(i int, size int) string {
 	tmpstr := strconv.Itoa(i)

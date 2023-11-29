@@ -56,7 +56,7 @@ func TestSimpleGet(t *testing.T) {
 	size := 1000
 	gc := buildSimpleCache(size)
 
-	//set
+	// set
 	for i := 0; i < size; i++ {
 		key := "Key-" + strconv.Itoa(i)
 		value, err := loader(key)
@@ -67,7 +67,7 @@ func TestSimpleGet(t *testing.T) {
 		gc.Set(key, value)
 	}
 
-	//get
+	// get
 	for i := 0; i < size; i++ {
 		key := "Key-" + strconv.Itoa(i)
 		v, err := gc.Get(key)
@@ -83,7 +83,7 @@ func TestSimpleGetBig(t *testing.T) {
 	size := 1000
 	gc := buildSimpleCache(size)
 
-	//set
+	// set
 	for i := 0; i < size+10; i++ {
 		key := "Key-" + strconv.Itoa(i)
 		value, err := loader(key)
@@ -94,7 +94,7 @@ func TestSimpleGetBig(t *testing.T) {
 		gc.Set(key, value)
 	}
 
-	//get
+	// get
 	assert.Equal(gc.Len(), size)
 }
 
@@ -104,7 +104,7 @@ func TestLoadingSimpleGet(t *testing.T) {
 	size := 1000
 	gc := buildLoadingSimpleCache(size, loader)
 
-	//get
+	// get
 	for i := 0; i < size; i++ {
 		key := "Key-" + strconv.Itoa(i)
 		v, err := gc.Get(key)

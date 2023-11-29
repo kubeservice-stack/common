@@ -78,8 +78,8 @@ func (s *EtcdClusterTestSuite) TestWriteRead() {
 
 	err3 := ed.Close()
 	s.Nil(err3)
-
 }
+
 func (s *EtcdClusterTestSuite) TestList() {
 	ed, err := newEtedDiscovery(config.Discovery{
 		Namespace: "/test/list",
@@ -94,14 +94,14 @@ func (s *EtcdClusterTestSuite) TestList() {
 	err = ed.Put(context.TODO(), "/test/key2", []byte("dongjiang"))
 	s.Nil(err)
 
-	//put 空
+	// put 空
 	err = ed.Put(context.TODO(), "/test/key3", []byte{})
 	s.Nil(err)
 
 	list, err := ed.List(context.TODO(), "/test")
 	s.Nil(err)
 
-	s.Equal([]KeyValue{KeyValue{Key: "/test/key1", Value: []byte("dongjiang")}, KeyValue{Key: "/test/key2", Value: []byte("dongjiang")}}, list)
+	s.Equal([]KeyValue{{Key: "/test/key1", Value: []byte("dongjiang")}, {Key: "/test/key2", Value: []byte("dongjiang")}}, list)
 	s.Equal(2, len(list))
 
 	err3 := ed.Close()
@@ -164,7 +164,7 @@ func (s *EtcdClusterTestSuite) TestWatch() {
 
 	val := make(map[string]string)
 
-	//同步数据闭包
+	// 同步数据闭包
 	syncKVs := func(ch WatchEventChan) {
 		for event := range ch {
 			if event.Err != nil {
@@ -188,7 +188,7 @@ func (s *EtcdClusterTestSuite) TestWatch() {
 	err = ed.Put(ctx, "/cluster1/data/1", []byte("dongjiang1"))
 	s.Nil(err)
 
-	//测试存在的数据
+	// 测试存在的数据
 	err = ed.Put(ctx, "/cluster1/data/2", []byte("dongjiang2"))
 	s.Nil(err)
 	ch2 := ed.Watch(ctx, "/cluster1/data/2", true)
@@ -290,7 +290,6 @@ func (s *EtcdClusterTestSuite) TestGetWatchPrefix() {
 
 	err3 := ed.Close()
 	s.Nil(err3)
-
 }
 
 func (s *EtcdClusterTestSuite) TestTransaction() {
@@ -355,7 +354,8 @@ func (s *EtcdClusterTestSuite) TestBatch() {
 			{"key1", []byte("dongjiang1")},
 			{"key2", []byte("dongjiang2")},
 			{"key3", []byte("dongjiang3")},
-		}}
+		},
+	}
 	success, err := ed.Batch(context.TODO(), batch)
 	s.Nil(err)
 	s.Equal(true, success)

@@ -25,8 +25,10 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var noExistedFile = "/tmp/not_existed_file"
-var testPath = "/tmp/file"
+var (
+	noExistedFile = "/tmp/not_existed_file"
+	testPath      = "/tmp/file"
+)
 
 func TestPath(t *testing.T) {
 	assert := assert.New(t)

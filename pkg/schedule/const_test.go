@@ -32,5 +32,4 @@ func Test_timeUnit(t *testing.T) {
 	assert.Equal(hours.String(), time.Hour)
 	assert.Equal(days.String(), time.Second*3600*24)
 	assert.Equal(weeks.String(), time.Second*3600*24*7)
-
 }

@@ -58,7 +58,6 @@ func RandSleep(max, min int) {
 	}
 	t := time.Duration(rand.Intn(max-min) + min)
 	time.Sleep(t * time.Millisecond)
-
 }
 
 func ToTime(str string) (time.Time, error) {

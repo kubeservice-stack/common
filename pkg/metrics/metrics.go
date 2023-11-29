@@ -30,8 +30,10 @@ import (
 	promreporter "github.com/uber-go/tally/prometheus"
 )
 
-var onceEnable sync.Once
-var prometheusLogger = logger.GetLogger("pkg/common/metrics", "prometheus")
+var (
+	onceEnable       sync.Once
+	prometheusLogger = logger.GetLogger("pkg/common/metrics", "prometheus")
+)
 
 var (
 	ErrMetricsInitRegistryError = fmt.Errorf("metrics: can not init metrics registry")
@@ -75,7 +77,7 @@ func NewTallyScope(cfg *config.Metrics) *TallyScope {
 	r := promreporter.NewReporter(promreporter.Options{})
 	scope, closer := tally.NewRootScope(tally.ScopeOptions{
 		Prefix:         cfg.MetricsPrefix, // cfg.MetricsPrefix
-		Tags:           cfg.MetricsTags,   //cfg.MetricsTags
+		Tags:           cfg.MetricsTags,   // cfg.MetricsTags
 		CachedReporter: r,
 		Separator:      promreporter.DefaultSeparator,
 	}, cfg.FlushInterval*time.Second) // cfg.FlushInterval * time.Second

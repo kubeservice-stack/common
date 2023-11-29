@@ -35,7 +35,8 @@ type Reader struct {
 func NewReader(buf *bufioutil.Buffer) *Reader {
 	return &Reader{
 		buf:   buf,
-		count: 0}
+		count: 0,
+	}
 }
 
 // ReadBit reads a bit, if failure return error

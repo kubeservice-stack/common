@@ -76,31 +76,38 @@ var longVItem = [299]byte{250: '1', 251: '8', 252: '2', 253: '2', 297: 'S', 298:
 var marshalTests = []marshalTest{
 	{
 		in: &T{A: true, X: "x", Y: 1, Z: 2},
-		out: []byte{MCPACKV2_OBJECT, 0, 28, 0, 0, 0,
+		out: []byte{
+			MCPACKV2_OBJECT, 0, 28, 0, 0, 0,
 			3, 0, 0, 0,
 			MCPACKV2_BOOL, 2, 'A', 0, 1,
 			MCPACKV2_SHORT_STRING, 2, 2, 'X', 0, 'x', 0,
-			MCPACKV2_INT64, 2, 'Y', 0, 1, 0, 0, 0, 0, 0, 0, 0},
+			MCPACKV2_INT64, 2, 'Y', 0, 1, 0, 0, 0, 0, 0, 0, 0,
+		},
 	},
 	{
 		in: &U{Alphabet: "a-z"},
-		out: []byte{MCPACKV2_OBJECT, 0, 17, 0, 0, 0,
+		out: []byte{
+			MCPACKV2_OBJECT, 0, 17, 0, 0, 0,
 			1, 0, 0, 0,
-			MCPACKV2_SHORT_STRING, 6, 4, 'a', 'l', 'p', 'h', 'a', 0, 'a', '-', 'z', 0},
+			MCPACKV2_SHORT_STRING, 6, 4, 'a', 'l', 'p', 'h', 'a', 0, 'a', '-', 'z', 0,
+		},
 	},
 	{
 		in: &V{F1: &U{Alphabet: "a-z"}, F2: 1, F3: Number(1)},
-		out: []byte{MCPACKV2_OBJECT, 0, 52, 0, 0, 0,
+		out: []byte{
+			MCPACKV2_OBJECT, 0, 52, 0, 0, 0,
 			3, 0, 0, 0,
 			MCPACKV2_OBJECT, 3, 17, 0, 0, 0, 'F', '1', 0, 1, 0, 0, 0, MCPACKV2_SHORT_STRING, 6, 4, 'a', 'l', 'p', 'h', 'a', 0, 'a', '-', 'z', 0,
 			MCPACKV2_INT32, 3, 'F', '2', 0, 1, 0, 0, 0,
-			MCPACKV2_INT64, 3, 'F', '3', 0, 1, 0, 0, 0, 0, 0, 0, 0},
+			MCPACKV2_INT64, 3, 'F', '3', 0, 1, 0, 0, 0, 0, 0, 0, 0,
+		},
 	},
 	getTestslongVItemW(),
 	getTestsKeyBoundaryX(),
 	{
 		in: &Y{},
-		out: []byte{MCPACKV2_OBJECT, 0, 20, 0, 0, 0,
+		out: []byte{
+			MCPACKV2_OBJECT, 0, 20, 0, 0, 0,
 			1, 0, 0, 0,
 			MCPACKV2_ARRAY, 6, 4, 0, 0, 0, 'E', 'm', 'p', 't', 'y', 0, 0, 0, 0, 0,
 		},
@@ -109,7 +116,8 @@ var marshalTests = []marshalTest{
 }
 
 func getTestslongVItemW() marshalTest {
-	out := []byte{MCPACKV2_OBJECT, 0, 0x3e, 0x1, 0, 0,
+	out := []byte{
+		MCPACKV2_OBJECT, 0, 0x3e, 0x1, 0, 0,
 		2, 0, 0, 0,
 		MCPACKV2_STRING, 2, 0x2c, 0x1, 0, 0, 'S', 0,
 	}
@@ -129,15 +137,17 @@ func getTestsKeyBoundaryX() marshalTest {
 	deta := [2]int16{-18, -22}
 	in := &X{Beta: beta, Deta: deta}
 
-	out := []byte{MCPACKV2_OBJECT, 0, 0x2f, 0x1, 0, 0, //header
+	out := []byte{
+		MCPACKV2_OBJECT, 0, 0x2f, 0x1, 0, 0, // header
 		2, 0, 0, 0,
-		MCPACKV2_OBJECT, 5, 0x9, 0x1, 0, 0, //map
-		'B', 'e', 't', 'a', 0, //key: Beta | 0x0
-		1, 0, 0, 0, //count: 1
-		MCPACKV2_SHORT_STRING, 0xff, 3}
+		MCPACKV2_OBJECT, 5, 0x9, 0x1, 0, 0, // map
+		'B', 'e', 't', 'a', 0, // key: Beta | 0x0
+		1, 0, 0, 0, // count: 1
+		MCPACKV2_SHORT_STRING, 0xff, 3,
+	}
 	out = append(out, longVItem[:254]...)
 	out = append(out, 0, 'S', 'V', 0)
-	//Deta
+	// Deta
 	out = append(out, MCPACKV2_ARRAY, 5, 0xc, 0, 0, 0,
 		'D', 'e', 't', 'a', 0,
 		2, 0, 0, 0,
@@ -189,7 +199,7 @@ func TestMarshal(t *testing.T) {
 func TestDominantField(t *testing.T) {
 	assert := assert.New(t)
 	aa, ok := dominantField([]field{
-		field{
+		{
 			name:      "aa",
 			nameBytes: []byte("aa"),
 		},
@@ -201,11 +211,11 @@ func TestDominantField(t *testing.T) {
 	})
 
 	bb, ok := dominantField([]field{
-		field{
+		{
 			name:      "aa",
 			nameBytes: []byte("aa"),
 		},
-		field{
+		{
 			name:      "bb",
 			nameBytes: []byte("bb"),
 		},
@@ -214,7 +224,7 @@ func TestDominantField(t *testing.T) {
 	assert.Equal(bb, field{})
 
 	cc, ok := dominantField([]field{
-		field{
+		{
 			index: []int{10, 11, 12},
 		},
 	})
@@ -224,11 +234,11 @@ func TestDominantField(t *testing.T) {
 	})
 
 	dd, ok := dominantField([]field{
-		field{
+		{
 			index: []int{1},
 			tag:   true,
 		},
-		field{
+		{
 			index: []int{1, 2, 3},
 			tag:   true,
 		},

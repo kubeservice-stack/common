@@ -23,9 +23,7 @@ import (
 	"github.com/kubeservice-stack/common/pkg/logger"
 )
 
-var (
-	openFileFn = os.OpenFile
-)
+var openFileFn = os.OpenFile
 
 // fileLock is file lock
 type fileLock struct {
@@ -37,7 +35,7 @@ type fileLock struct {
 
 // NewFileLock create new file lock instance
 func NewFileLock(fileName string) (Locker, error) {
-	f, err := openFileFn(fileName, os.O_CREATE|os.O_RDONLY, os.FileMode(0600))
+	f, err := openFileFn(fileName, os.O_CREATE|os.O_RDONLY, os.FileMode(0o600))
 	if err != nil {
 		return nil, fmt.Errorf("cannot create file[%s] for lock err: %s", fileName, err)
 	}

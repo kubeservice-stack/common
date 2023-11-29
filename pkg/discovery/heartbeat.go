@@ -87,7 +87,7 @@ func (h *heartbeat) grantKeepAliveLease(ctx context.Context) (bool, error) {
 func (h *heartbeat) keepAlive(ctx context.Context) {
 	var (
 		err error
-		gap = 100 * time.Millisecond //时间间隔
+		gap = 100 * time.Millisecond // 时间间隔
 	)
 	for {
 		if err != nil {
@@ -97,7 +97,7 @@ func (h *heartbeat) keepAlive(ctx context.Context) {
 				isSuccess, e := h.grantKeepAliveLease(ctx)
 				err = e
 				if !isSuccess {
-					//写入失败， 关闭心跳
+					// 写入失败， 关闭心跳
 					return
 				}
 			} else {
