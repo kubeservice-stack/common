@@ -18,7 +18,6 @@ package utils
 
 import (
 	"errors"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 )
@@ -64,7 +63,7 @@ func MkDir(path string) error {
 }
 
 func ListDir(path string) ([]string, error) {
-	files, err := ioutil.ReadDir(path)
+	files, err := os.ReadDir(path)
 	if err != nil {
 		return nil, err
 	}
