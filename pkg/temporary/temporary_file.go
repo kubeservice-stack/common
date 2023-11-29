@@ -3,7 +3,6 @@ package temporary
 import (
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 )
 
@@ -25,7 +24,7 @@ type temporaryFile struct {
 
 func newTemporaryFile(dir, pattern string) (tf *temporaryFile, err error) {
 	var file *os.File
-	if file, err = ioutil.TempFile(dir, pattern); err != nil {
+	if file, err = os.CreateTemp(dir, pattern); err != nil {
 		return
 	}
 	tf = &temporaryFile{
