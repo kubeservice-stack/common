@@ -23,9 +23,7 @@ import (
 	"github.com/kubeservice-stack/common/pkg/config"
 )
 
-var (
-	ErrNotExist = fmt.Errorf("discovery is not exist")
-)
+var ErrNotExist = fmt.Errorf("discovery is not exist")
 
 type DiscoveryFactory interface {
 	CreateDiscovery(cfg config.Discovery) (Discovery, error)
@@ -106,6 +104,7 @@ type discoveryFactory struct {
 func NewDiscoveryFactory(owner string) DiscoveryFactory {
 	return &discoveryFactory{owner: owner}
 }
+
 func (df *discoveryFactory) CreateDiscovery(cfg config.Discovery) (Discovery, error) {
 	// 默认etcd discovery
 	return newEtedDiscovery(cfg, df.owner)

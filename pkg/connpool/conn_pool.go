@@ -34,16 +34,16 @@ var (
 )
 
 type ConnPool struct {
-	Connect      func() (interface{}, error) //connect func,return instance,id,error
-	DisConnect   func(c interface{})         //disconnect func
-	ClearConnect func(c interface{})         //clear connect data
+	Connect      func() (interface{}, error) // connect func,return instance,id,error
+	DisConnect   func(c interface{})         // disconnect func
+	ClearConnect func(c interface{})         // clear connect data
 
-	//must init param
+	// must init param
 	// Maximum number of connections allocated by the pool at a given time.
 	// When zero, there is no limit on the number of connections in the pool.
 	MaxActiveNum int
 
-	//Reserved idle connections
+	// Reserved idle connections
 	ReservedIdleNum int
 
 	// Close connections after remaining idle for this duration. If the value
@@ -52,7 +52,7 @@ type ConnPool struct {
 	IdleTimeout time.Duration
 
 	// How many seconds wait for when the pool is at the MaxActiveNum limit
-	//0 forever,-1 no wait
+	// 0 forever,-1 no wait
 	WaitTime int64
 
 	mu     sync.RWMutex
@@ -61,9 +61,9 @@ type ConnPool struct {
 
 	idlePool list.List
 
-	//internal param
-	activeNum int //current inuse num
-	waitNum   int //wait num
+	// internal param
+	activeNum int // current inuse num
+	waitNum   int // wait num
 }
 
 type Conn struct {
@@ -91,7 +91,7 @@ func (p *ConnPool) Pop() (*Conn, error) {
 	tryed := false
 	p.mu.Lock()
 
-	//for loop to close idle timeout conn and close them
+	// for loop to close idle timeout conn and close them
 	if timeout := p.IdleTimeout; timeout > 0 {
 		for i, n := p.ReservedIdleNum, p.idlePool.Len(); i < n; i++ {
 			e := p.idlePool.Back()
@@ -110,7 +110,7 @@ func (p *ConnPool) Pop() (*Conn, error) {
 	}
 
 	for {
-		//Get idle connection.
+		// Get idle connection.
 		if p.idlePool.Len() > 0 {
 			e := p.idlePool.Front()
 			c = e.Value.(*Conn)
@@ -130,7 +130,7 @@ func (p *ConnPool) Pop() (*Conn, error) {
 		if p.MaxActiveNum == 0 || p.activeNum < p.MaxActiveNum {
 			p.activeNum += 1
 			p.mu.Unlock()
-			//new connection
+			// new connection
 			Inst, e := p.Connect()
 			if e != nil {
 				p.mu.Lock()
@@ -144,7 +144,7 @@ func (p *ConnPool) Pop() (*Conn, error) {
 			return c, nil
 		}
 
-		//no wait
+		// no wait
 		if p.WaitTime < 0 {
 			p.mu.Unlock()
 			return nil, nil

@@ -28,11 +28,15 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-const HTTPModule = "http"
-const CrashModule = "crash"
+const (
+	HTTPModule  = "http"
+	CrashModule = "crash"
+)
 
-var AccessLog = GetLogger(HTTPModule, "Access")
-var CrashLog = GetLogger(CrashModule, "Crash")
+var (
+	AccessLog = GetLogger(HTTPModule, "Access")
+	CrashLog  = GetLogger(CrashModule, "Crash")
+)
 
 func SimpleTimeEncoder(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
 	enc.AppendString(t.Format("2006-01-02 15:04:05.000"))

@@ -54,7 +54,6 @@ func Sort(maps map[string]string) map[string]string {
 }
 
 func SortKey(maps []string) []string {
-
 	priorities := make([]int, 0)
 	for _, key := range maps {
 		keyi, err := strconv.Atoi(key)
@@ -72,8 +71,8 @@ func SortKey(maps []string) []string {
 
 	return ret
 }
-func Merge(mapsA map[string]string, mapsB map[string]string) (map[string]string, error) {
 
+func Merge(mapsA map[string]string, mapsB map[string]string) (map[string]string, error) {
 	if mapsA == nil && mapsB == nil {
 		return nil, nil
 	}

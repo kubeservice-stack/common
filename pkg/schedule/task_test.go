@@ -101,7 +101,6 @@ func Test_TaskTags(t *testing.T) {
 
 	err = task1.Day().At(now.Format("24:04:05")).Loc(time.UTC).Do(CallBackTest, "aaa")
 	assert.NotNil(err)
-
 }
 
 func Test_CallPanic(t *testing.T) {

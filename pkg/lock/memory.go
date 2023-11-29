@@ -45,7 +45,6 @@ func (sl *MemoryLock) Lock() error {
 func (sl *MemoryLock) Unlock() error {
 	atomic.StoreUint32(&sl._flag, 0)
 	return nil
-
 }
 
 // TryLock will try to lock memory and return whether it succeed or not without blocking.

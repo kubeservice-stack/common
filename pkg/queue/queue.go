@@ -18,7 +18,6 @@ package queue
 
 import (
 	"sync"
-
 	"sync/atomic"
 )
 

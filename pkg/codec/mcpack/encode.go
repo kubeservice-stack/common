@@ -284,6 +284,7 @@ func uint16Encoder(e *encodeState, k string, v reflect.Value) {
 	PutUint16(e.data[e.off:], uint16(v.Uint()))
 	e.off += 2
 }
+
 func uint32Encoder(e *encodeState, k string, v reflect.Value) {
 	e.resizeIfNeeded(1 + 1 + len(k) + 1 + 8)
 
@@ -293,6 +294,7 @@ func uint32Encoder(e *encodeState, k string, v reflect.Value) {
 	PutUint32(e.data[e.off:], uint32(v.Uint()))
 	e.off += 4
 }
+
 func uint64Encoder(e *encodeState, k string, v reflect.Value) {
 	e.resizeIfNeeded(1 + 1 + len(k) + 1 + 8)
 
@@ -324,71 +326,71 @@ func float64Encoder(e *encodeState, k string, v reflect.Value) {
 }
 
 func stringEncoder(e *encodeState, k string, v reflect.Value) {
-	//type(1) | klen(1) | vlen(4) | key(len(k)) | 0x00 | value | 0x00
-	//max(short_vitem, long_vitem)
+	// type(1) | klen(1) | vlen(4) | key(len(k)) | 0x00 | value | 0x00
+	// max(short_vitem, long_vitem)
 	e.resizeIfNeeded(1 + 1 + 4 + len(k) + 1 + v.Len() + 1)
 
 	vlen := len(v.String()) + 1
 	if vlen < MAX_SHORT_VITEM_LEN {
-		//type(1) | klen(1) | vlen(1) | key(len(k)) | 0x00 | value | 0x00
-		//type(1)
+		// type(1) | klen(1) | vlen(1) | key(len(k)) | 0x00 | value | 0x00
+		// type(1)
 		e.setType(MCPACKV2_SHORT_STRING)
-		//klen(1)
+		// klen(1)
 		l := e.setKeyLen(k)
-		//vlen(1)
+		// vlen(1)
 		PutUint8(e.data[e.off:], uint8(vlen))
 		e.off++
-		//key(k[0:l]) | 0x00
+		// key(k[0:l]) | 0x00
 		e.setKey(k, l)
 	} else {
-		//type(1) | klen(1) | vlen(4) | key(len(k)) | 0x00 | value | 0x00
-		//type(1)
+		// type(1) | klen(1) | vlen(4) | key(len(k)) | 0x00 | value | 0x00
+		// type(1)
 		e.setType(MCPACKV2_STRING)
-		//klen(l)
+		// klen(l)
 		l := e.setKeyLen(k)
-		//vlen(4)
+		// vlen(4)
 		PutUint32(e.data[e.off:], uint32(vlen))
 		e.off += 4
-		//key(k[:l]) | 0x00
+		// key(k[:l]) | 0x00
 		e.setKey(k, l)
 	}
 
-	//value | 0x00
+	// value | 0x00
 	e.off += copy(e.data[e.off:], v.String())
 	e.data[e.off] = 0
 	e.off++
 }
 
 func binaryEncoder(e *encodeState, k string, v reflect.Value) {
-	//type(1) | klen(1) | vlen(4) | key(len(k)) | 0x00 | value
-	//max(short_vitem, long_vitem)
+	// type(1) | klen(1) | vlen(4) | key(len(k)) | 0x00 | value
+	// max(short_vitem, long_vitem)
 	e.resizeIfNeeded(1 + 1 + 4 + len(k) + 1 + v.Len())
 
 	vlen := len(v.Bytes())
 	if vlen <= MAX_SHORT_VITEM_LEN {
-		//type(1) | klen(1) | vlen(1) | key(len(k)) | 0x00 | value
-		//type(1)
+		// type(1) | klen(1) | vlen(1) | key(len(k)) | 0x00 | value
+		// type(1)
 		e.setType(MCPACKV2_SHORT_BINARY)
-		//klen(1)
+		// klen(1)
 		l := e.setKeyLen(k)
-		//vlen(1)
+		// vlen(1)
 		PutUint8(e.data[e.off:], uint8(vlen))
 		e.off++
-		//key(k[:l])) | 0x00
+		// key(k[:l])) | 0x00
 		e.setKey(k, l)
 	} else {
-		//type(1) | klen(1) | vlen(4) | key(len(k)) | 0x00 | value
-		//type(1)
+		// type(1) | klen(1) | vlen(4) | key(len(k)) | 0x00 | value
+		// type(1)
 		e.setType(MCPACKV2_BINARY)
-		//klen(1)
+		// klen(1)
 		l := e.setKeyLen(k)
-		//vlen(4)
+		// vlen(4)
 		PutUint32(e.data[e.off:], uint32(vlen))
 		e.off += 4
-		//key(k[0:l]) | 0x00
+		// key(k[0:l]) | 0x00
 		e.setKey(k, l)
 	}
-	//value
+	// value
 	e.off += copy(e.data[e.off:], v.Bytes())
 }
 
@@ -408,21 +410,21 @@ type structEncoder struct {
 func (se *structEncoder) encode(e *encodeState, k string, v reflect.Value) {
 	// type(1) | klen(1) | vlen(4) | key(len(k)) | 0x00 | field number(4)
 	e.resizeIfNeeded(1 + 1 + 4 + len(k) + 1 + 4)
-	//type(1)
+	// type(1)
 	e.setType(MCPACKV2_OBJECT)
-	//klen(1)
+	// klen(1)
 	l := e.setKeyLen(k)
-	//vlen defer
+	// vlen defer
 	vlenpos := e.off
 	e.off += 4
-	//key(k[:l]) | 0x00
+	// key(k[:l]) | 0x00
 	e.setKey(k, l)
-	//vpos defer
+	// vpos defer
 	vpos := e.off
-	//count(4)
+	// count(4)
 	PutInt32(e.data[e.off:], int32(len(se.fields)))
 	e.off += 4
-	//elem
+	// elem
 	for i, f := range se.fields {
 		fv := fieldByIndex(v, f.index)
 		if !fv.IsValid() || f.omitEmpty && isEmptyValue(fv) {
@@ -430,7 +432,7 @@ func (se *structEncoder) encode(e *encodeState, k string, v reflect.Value) {
 		}
 		se.fieldEncs[i](e, f.name, fv)
 	}
-	//vlen
+	// vlen
 	PutInt32(e.data[vlenpos:], int32(e.off-vpos))
 }
 
@@ -452,16 +454,16 @@ type mapEncoder struct {
 
 func (me *mapEncoder) encode(e *encodeState, k string, v reflect.Value) {
 	e.resizeIfNeeded(1 + 1 + 4 + len(k) + 1 + 4)
-	//type(1)
+	// type(1)
 	e.setType(MCPACKV2_OBJECT)
-	//klen(1)
+	// klen(1)
 	l := e.setKeyLen(k)
-	//vlen defer
+	// vlen defer
 	vlenpos := e.off
 	e.off += 4
-	//key(k[:l]) | 0x00
+	// key(k[:l]) | 0x00
 	e.setKey(k, l)
-	//vpos defer
+	// vpos defer
 	vpos := e.off
 	PutInt32(e.data[e.off:], int32(len(v.MapKeys())))
 	e.off += 4
@@ -469,7 +471,7 @@ func (me *mapEncoder) encode(e *encodeState, k string, v reflect.Value) {
 	for _, k := range v.MapKeys() {
 		me.elemEnc(e, k.String(), v.MapIndex(k))
 	}
-	//vlen
+	// vlen
 	PutInt32(e.data[vlenpos:], int32(e.off-vpos))
 }
 
@@ -505,25 +507,25 @@ func (ae *arrayEncoder) encode(e *encodeState, k string, v reflect.Value) {
 	// type(1) | klen(1) | vlen(4) | key(len(0)) | 0x00 | field
 	// number(4)
 	e.resizeIfNeeded(1 + 1 + 4 + len(k) + 1 + 4)
-	//type(1)
+	// type(1)
 	e.setType(MCPACKV2_ARRAY)
-	//klen(k[:l])
+	// klen(k[:l])
 	l := e.setKeyLen(k)
-	//vlen defer
+	// vlen defer
 	vlenpos := e.off
 	e.off += 4
-	//key(k[:l]) | 0x00
+	// key(k[:l]) | 0x00
 	e.setKey(k, l)
-	//vpos defer
+	// vpos defer
 	vpos := e.off
-	//count(4)
+	// count(4)
 	PutInt32(e.data[e.off:], int32(v.Len()))
 	e.off += 4
 
 	for i := 0; i < v.Len(); i++ {
 		ae.elemEnc(e, "", v.Index(i))
 	}
-	//vlen
+	// vlen
 	PutInt32(e.data[vlenpos:], int32(e.off-vpos))
 }
 
@@ -616,7 +618,7 @@ func typeFields(t reflect.Type) []field {
 
 			for i := 0; i < f.typ.NumField(); i++ {
 				sf := f.typ.Field(i)
-				//not basic type
+				// not basic type
 				if sf.PkgPath != "" {
 					continue
 				}
@@ -654,7 +656,7 @@ func typeFields(t reflect.Type) []field {
 					}
 					continue
 				}
-				//struct var of the same type can only be processed once at the same level
+				// struct var of the same type can only be processed once at the same level
 				nextCount[ft]++
 				if nextCount[ft] == 1 {
 					next = append(next, fillField(field{name: ft.Name(), index: index, typ: ft}))
@@ -740,6 +742,7 @@ func isEmptyValue(v reflect.Value) bool {
 	}
 	return false
 }
+
 func fieldByIndex(v reflect.Value, index []int) reflect.Value {
 	for _, i := range index {
 		if v.Kind() == reflect.Ptr {

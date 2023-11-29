@@ -28,7 +28,7 @@ func BenchmarkStorage_InsertRows(b *testing.B) {
 	b.ResetTimer()
 	for i := 1; i < b.N; i++ {
 		stg.InsertRows([]Row{
-			Row{Name: "metric1", DataPoint: DataPoint{Timestamp: int64(i), Value: 0.1}},
+			{Name: "metric1", DataPoint: DataPoint{Timestamp: int64(i), Value: 0.1}},
 		})
 	}
 }

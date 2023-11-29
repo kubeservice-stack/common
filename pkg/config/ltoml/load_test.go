@@ -29,8 +29,10 @@ type TestCfg struct {
 	Path string `toml:"path"`
 }
 
-var cfgFile = "./test.test"
-var defaultCfgFile = "./test.test"
+var (
+	cfgFile        = "./test.test"
+	defaultCfgFile = "./test.test"
+)
 
 func Test_LoadConfig(t *testing.T) {
 	defer func() {

@@ -46,7 +46,7 @@ func ExampleTask(name string) {
 }
 
 type CustomLocker struct {
-	Data map[string]interface{} //对非携程安全的数据，安全添加和删除
+	Data map[string]interface{} // 对非携程安全的数据，安全添加和删除
 }
 
 func (c *CustomLocker) Lock(key string) (bool, error) {

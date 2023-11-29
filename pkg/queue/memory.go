@@ -21,8 +21,8 @@ import (
 	"sync/atomic"
 )
 
-type Item struct { //数组解构
-	value interface{} //数据值
+type Item struct { // 数组解构
+	value interface{} // 数据值
 	m     bool        // mark位
 }
 
@@ -36,11 +36,11 @@ func NewUnLockQueue(max uint64) Queue {
 
 // lock free queue
 type UnLockQueue struct {
-	maxlen uint64 //最大长度
+	maxlen uint64 // 最大长度
 	capM   uint64
-	putB   uint64 //生产位
-	getB   uint64 //消费位
-	mp     []Item //数组
+	putB   uint64 // 生产位
+	getB   uint64 // 消费位
+	mp     []Item // 数组
 }
 
 func (q *UnLockQueue) Maxlen() uint64 {

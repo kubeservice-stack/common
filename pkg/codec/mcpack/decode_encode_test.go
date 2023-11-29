@@ -107,5 +107,4 @@ func TestDecodeEncodeNil(t *testing.T) {
 	assert.NoError(err)
 	assert.Equal("dongjiang", p.Name)
 	assert.Equal((*int)(nil), p.P)
-
 }

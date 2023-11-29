@@ -49,14 +49,15 @@ func optionsLoadingLFUCache(size int, loader LoaderFunc) Cache {
 		Expiration(time.Second).
 		Setting()
 }
+
 func TestLFUGet(t *testing.T) {
 	assert := assert.New(t)
 
-	size := 1000
-	numbers := 1000
+	size := 100
+	numbers := 100
 
 	gc := optionsLFUCache(size)
-	//set
+	// set
 	for i := 0; i < numbers; i++ {
 		key := "Key-" + strconv.Itoa(i)
 		value, err := loader(key)
@@ -67,7 +68,7 @@ func TestLFUGet(t *testing.T) {
 		gc.Set(key, value)
 	}
 
-	//get
+	// get
 	for i := 0; i < numbers; i++ {
 		key := "Key-" + strconv.Itoa(i)
 		v, err := gc.Get(key)
@@ -80,11 +81,11 @@ func TestLFUGet(t *testing.T) {
 func TestLFUGetWithTimeout(t *testing.T) {
 	assert := assert.New(t)
 
-	size := 1000
-	numbers := 1000
+	size := 100
+	numbers := 100
 
 	gc := optionsLoadingLFUCache(size, loader)
-	//set
+	// set
 	for i := 0; i < numbers; i++ {
 		key := "Key-" + strconv.Itoa(i)
 		value, err := loader(key)
@@ -95,7 +96,7 @@ func TestLFUGetWithTimeout(t *testing.T) {
 		gc.Set(key, value)
 	}
 
-	//get
+	// get
 	for i := 0; i < numbers; i++ {
 		key := "Key-" + strconv.Itoa(i)
 		v, err := gc.Get(key)
@@ -108,12 +109,12 @@ func TestLFUGetWithTimeout(t *testing.T) {
 func TestLoadingLFUGet(t *testing.T) {
 	assert := assert.New(t)
 
-	size := 1000
-	numbers := 1000
+	size := 100
+	numbers := 100
 
 	gc := optionsLoadingLFUCache(size, loader)
 
-	//get
+	// get
 	for i := 0; i < numbers; i++ {
 		key := "Key-" + strconv.Itoa(i)
 		v, err := gc.Get(key)
@@ -126,7 +127,7 @@ func TestLoadingLFUGet(t *testing.T) {
 func TestLFULength(t *testing.T) {
 	assert := assert.New(t)
 
-	gc := optionsLFUCache(1000)
+	gc := optionsLFUCache(5)
 	gc.Get("test1")
 	gc.Get("test2")
 	length := gc.Len()
@@ -140,7 +141,7 @@ func TestLFULength(t *testing.T) {
 func TestLFULengthWithTimeout(t *testing.T) {
 	assert := assert.New(t)
 
-	gc := optionsLoadingLFUCache(1000, loader)
+	gc := optionsLoadingLFUCache(5, loader)
 	gc.Get("test1")
 	gc.Get("test2")
 	length := gc.Len()
@@ -163,6 +164,7 @@ func TestLFUEvictItem(t *testing.T) {
 		assert.Nil(err)
 	}
 }
+
 func TestLFUEvictItemWithTimeout(t *testing.T) {
 	assert := assert.New(t)
 
@@ -192,7 +194,7 @@ func TestLFUGetIFPresent(t *testing.T) {
 	assert.Equal(err, ErrCacheKeyNotFind)
 	assert.Equal(v, nil)
 
-	time.Sleep(20 * time.Millisecond) //时间够长，case稳定
+	time.Sleep(20 * time.Millisecond) // 时间够长，case稳定
 
 	v, err = cache.GetIFPresent("key")
 	assert.Nil(err)

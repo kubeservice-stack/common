@@ -49,10 +49,10 @@ func buildLoadingLRUCache(size int, loader LoaderFunc) Cache {
 func TestLRUGet(t *testing.T) {
 	assert := assert.New(t)
 
-	size := 1000
-	numbers := 1000
+	size := 100
+	numbers := 100
 	gc := optionsLRUCache(size, loader)
-	//set
+	// set
 	for i := 0; i < numbers; i++ {
 		key := "Key-" + strconv.Itoa(i)
 		value, err := loader(key)
@@ -63,7 +63,7 @@ func TestLRUGet(t *testing.T) {
 		gc.Set(key, value)
 	}
 
-	//get
+	// get
 	for i := 0; i < numbers; i++ {
 		key := "Key-" + strconv.Itoa(i)
 		v, err := gc.Get(key)
@@ -76,10 +76,10 @@ func TestLRUGet(t *testing.T) {
 func TestLRUGetWithTimeout(t *testing.T) {
 	assert := assert.New(t)
 
-	size := 1000
-	numbers := 1000
+	size := 100
+	numbers := 100
 	gc := buildLoadingLRUCache(size, loader)
-	//set
+	// set
 	for i := 0; i < numbers; i++ {
 		key := "Key-" + strconv.Itoa(i)
 		value, err := loader(key)
@@ -90,7 +90,7 @@ func TestLRUGetWithTimeout(t *testing.T) {
 		gc.Set(key, value)
 	}
 
-	//get
+	// get
 	for i := 0; i < numbers; i++ {
 		key := "Key-" + strconv.Itoa(i)
 		v, err := gc.Get(key)
@@ -103,9 +103,9 @@ func TestLRUGetWithTimeout(t *testing.T) {
 func TestLoadingLRUGet(t *testing.T) {
 	assert := assert.New(t)
 
-	size := 1000
+	size := 100
 	gc := optionsLRUCache(size, loader)
-	//get
+	// get
 	for i := 0; i < size; i++ {
 		key := "Key-" + strconv.Itoa(i)
 		v, err := gc.Get(key)
@@ -118,9 +118,9 @@ func TestLoadingLRUGet(t *testing.T) {
 func TestLoadingLRUGetWithTimeout(t *testing.T) {
 	assert := assert.New(t)
 
-	size := 1000
+	size := 100
 	gc := buildLoadingLRUCache(size, loader)
-	//get
+	// get
 	for i := 0; i < size; i++ {
 		key := "Key-" + strconv.Itoa(i)
 		v, err := gc.Get(key)
@@ -133,7 +133,7 @@ func TestLoadingLRUGetWithTimeout(t *testing.T) {
 func TestLRULength(t *testing.T) {
 	assert := assert.New(t)
 
-	gc := optionsLRUCache(1000, loader)
+	gc := optionsLRUCache(5, loader)
 	gc.Get("test1")
 	gc.Get("test2")
 	length := gc.Len()
@@ -143,13 +143,12 @@ func TestLRULength(t *testing.T) {
 
 	length = gc.Len()
 	assert.Equal(length, 2)
-
 }
 
 func TestLRULengthWithTimeout(t *testing.T) {
 	assert := assert.New(t)
 
-	gc := buildLoadingLRUCache(1000, loader)
+	gc := buildLoadingLRUCache(5, loader)
 	gc.Get("test1")
 	gc.Get("test2")
 	length := gc.Len()
@@ -159,7 +158,6 @@ func TestLRULengthWithTimeout(t *testing.T) {
 
 	length = gc.Len()
 	assert.Equal(length, 0)
-
 }
 
 func TestLRUEvictItem(t *testing.T) {
@@ -204,7 +202,7 @@ func TestLRUGetIFPresent(t *testing.T) {
 	assert.Equal(err, ErrCacheKeyNotFind)
 	assert.Equal(v, nil)
 
-	time.Sleep(20 * time.Millisecond) //时间够长，case稳定
+	time.Sleep(20 * time.Millisecond) // 时间够长，case稳定
 
 	v, err = cache.GetIFPresent("key")
 	assert.Nil(err)

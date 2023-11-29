@@ -55,7 +55,7 @@ func Test_UvarintLittleEndian_special_cases(t *testing.T) {
 	assert.Zero(t, size)
 
 	// overflow
-	var buf2 = []byte{
+	buf2 := []byte{
 		1, 1,
 		0x80, 0x80, 0x80, 0x80, 0x80,
 		0x80, 0x80, 0x80, 0x80, 0x80,

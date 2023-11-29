@@ -52,8 +52,8 @@ func Test_RateLimitersTryAccept(t *testing.T) {
 	for !stop {
 		select {
 		case <-after:
-			fmt.Println(count)             //接近100
-			assert.InDelta(count, 80, 120) //80~120
+			fmt.Println(count)             // 接近100
+			assert.InDelta(count, 80, 120) // 80~120
 			stop = true
 		default:
 			pass := (adapters[RATELIMITER])().TryAccept("dongjiang", 100, 2)

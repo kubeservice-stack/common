@@ -62,7 +62,6 @@ func GetDefaultLimiter() Instance {
 }
 
 func HasRegister(name string) bool {
-
 	if _, ok := adapters[name]; ok {
 		return true
 	}

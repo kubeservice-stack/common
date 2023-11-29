@@ -31,8 +31,8 @@ func Test_WildcardMatch_MatchingEmpty(t *testing.T) {
 
 func Test_WildcardMatch_MatchIdentityCaseInsensitive(t *testing.T) {
 	assert.True(t, WildcardMatch("foo", "foo"))
-	//assert.True(t, WildcardMatch("foo", "FOO"))
-	//assert.True(t, WildcardMatch("foo", "Foo"))
+	// assert.True(t, WildcardMatch("foo", "FOO"))
+	// assert.True(t, WildcardMatch("foo", "Foo"))
 	assert.True(t, WildcardMatch("6543210", "6543210"))
 }
 
@@ -49,7 +49,7 @@ func Test_WildcardMatch_SingleWildcard(t *testing.T) {
 
 func Test_WildcardMatch_MultipleWildcards(t *testing.T) {
 	assert.False(t, WildcardMatch("f??", "boo"))
-	//assert.True(t, WildcardMatch("he??o", "Hello"))
+	// assert.True(t, WildcardMatch("he??o", "Hello"))
 	assert.True(t, WildcardMatch("?o?", "foo"))
 }
 

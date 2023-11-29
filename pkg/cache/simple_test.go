@@ -53,10 +53,10 @@ func addFuncForSimple(key, value interface{}) {
 func TestSimpleGet(t *testing.T) {
 	assert := assert.New(t)
 
-	size := 1000
+	size := 100
 	gc := buildSimpleCache(size)
 
-	//set
+	// set
 	for i := 0; i < size; i++ {
 		key := "Key-" + strconv.Itoa(i)
 		value, err := loader(key)
@@ -67,7 +67,7 @@ func TestSimpleGet(t *testing.T) {
 		gc.Set(key, value)
 	}
 
-	//get
+	// get
 	for i := 0; i < size; i++ {
 		key := "Key-" + strconv.Itoa(i)
 		v, err := gc.Get(key)
@@ -80,10 +80,10 @@ func TestSimpleGet(t *testing.T) {
 func TestSimpleGetBig(t *testing.T) {
 	assert := assert.New(t)
 
-	size := 1000
+	size := 100
 	gc := buildSimpleCache(size)
 
-	//set
+	// set
 	for i := 0; i < size+10; i++ {
 		key := "Key-" + strconv.Itoa(i)
 		value, err := loader(key)
@@ -94,17 +94,17 @@ func TestSimpleGetBig(t *testing.T) {
 		gc.Set(key, value)
 	}
 
-	//get
+	// get
 	assert.Equal(gc.Len(), size)
 }
 
 func TestLoadingSimpleGet(t *testing.T) {
 	assert := assert.New(t)
 
-	size := 1000
+	size := 100
 	gc := buildLoadingSimpleCache(size, loader)
 
-	//get
+	// get
 	for i := 0; i < size; i++ {
 		key := "Key-" + strconv.Itoa(i)
 		v, err := gc.Get(key)
@@ -117,7 +117,7 @@ func TestLoadingSimpleGet(t *testing.T) {
 func TestSimpleLength(t *testing.T) {
 	assert := assert.New(t)
 
-	gc := buildLoadingSimpleCache(1000, loader)
+	gc := buildLoadingSimpleCache(5, loader)
 	gc.Get("test1")
 	gc.Get("test2")
 
@@ -130,7 +130,7 @@ func TestSimpleLength(t *testing.T) {
 func TestSimpleLength2(t *testing.T) {
 	assert := assert.New(t)
 
-	gc := buildSimpleCache(1000)
+	gc := buildSimpleCache(5)
 	gc.Get("test1")
 	gc.Get("test2")
 

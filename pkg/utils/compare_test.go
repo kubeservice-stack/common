@@ -32,12 +32,12 @@ func Test_Version_compare(t *testing.T) {
 	assert.Equal(Version_compare("1.1.1.1.1", "1.1.1.2.1"), -1, "is not equals")
 	assert.Equal(Version_compare("1.1.1.1.2", "1.1.1.2.1"), -1, "is not equals")
 	assert.Equal(Version_compare("1.1.1.2.1-debug", "1.1.1.2.1"), -1, "is not equals")
-	//TODO
+	// TODO
 	assert.Equal(Version_compare("1.1.1.2.2-debug", "1.1.1.2.1"), 1, "is not equals")
 	assert.Equal(Version_compare("1.1.1.2.2", "1.1.1.2.1"), 1, "is not equals")
 	assert.Equal(Version_compare("1.1.1.2", "1.1.1.2.1"), -1, "is not equals")
 	assert.Equal(Version_compare("1.1.1.1.2-dev", "1.1.1.2.1"), -1, "is not equals")
-	//TODO
+	// TODO
 	assert.Equal(Version_compare("Debug-1.1.1.1", "1.1.1.1"), -1, "is not equals")
 	assert.Equal(Version_compare("debug-1.1.1.1", "1.1.1.1"), -1, "is not equals")
 	assert.Equal(Version_compare("Debug-1.1.1.2", "1.1.1.1"), -1, "is not equals")
@@ -51,6 +51,6 @@ func Test_Version_compare(t *testing.T) {
 	assert.Equal(Version_compare("445.1", "444.12.1235.6667"), 1, "is not equals")
 	assert.Equal(Version_compare("4.4.1", "125"), -1, "is not equals")
 
-	//TODO maybe bug
+	// TODO maybe bug
 	assert.Equal(Version_compare("aa", "aaaaa"), 0, "is not equals")
 }

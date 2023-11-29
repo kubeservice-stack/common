@@ -37,8 +37,8 @@ type etcdDiscovery struct {
 func newEtedDiscovery(cfg config.Discovery, owner string) (Discovery, error) {
 	cf := etcdcliv3.Config{
 		Endpoints: cfg.Endpoints,
-		//TODO: maybe bug dongjiang
-		//DialTimeout: config.DialTimeout * time.Second,
+		// TODO: maybe bug dongjiang
+		// DialTimeout: config.DialTimeout * time.Second,
 	}
 	cli, err := etcdcliv3.New(cf)
 	if err != nil {
@@ -47,7 +47,8 @@ func newEtedDiscovery(cfg config.Discovery, owner string) (Discovery, error) {
 	ed := etcdDiscovery{
 		namespace: cfg.Namespace,
 		client:    cli,
-		logger:    logger.GetLogger(owner, "ETCD")}
+		logger:    logger.GetLogger(owner, "ETCD"),
+	}
 
 	ed.logger.Info("new etcd client successfully",
 		logger.Any("endpoints", cfg.Endpoints))

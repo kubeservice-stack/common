@@ -53,7 +53,6 @@ func (c *Options) load(key interface{}, cb func(interface{}, error) (interface{}
 	v, called, err := c.loadGroup.Do(key, func() (interface{}, error) {
 		return cb((*c.loaderFunc)(key))
 	}, isWait)
-
 	if err != nil {
 		optionsLogger.Error(err.Error())
 		return nil, called, err

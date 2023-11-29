@@ -51,7 +51,6 @@ func TestUtil_InSlice(t *testing.T) {
 	assert.False(InSlice("b", []string{"aaaa", "aaa"}), "解析文件正常，不符合需求！")
 
 	assert.False(InSlice("aaa", []string{}), "解析文件正常，不符合需求！")
-
 }
 
 func Test_ReplayStr(t *testing.T) {

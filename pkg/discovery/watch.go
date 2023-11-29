@@ -25,7 +25,7 @@ import (
 )
 
 const (
-	defaultRetryInterval = 100 * time.Millisecond //默认watch周期100ms
+	defaultRetryInterval = 100 * time.Millisecond // 默认watch周期100ms
 )
 
 type watcher struct {

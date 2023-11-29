@@ -56,7 +56,6 @@ func (t timeUnit) String() time.Duration {
 	default:
 		return -1
 	}
-
 }
 
 var (

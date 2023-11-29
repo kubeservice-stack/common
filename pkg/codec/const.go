@@ -19,6 +19,6 @@ package codec
 type PACK string
 
 const (
-	MCPACK  PACK = "mcpack"  //mcpack 算法: like Json decode/encode
-	MSGPACK PACK = "msgpack" //msgpack https://msgpack.uptrace.dev/
+	MCPACK  PACK = "mcpack"  // mcpack 算法: like Json decode/encode
+	MSGPACK PACK = "msgpack" // msgpack https://msgpack.uptrace.dev/
 )

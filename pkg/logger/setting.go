@@ -30,12 +30,12 @@ import (
 
 var (
 	isTerminal         = IsTerminal(os.Stdout)
-	maxModuleNameLen   uint32 //最大长度
+	maxModuleNameLen   uint32 // 最大长度
 	mediaLogger        atomic.Value
 	accessLogger       atomic.Value
 	crashLogger        atomic.Value
-	defaultLogger      = newDefaultLogger()                      //默认logger
-	RunningAtomicLevel = zap.NewAtomicLevelAt(zapcore.InfoLevel) //设置日志等级
+	defaultLogger      = newDefaultLogger()                      // 默认logger
+	RunningAtomicLevel = zap.NewAtomicLevelAt(zapcore.InfoLevel) // 设置日志等级
 )
 
 const (
