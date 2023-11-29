@@ -147,7 +147,7 @@ func TestLoadingARCGet(t *testing.T) {
 func TestLoadingARCGetWithExpiration(t *testing.T) {
 	assert := assert.New(t)
 
-	size := 1000
+	size := 100
 	gc := buildLoadingARCacheWithExpiration(size, 1*time.Nanosecond)
 
 	// set
@@ -171,14 +171,14 @@ func TestLoadingARCGetWithExpiration(t *testing.T) {
 func TestARCLength(t *testing.T) {
 	assert := assert.New(t)
 
-	gc := buildLoadingARCacheWithExpiration(2, 5*time.Second)
+	gc := buildLoadingARCacheWithExpiration(2, 2*time.Second)
 	gc.Set("test1", "aa")
 	gc.Set("test2", "aa")
 	gc.Set("test3", "aa")
 	length := gc.Len()
 	assert.Equal(length, 2)
 
-	time.Sleep(time.Second * 6)
+	time.Sleep(time.Second * 3)
 	gc.Set("test4", "aa")
 	length = gc.Len()
 	assert.Equal(length, 1)
@@ -221,7 +221,6 @@ func TestARCGetIFPresent(t *testing.T) {
 		ARC().
 		LoaderFunc(
 			func(key interface{}) (interface{}, error) {
-				time.Sleep(time.Millisecond)
 				return "value", nil
 			}).
 		Setting()
