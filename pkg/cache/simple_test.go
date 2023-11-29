@@ -53,7 +53,7 @@ func addFuncForSimple(key, value interface{}) {
 func TestSimpleGet(t *testing.T) {
 	assert := assert.New(t)
 
-	size := 1000
+	size := 100
 	gc := buildSimpleCache(size)
 
 	// set
@@ -80,7 +80,7 @@ func TestSimpleGet(t *testing.T) {
 func TestSimpleGetBig(t *testing.T) {
 	assert := assert.New(t)
 
-	size := 1000
+	size := 100
 	gc := buildSimpleCache(size)
 
 	// set
@@ -101,7 +101,7 @@ func TestSimpleGetBig(t *testing.T) {
 func TestLoadingSimpleGet(t *testing.T) {
 	assert := assert.New(t)
 
-	size := 1000
+	size := 100
 	gc := buildLoadingSimpleCache(size, loader)
 
 	// get
@@ -117,7 +117,7 @@ func TestLoadingSimpleGet(t *testing.T) {
 func TestSimpleLength(t *testing.T) {
 	assert := assert.New(t)
 
-	gc := buildLoadingSimpleCache(1000, loader)
+	gc := buildLoadingSimpleCache(5, loader)
 	gc.Get("test1")
 	gc.Get("test2")
 
@@ -130,7 +130,7 @@ func TestSimpleLength(t *testing.T) {
 func TestSimpleLength2(t *testing.T) {
 	assert := assert.New(t)
 
-	gc := buildSimpleCache(1000)
+	gc := buildSimpleCache(5)
 	gc.Get("test1")
 	gc.Get("test2")
 

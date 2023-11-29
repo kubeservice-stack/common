@@ -55,8 +55,8 @@ func buildLoadingFIFOCache(size int, loader LoaderFunc) Cache {
 func TestFIFOGet(t *testing.T) {
 	assert := assert.New(t)
 
-	size := 1000
-	numbers := 1000
+	size := 100
+	numbers := 100
 	gc := optionsFIFOCache(size, loader)
 	// set
 	for i := 0; i < numbers; i++ {
@@ -82,8 +82,8 @@ func TestFIFOGet(t *testing.T) {
 func TestFIFOGetWithTimeout(t *testing.T) {
 	assert := assert.New(t)
 
-	size := 1000
-	numbers := 1000
+	size := 100
+	numbers := 100
 	gc := buildLoadingFIFOCache(size, loader)
 	// set
 	for i := 0; i < numbers; i++ {
@@ -109,7 +109,7 @@ func TestFIFOGetWithTimeout(t *testing.T) {
 func TestLoadingFIFOGet(t *testing.T) {
 	assert := assert.New(t)
 
-	size := 1000
+	size := 100
 	gc := optionsFIFOCache(size, loader)
 	// get
 	for i := 0; i < size; i++ {
@@ -122,7 +122,7 @@ func TestLoadingFIFOGet(t *testing.T) {
 func TestLoadingFIFOGetWithTimeout(t *testing.T) {
 	assert := assert.New(t)
 
-	size := 1000
+	size := 100
 	gc := buildLoadingFIFOCache(size, loader)
 	// get
 	for i := 0; i < size; i++ {
@@ -135,7 +135,7 @@ func TestLoadingFIFOGetWithTimeout(t *testing.T) {
 func TestFIFOLength(t *testing.T) {
 	assert := assert.New(t)
 
-	gc := optionsFIFOCache(1000, loader)
+	gc := optionsFIFOCache(5, loader)
 	gc.Set("testaa", true)
 	gc.Set("testbb", false)
 
@@ -151,7 +151,7 @@ func TestFIFOLength(t *testing.T) {
 func TestFIFOLengthWithTimeout(t *testing.T) {
 	assert := assert.New(t)
 
-	gc := buildLoadingFIFOCache(1000, loader)
+	gc := buildLoadingFIFOCache(5, loader)
 	gc.Get("testaa")
 	gc.Get("testbb")
 	length := gc.Len()

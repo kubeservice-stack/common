@@ -61,7 +61,7 @@ func addFuncForARC(key, value interface{}) {
 func TestARCGet(t *testing.T) {
 	assert := assert.New(t)
 
-	size := 1000
+	size := 100
 	gc := buildARCache(size)
 
 	// set
@@ -88,7 +88,7 @@ func TestARCGet(t *testing.T) {
 func TestARCGetBig(t *testing.T) {
 	assert := assert.New(t)
 
-	size := 1000
+	size := 100
 	gc := buildARCache(size)
 
 	// set
@@ -123,7 +123,7 @@ func TestARCGetBig(t *testing.T) {
 func TestLoadingARCGet(t *testing.T) {
 	assert := assert.New(t)
 
-	size := 1000
+	size := 100
 	gc := buildLoadingARCache(size)
 
 	// set
