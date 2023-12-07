@@ -104,6 +104,7 @@ func TestUndo(t *testing.T) {
 	assert.Equal(tb.Limit(), false)
 	assert.Equal(tb.Limit(), false)
 	assert.Equal(tb.Limit(), false)
+	assert.Equal(tb.Limit(), true)
 	tb.Undo()
 	assert.Equal(tb.Limit(), false)
 	assert.Equal(tb.Limit(), true)
