@@ -70,7 +70,6 @@ func TestTokenBucket(t *testing.T) {
 			}
 		}
 	}
-
 }
 
 func TestUnixNano(t *testing.T) {
