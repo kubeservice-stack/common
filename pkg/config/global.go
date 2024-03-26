@@ -19,7 +19,7 @@ package config
 import (
 	"fmt"
 
-	"github.com/caarlos0/env/v6"
+	"github.com/caarlos0/env/v10"
 
 	"github.com/kubeservice-stack/common/pkg/config/ltoml"
 )
@@ -33,6 +33,8 @@ func init() {
 	GlobalCfg.GinConfig = GlobalCfg.GinConfig.DefaultConfig()
 	GlobalCfg.RateLimit = GlobalCfg.RateLimit.DefaultConfig()
 	GlobalCfg.Temporary = GlobalCfg.Temporary.DefaultConfig()
+	GlobalCfg.DBConfg = GlobalCfg.DBConfg.DefaultConfig()
+
 }
 
 func LoadGlobalConfig(cfgPath string) (err error) {
@@ -54,6 +56,7 @@ type Global struct {
 	GinConfig `toml:"gin"`
 	RateLimit `toml:"ratelimit"`
 	Temporary `toml:"temporary"`
+	DBConfg   `toml:"database"`
 }
 
 func (g Global) TOML() string {
@@ -64,5 +67,6 @@ func (g Global) TOML() string {
 		g.GinConfig.TOML(),
 		g.RateLimit.TOML(),
 		g.Temporary.TOML(),
+		g.DBConfg.TOML(),
 	)
 }
