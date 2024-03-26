@@ -70,3 +70,11 @@ func NewDBConn(cfg config.DBConfg) (*DBConn, error) {
 		db:     conn,
 	}, nil
 }
+
+func (g *DBConn) close() error {
+	db, err := g.db.DB()
+	if err != nil {
+		return err
+	}
+	return db.Close()
+}
