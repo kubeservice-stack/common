@@ -63,12 +63,12 @@ func NewDBConn(cfg config.DBConfg) (*DBConn, error) {
 
 	conn, err := gorm.Open(adapter(cfg), gcfg)
 	if err != nil {
-		return nil, errors.Join(ErrDBNotconnected, err)
+		return nil, err
 	}
 
 	err = conn.Use(tracing.NewPlugin())
 	if err != nil {
-		return nil, errors.Join(ErrDBNotconnected, err)
+		return nil, err
 	}
 
 	return &DBConn{
