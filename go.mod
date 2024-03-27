@@ -5,7 +5,6 @@ go 1.19
 require (
 	github.com/BurntSushi/toml v0.3.1
 	github.com/caarlos0/env/v10 v10.0.0
-	github.com/caarlos0/env/v6 v6.10.1
 	github.com/gin-gonic/gin v1.8.1
 	github.com/glebarez/sqlite v1.11.0
 	github.com/go-sql-driver/mysql v1.8.1
