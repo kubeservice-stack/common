@@ -120,5 +120,20 @@ func Test_global(t *testing.T) {
   ## 上传文件临时文件名格式, 默认前缀 uploadd-*
   file_pattern = ""
   ## 上传文件临时文件名格式, 默认前缀 104857600 byte = 100MB
-  max_upload_size = 0`)
+  max_upload_size = 0
+[database]
+  ## dbtype 模式: mysql/sqlite3/postgres
+  db_type = ""
+  ## user 用户
+  user = ""
+  ## password 密码
+  password = ""
+  ## Host 地址
+  host = ""
+  ## Port 端口
+  port = ""
+  ## 数据库名
+  database = ""
+  ## ca cert证书
+  ca_cert = ""`)
 }
