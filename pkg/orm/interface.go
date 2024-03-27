@@ -20,7 +20,6 @@ import (
 	"errors"
 
 	"github.com/kubeservice-stack/common/pkg/config"
-	logging "github.com/kubeservice-stack/common/pkg/logger"
 	"gorm.io/gorm"
 	"gorm.io/plugin/opentelemetry/tracing"
 )
@@ -28,7 +27,6 @@ import (
 var (
 	ErrDBNotconnected   = errors.New("migrate: database not connected")
 	ErrDBTypeNotSupport = errors.New("migrate: database type not support")
-	ormLogger           = logging.GetLogger("pkg/common/orm", "orm")
 )
 
 type DBConn struct {
@@ -77,7 +75,7 @@ func NewDBConn(cfg config.DBConfg) (*DBConn, error) {
 	}, nil
 }
 
-func (g *DBConn) close() error {
+func (g *DBConn) Close() error {
 	db, err := g.db.DB()
 	if err != nil {
 		return err

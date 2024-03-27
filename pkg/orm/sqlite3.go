@@ -17,15 +17,13 @@ limitations under the License.
 package orm
 
 import (
-	"fmt"
-
 	"github.com/glebarez/sqlite"
 	"github.com/kubeservice-stack/common/pkg/config"
 	"gorm.io/gorm"
 )
 
 func NewSqlite3(cfg config.DBConfg) gorm.Dialector {
-	return sqlite.Open(fmt.Sprintf("%s", cfg.Database))
+	return sqlite.Open(cfg.Database)
 }
 
 func init() {

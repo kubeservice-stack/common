@@ -38,4 +38,7 @@ func Test_NewDBConnSuccess(t *testing.T) {
 	})
 	assert.NoError(err)
 	assert.NotNil(r)
+
+	err = r.Close()
+	assert.NoError(err)
 }
