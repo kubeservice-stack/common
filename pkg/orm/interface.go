@@ -26,8 +26,9 @@ import (
 )
 
 var (
-	ErrDBNotconnected = errors.New("migrate: database not connected")
-	ormLogger         = logging.GetLogger("pkg/common/orm", "orm")
+	ErrDBNotconnected   = errors.New("migrate: database not connected")
+	ErrDBTypeNotSupport = errors.New("migrate: database type not support")
+	ormLogger           = logging.GetLogger("pkg/common/orm", "orm")
 )
 
 type DBConn struct {
@@ -55,7 +56,12 @@ func NewDBConn(cfg config.DBConfg) (*DBConn, error) {
 		PrepareStmt:          false,
 	}
 
-	conn, err := gorm.Open(adapters[cfg.DBType](cfg), gcfg)
+	adapter, ok := adapters[cfg.DBType]
+	if !ok {
+		return nil, ErrDBTypeNotSupport
+	}
+
+	conn, err := gorm.Open(adapter(cfg), gcfg)
 	if err != nil {
 		return nil, errors.Join(ErrDBNotconnected, err)
 	}

@@ -17,17 +17,14 @@ limitations under the License.
 package orm
 
 import (
-	"fmt"
+	"testing"
 
-	"github.com/glebarez/sqlite"
 	"github.com/kubeservice-stack/common/pkg/config"
-	"gorm.io/gorm"
+	"github.com/stretchr/testify/assert"
 )
 
-func NewSqlite3(cfg config.DBConfg) gorm.Dialector {
-	return sqlite.Open(fmt.Sprintf("%s", cfg.Database))
-}
-
-func init() {
-	Register(config.SQLITE3, NewSqlite3)
+func Test_sqlite(t *testing.T) {
+	assert := assert.New(t)
+	r := NewSqlite3(config.GlobalCfg.DBConfg)
+	assert.NotNil(r)
 }
