@@ -42,9 +42,9 @@ func New(name string, capacity uint64, tw time.Duration) *TokenBucket {
 
 	return &TokenBucket{
 		name:      name,
-		capacity:  uint64(capacity),
-		allowance: uint64(capacity) * nano,
-		max:       uint64(capacity) * nano,
+		capacity:  capacity,
+		allowance: capacity * nano,
+		max:       capacity * nano,
 		unit:      nano,
 		lastCheck: unixNano(),
 	}

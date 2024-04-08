@@ -301,7 +301,7 @@ func uint64Encoder(e *encodeState, k string, v reflect.Value) {
 	e.setType(MCPACKV2_UINT64)
 	e.setKey(k, e.setKeyLen(k))
 
-	PutUint64(e.data[e.off:], uint64(v.Uint()))
+	PutUint64(e.data[e.off:], v.Uint())
 	e.off += 8
 }
 

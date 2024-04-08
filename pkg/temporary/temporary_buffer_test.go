@@ -34,7 +34,7 @@ func Test_NewTemporaryBuffer(t *testing.T) {
 	assert.Contains(tb.Name(), "")
 	assert.Equal(tb.Type(), "Buffer")
 	assert.Equal(tb.Size(), int64(0))
-	assert.Equal(tb.Bytes(), []uint8([]byte(nil)))
+	assert.Equal(tb.Bytes(), []byte(nil))
 
 	n, err := tb.Write([]byte("dongjiang test"))
 	assert.Nil(err)

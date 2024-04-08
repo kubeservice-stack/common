@@ -26,7 +26,7 @@ func Int8(b []byte) int8 {
 }
 
 func PutInt8(b []byte, v int8) {
-	b[0] = byte(uint8(v))
+	b[0] = uint8(v)
 }
 
 func Int16(b []byte) int16 {
@@ -66,11 +66,11 @@ func PutInt64(b []byte, v int64) {
 }
 
 func Uint8(b []byte) uint8 {
-	return uint8(b[0])
+	return b[0]
 }
 
 func PutUint8(b []byte, v uint8) {
-	b[0] = byte(v)
+	b[0] = v
 }
 
 func Uint16(b []byte) uint16 {

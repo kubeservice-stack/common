@@ -49,7 +49,7 @@ func Test_Uint16Encode(t *testing.T) {
 	var b []byte
 	aa := Uint16Encode(b, uint16(124))
 	assert.NotEmpty(aa)
-	assert.Equal(aa, []uint8([]byte{0x0, 0x7c}))
+	assert.Equal(aa, []byte{0x0, 0x7c})
 }
 
 func Test_Uint16Decode(t *testing.T) {

@@ -62,7 +62,7 @@ func Test_CallTaskFuncWithParams(t *testing.T) {
 
 	bb, err := callTaskFuncWithParams(functionNameA, []interface{}{1, 1})
 	assert.Equal(err, ErrParamsNotAdapted)
-	assert.Equal(bb, []reflect.Value([]reflect.Value(nil)))
+	assert.Equal(bb, []reflect.Value(nil))
 
 	cc, err := callTaskFuncWithParams(functionNameC, nil)
 	assert.Nil(err)

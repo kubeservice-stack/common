@@ -1,8 +1,51 @@
+run:
+  deadline: 10m
+
 linters:
   disable-all: true
   enable:
-    - gosimple
-    - structcheck
-    - typecheck
-    - unused
-    - varcheck
+  - gosimple
+  - typecheck
+  - unused
+  - depguard
+  - unconvert
+
+issues:
+  exclude-rules:
+  # Disable errcheck linter for test files.
+  - path: _test.go
+    linters:
+    - errcheck
+
+linters-settings:
+  testifylint:
+    disable:
+      - require-error
+      - expected-actual
+    enable:
+      - bool-compare
+      - compares
+      - empty
+      - error-is-as
+      - error-nil
+      - float-compare
+      - len
+      - suite-dont-use-pkg
+      - suite-extra-assert-call
+      - suite-thelper
+  errcheck:
+    exclude: scripts/errcheck_excludes.txt
+  gci:
+    sections:
+      - standard
+      - default
+  depguard:
+    rules:
+      forbid-pkg-errors:
+        deny:
+        - pkg: "github.com/pkg/errors"
+          dsc: Should be replaced with standard lib errors or fmt.Errorf
+        - pkg: "io/ioutil"
+          desc: Use corresponding 'os' or 'io' functions instead.
+        - pkg: "github.com/pkg/errors"
+          desc: Use 'errors' or 'fmt' instead of github.com/pkg/errors
