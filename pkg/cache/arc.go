@@ -68,7 +68,7 @@ func (c *ARCPlugin) replace(key interface{}) {
 	if ok {
 		delete(c.items, old)
 		if c.evictedFunc != nil {
-			(*c.evictedFunc)(item.Key, item.Value)
+			(*c.evictedFunc)(old, item.Value)
 		}
 	}
 }
@@ -122,7 +122,7 @@ func (c *ARCPlugin) set(key, value interface{}) (interface{}, error) {
 			if ok {
 				delete(c.items, pop)
 				if c.evictedFunc != nil {
-					(*c.evictedFunc)(it.Key, it.Value)
+					(*c.evictedFunc)(pop, it.Value)
 				}
 			}
 		}
