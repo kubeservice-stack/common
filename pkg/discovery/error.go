@@ -19,7 +19,6 @@ package discovery
 import (
 	"fmt"
 
-	"github.com/pkg/errors"
 	etcdcliv3 "go.etcd.io/etcd/clientv3"
 )
 
@@ -33,7 +32,7 @@ var (
 // 将txn响应和错误转化为一个错误
 func TxnErr(resp *etcdcliv3.TxnResponse, err error) error {
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 	if !resp.Succeeded {
 		return ErrTxnFailed

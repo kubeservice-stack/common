@@ -21,8 +21,6 @@ import (
 	"fmt"
 	"sync"
 	"time"
-
-	"github.com/pkg/errors"
 )
 
 var (
@@ -136,7 +134,7 @@ func (p *ConnPool) Pop() (*Conn, error) {
 				p.mu.Lock()
 				p.activeNum -= 1
 				p.mu.Unlock()
-				return nil, errors.Wrap(errPoolPopError, e.Error())
+				return nil, fmt.Errorf("%v : %v", errPoolPopError.Error(), e.Error())
 			}
 
 			// init struct

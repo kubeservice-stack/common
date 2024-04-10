@@ -45,7 +45,7 @@ func Test_NewTemporaryFile(t *testing.T) {
 	assert.Contains(tf.Name(), "test1")
 	assert.Equal(tf.Type(), "File")
 	assert.Equal(tf.Size(), int64(0))
-	assert.Equal(tf.Bytes(), []uint8([]byte{}))
+	assert.Equal(tf.Bytes(), []byte{})
 
 	n, err := tf.Write([]byte("dongjiang test"))
 	assert.Nil(err)

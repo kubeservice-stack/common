@@ -41,7 +41,7 @@ func Test_NewTemporary(t *testing.T) {
 	defer aa.Close()
 
 	assert.Equal(aa.Name(), "")
-	assert.Equal(aa.Bytes(), []uint8([]byte(nil)))
+	assert.Equal(aa.Bytes(), []byte(nil))
 	assert.Equal(aa.Size(), int64(0))
 	assert.Equal(aa.Type(), "Buffer")
 
@@ -73,7 +73,7 @@ func Test_NewAsyncTemporary(t *testing.T) {
 	defer aa.Close()
 
 	assert.Equal(aa.Name(), "")
-	assert.Equal(aa.Bytes(), []uint8([]byte(nil)))
+	assert.Equal(aa.Bytes(), []byte(nil))
 	assert.Equal(aa.Size(), int64(0))
 	assert.Equal(aa.Type(), "Buffer")
 
