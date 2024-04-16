@@ -24,7 +24,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func NewPostgres(cfg config.DBConfg) gorm.Dialector {
+func NewPostgres(cfg config.DBConfig) gorm.Dialector {
 	return postgres.Open(fmt.Sprintf(
 		"host=%s port=%s user=%s dbname=%s password=%s sslmode=disable",
 		cfg.Host, cfg.Port, cfg.User, cfg.Database, cfg.Password))

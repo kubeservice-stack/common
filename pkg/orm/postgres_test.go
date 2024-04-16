@@ -25,6 +25,6 @@ import (
 
 func Test_postgres(t *testing.T) {
 	assert := assert.New(t)
-	r := NewPostgres(config.GlobalCfg.DBConfg)
+	r := NewPostgres(config.GlobalCfg.DBConfig)
 	assert.NotNil(r)
 }

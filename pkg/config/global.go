@@ -33,7 +33,7 @@ func init() {
 	GlobalCfg.GinConfig = GlobalCfg.GinConfig.DefaultConfig()
 	GlobalCfg.RateLimit = GlobalCfg.RateLimit.DefaultConfig()
 	GlobalCfg.Temporary = GlobalCfg.Temporary.DefaultConfig()
-	GlobalCfg.DBConfg = GlobalCfg.DBConfg.DefaultConfig()
+	GlobalCfg.DBConfig = GlobalCfg.DBConfig.DefaultConfig()
 
 }
 
@@ -56,7 +56,7 @@ type Global struct {
 	GinConfig `toml:"gin"`
 	RateLimit `toml:"ratelimit"`
 	Temporary `toml:"temporary"`
-	DBConfg   `toml:"database"`
+	DBConfig  `toml:"database"`
 }
 
 func (g Global) TOML() string {
@@ -67,6 +67,6 @@ func (g Global) TOML() string {
 		g.GinConfig.TOML(),
 		g.RateLimit.TOML(),
 		g.Temporary.TOML(),
-		g.DBConfg.TOML(),
+		g.DBConfig.TOML(),
 	)
 }

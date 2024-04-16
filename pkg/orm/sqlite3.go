@@ -22,7 +22,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func NewSqlite3(cfg config.DBConfg) gorm.Dialector {
+func NewSqlite3(cfg config.DBConfig) gorm.Dialector {
 	return sqlite.Open(cfg.Database)
 }
 

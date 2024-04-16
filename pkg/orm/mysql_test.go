@@ -25,6 +25,27 @@ import (
 
 func Test_MySQL(t *testing.T) {
 	assert := assert.New(t)
-	r := NewMySQL(config.GlobalCfg.DBConfg)
+	r := NewMySQL(config.GlobalCfg.DBConfig)
 	assert.NotNil(r)
+}
+
+func TestString2Map(t *testing.T) {
+	assert := assert.New(t)
+	ret := String2Map("")
+	assert.Equal(ret, map[string]string{})
+
+	ret = String2Map("  asdfsdf ?")
+	assert.Equal(ret, map[string]string{})
+
+	ret = String2Map("  dd=dd ?")
+	assert.Equal(ret, map[string]string{"dd": "dd"})
+
+	ret = String2Map("  dd=dd=dd ?")
+	assert.Equal(ret, map[string]string{})
+
+	ret = String2Map("  dd=dd&dd=aa ?")
+	assert.Equal(ret, map[string]string{"dd": "aa"})
+
+	ret = String2Map("  dd=dd&dd=aa&bb=aa ?")
+	assert.Equal(ret, map[string]string{"dd": "aa", "bb": "aa"})
 }
