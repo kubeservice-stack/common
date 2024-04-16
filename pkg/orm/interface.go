@@ -20,6 +20,7 @@ import (
 	"errors"
 
 	"github.com/kubeservice-stack/common/pkg/config"
+	"github.com/kubeservice-stack/common/pkg/orm/cache"
 	"gorm.io/gorm"
 	"gorm.io/plugin/opentelemetry/tracing"
 )
@@ -34,7 +35,7 @@ type DBConn struct {
 	db     *gorm.DB
 }
 
-type Instance func(cfg config.DBConfg) gorm.Dialector
+type Instance func(cfg config.DBConfig) gorm.Dialector
 
 var adapters = make(map[config.DBTYPE]Instance)
 
@@ -48,7 +49,7 @@ func Register(name config.DBTYPE, adapter Instance) {
 	adapters[name] = adapter
 }
 
-func NewDBConn(cfg config.DBConfg) (*DBConn, error) {
+func NewDBConn(cfg config.DBConfig) (*DBConn, error) {
 	gcfg := &gorm.Config{
 		DisableAutomaticPing: false,
 		PrepareStmt:          false,
@@ -67,6 +68,26 @@ func NewDBConn(cfg config.DBConfg) (*DBConn, error) {
 	err = conn.Use(tracing.NewPlugin())
 	if err != nil {
 		return nil, err
+	}
+
+	if cfg.Cache.CacheType == config.CACHEREDIS {
+		c, err := cache.NewRedisCache(&cfg.Cache)
+		if err != nil {
+			return nil, err
+		}
+		err = conn.Use(c)
+		if err != nil {
+			return nil, err
+		}
+	} else if cfg.Cache.CacheType == config.CACHEMEMORY {
+		c, err := cache.NewMemoryCache(&cfg.Cache)
+		if err != nil {
+			return nil, err
+		}
+		err = conn.Use(c)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	return &DBConn{

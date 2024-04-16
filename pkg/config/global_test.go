@@ -134,6 +134,28 @@ func Test_global(t *testing.T) {
   port = ""
   ## 数据库名
   database = ""
-  ## ca cert证书
-  ca_cert = ""`)
+  ## args 参数
+  args = ""
+[dbcache]
+  ## orm_cache_type: redis, memory. 默认值为memory
+  orm_cache_type: memory
+  ## orm_cache_model 模式: CacheDisable, CacheOnlyPrimary, CacheOnlySearch 和 CacheAll. 默认值为CacheOnlySearch
+  orm_cache_model = CacheOnlySearch
+  ## orm_invalidate_when_update: 如果用户在数据库中更新/删除/创建某些内容，我们将使所有缓存数据无效以确保一致性. 如果true将会清理cache. 默认值为true
+  orm_invalidate_when_update = true
+  ## orm_async_write: 如果 true，那么我们将以异步模式写入缓存. 默认值为true
+  orm_async_write = true
+  ## orm_cache_ttl: CacheTTL 缓存 ttl，单位为 ms，其中 0 代表永远. 默认值为5000
+  orm_cache_ttl = 5000
+  ## orm_disable_cache_penetration_protect: 如果为 true，那么我们不会缓存 nil 结果, 默认值为false
+  orm_disable_cache_penetration_protect = false
+[dbcachecfg]
+  ## cache addr
+  orm_cache_addr = 
+  ## cache username
+  orm_cache_username = 
+  ## cache password
+  orm_cache_password = 
+  ## cache db id
+  orm_cache_dbid = 0`)
 }

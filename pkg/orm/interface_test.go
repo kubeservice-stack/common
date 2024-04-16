@@ -25,14 +25,14 @@ import (
 
 func Test_NewDBConn(t *testing.T) {
 	assert := assert.New(t)
-	r, err := NewDBConn(config.GlobalCfg.DBConfg)
+	r, err := NewDBConn(config.GlobalCfg.DBConfig)
 	assert.Error(err)
 	assert.Nil(r)
 }
 
 func Test_NewDBConnSuccess(t *testing.T) {
 	assert := assert.New(t)
-	r, err := NewDBConn(config.DBConfg{
+	r, err := NewDBConn(config.DBConfig{
 		DBType:   config.SQLITE3,
 		Database: "file::memory:?cache=shared",
 	})

@@ -25,6 +25,6 @@ import (
 
 func Test_sqlite(t *testing.T) {
 	assert := assert.New(t)
-	r := NewSqlite3(config.GlobalCfg.DBConfg)
+	r := NewSqlite3(config.GlobalCfg.DBConfig)
 	assert.NotNil(r)
 }
