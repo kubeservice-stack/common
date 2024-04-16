@@ -36,6 +36,7 @@ func Test_NewDBConnSuccess(t *testing.T) {
 		DBType:   config.SQLITE3,
 		Database: "file::memory:?cache=shared",
 	})
+
 	assert.NoError(err)
 	assert.NotNil(r)
 
