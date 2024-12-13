@@ -11,8 +11,8 @@ on:
 
 env:
   # Common versions
-  GO_VERSION: '1.19'
-  GOLANGCI_VERSION: 'v1.49'
+  GO_VERSION: '1.23'
+  GOLANGCI_VERSION: 'v1.62.2'
 
 jobs:
 
@@ -37,7 +37,7 @@ jobs:
 
     steps:
       - name: Setup Go
-        uses: actions/setup-go@v2
+        uses: actions/setup-go@v5.2.0
         with:
           go-version: ${{ env.GO_VERSION }}
 
@@ -46,15 +46,8 @@ jobs:
         with:
           submodules: true
 
-      - name: Cache Go Dependencies
-        uses: actions/cache@v2
-        with:
-          path: .work/pkg
-          key: ${{ runner.os }}-pkg-${{ hashFiles('**/go.sum') }}
-          restore-keys: ${{ runner.os }}-pkg-
-
       - name: Install StaticCheck
-        run: go install honnef.co/go/tools/cmd/staticcheck@2022.1
+        run: go install honnef.co/go/tools/cmd/staticcheck@2024.1.1
 
       - name: Static Check
         run: staticcheck -tests=false ./...
@@ -66,7 +59,7 @@ jobs:
 
     steps:
       - name: Setup Go
-        uses: actions/setup-go@v2
+        uses: actions/setup-go@v5.2.0
         with:
           go-version: ${{ env.GO_VERSION }}
 
@@ -75,21 +68,15 @@ jobs:
         with:
           submodules: true
 
-      - name: Cache Go Dependencies
-        uses: actions/cache@v2
-        with:
-          path: .work/pkg
-          key: ${{ runner.os }}-pkg-${{ hashFiles('**/go.sum') }}
-          restore-keys: ${{ runner.os }}-pkg-
-
       # This action uses its own setup-go, which always seems to use the latest
       # stable version of Go. We could run 'make lint' to ensure our desired Go
       # version, but we prefer this action because it leaves 'annotations' (i.e.
       # it comments on PRs to point out linter violations).
       - name: Lint
-        uses: golangci/golangci-lint-action@v3
+        uses: golangci/golangci-lint-action@v6.1.1
         with:
           version: ${{ env.GOLANGCI_VERSION }}
+          args: --timeout 10m0s --go ${{ env.GO_VERSION }}
 
   unittest-report:
     runs-on: ubuntu-latest
@@ -103,19 +90,9 @@ jobs:
           submodules: true
 
       - name: Setup Go
-        uses: actions/setup-go@v2
+        uses: actions/setup-go@v5.2.0
         with:
           go-version: ${{ env.GO_VERSION }}
-
-      - name: Install StaticCheck
-        run: go install honnef.co/go/tools/cmd/staticcheck@2022.1
-
-      - name: Cache Go Dependencies
-        uses: actions/cache@v2
-        with:
-          path: .work/pkg
-          key: ${{ runner.os }}-pkg-${{ hashFiles('**/go.sum') }}
-          restore-keys: ${{ runner.os }}-pkg-
 
       - name: unittest
         run: go test ./...
@@ -124,4 +101,4 @@ jobs:
         run: go test -coverprofile=cover.out -coverpkg=./... ./... && go tool cover -html=cover.out -o cover.html && true
 
       - name: Upload coverage to codecov.io
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v5.1.1
