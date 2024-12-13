@@ -30,10 +30,7 @@ import (
 	promreporter "github.com/uber-go/tally/prometheus"
 )
 
-var (
-	onceEnable       sync.Once
-	prometheusLogger = logger.GetLogger("pkg/common/metrics", "prometheus")
-)
+var onceEnable sync.Once
 
 var (
 	ErrMetricsInitRegistryError = fmt.Errorf("metrics: can not init metrics registry")
