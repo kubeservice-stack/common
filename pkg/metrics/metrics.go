@@ -65,7 +65,6 @@ func NewTallyScope(cfg *config.Metrics) *TallyScope {
 		onceEnable.Do(func() {
 			DefaultRegistry().Register(collectors.NewProcessCollector(collectors.ProcessCollectorOpts{}))
 			DefaultRegistry().Register(collectors.NewGoCollector())
-			prometheusLogger.Info("go runtime metrics is exported")
 		})
 	} else {
 		onceEnable.Do(func() {
