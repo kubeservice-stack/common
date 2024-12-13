@@ -37,7 +37,7 @@ jobs:
 
     steps:
       - name: Setup Go
-        uses: ctions/setup-go@v5.2.0
+        uses: actions/setup-go@v5.2.0
         with:
           go-version: ${{ env.GO_VERSION }}
 
