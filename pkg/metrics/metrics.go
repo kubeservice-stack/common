@@ -23,7 +23,6 @@ import (
 	"time"
 
 	"github.com/kubeservice-stack/common/pkg/config"
-	"github.com/kubeservice-stack/common/pkg/logger"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/collectors"
 	"github.com/uber-go/tally"
