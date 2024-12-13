@@ -27,7 +27,7 @@
 
 ## 依赖管理
 
-基于`go mod`支持多golang语言版本编译： `最小golang`版本支持 `1.12`
+基于`go mod`支持多golang语言版本编译： `最小golang`版本支持 `1.22`
 
 
 ## License
