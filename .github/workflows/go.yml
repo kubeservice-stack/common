@@ -109,7 +109,7 @@ jobs:
           go-version: ${{ env.GO_VERSION }}
 
       - name: Install StaticCheck
-        run: go install honnef.co/go/tools/cmd/staticcheck@2022.1
+        run: go install honnef.co/go/tools/cmd/staticcheck@2024.1.1
 
       - name: Cache Go Dependencies
         uses: actions/cache@v2
