@@ -34,7 +34,7 @@ func TestMap(t *testing.T) {
 	assert.Equal(0, m.Size())
 }
 
-func TestMap_Put(t *testing.T) {
+func TestMapPut(t *testing.T) {
 	assert := assert.New(t)
 	m := NewOrderedMap()
 
@@ -60,7 +60,7 @@ func TestMap_Put(t *testing.T) {
 	assert.False(m.Empty())
 }
 
-func TestMap_Put_overwrite(t *testing.T) {
+func TestMapPutOverwrite(t *testing.T) {
 	assert := assert.New(t)
 	m := NewOrderedMap()
 
@@ -72,7 +72,7 @@ func TestMap_Put_overwrite(t *testing.T) {
 	assert.True(ok)
 }
 
-func TestMap_Get(t *testing.T) {
+func TestMapGet(t *testing.T) {
 	assert := assert.New(t)
 	m := NewOrderedMap()
 
@@ -121,7 +121,7 @@ func TestMap_Get(t *testing.T) {
 	}
 }
 
-func TestMap_Remove(t *testing.T) {
+func TestMapRemove(t *testing.T) {
 	assert := assert.New(t)
 	m := NewOrderedMap()
 	m.Put("bar", "foo")
@@ -143,7 +143,7 @@ func TestMap_Remove(t *testing.T) {
 	assert.False(ok)
 }
 
-func TestMap_Empty(t *testing.T) {
+func TestMapEmpty(t *testing.T) {
 	assert := assert.New(t)
 	m := NewOrderedMap()
 	assert.True(m.Empty())
@@ -178,7 +178,7 @@ func TestMap_Size(t *testing.T) {
 	assert.False(m.Empty())
 }
 
-func TestMap_Keys(t *testing.T) {
+func TestMapKeys(t *testing.T) {
 	assert := assert.New(t)
 	m := NewOrderedMap()
 
@@ -208,7 +208,7 @@ func TestMap_Keys(t *testing.T) {
 	assert.Equal(expectedKeys, keys)
 }
 
-func TestMap_Values(t *testing.T) {
+func TestMapValues(t *testing.T) {
 	assert := assert.New(t)
 	m := NewOrderedMap()
 
@@ -238,7 +238,7 @@ func TestMap_Values(t *testing.T) {
 	assert.Equal(expectedValues, v)
 }
 
-func TestMap_String(t *testing.T) {
+func TestMapString(t *testing.T) {
 	assert := assert.New(t)
 	m := NewOrderedMap()
 	m.Put(1, "foo")

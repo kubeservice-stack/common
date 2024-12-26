@@ -30,7 +30,7 @@ func TestSet(t *testing.T) {
 	assert.Equal(0, s.Size())
 }
 
-func TestSet_Add(t *testing.T) {
+func TestSetAdd(t *testing.T) {
 	assert := assert.New(t)
 	s := NewOrderedSet()
 	s.Add("e", "f", "g", "c", "d", "x", "b", "a")
@@ -45,7 +45,7 @@ func TestSet_Add(t *testing.T) {
 	assert.Equal(expectedOutput, vs)
 }
 
-func TestSet_Remove(t *testing.T) {
+func TestSetRemove(t *testing.T) {
 	assert := assert.New(t)
 
 	s := NewOrderedSet()
@@ -69,7 +69,7 @@ func TestSet_Remove(t *testing.T) {
 	assert.Equal(expectedOutput, vs)
 }
 
-func TestSet_Contains(t *testing.T) {
+func TestSetContains(t *testing.T) {
 	assert := assert.New(t)
 
 	s := NewOrderedSet()
@@ -96,7 +96,7 @@ func TestSet_Contains(t *testing.T) {
 	}
 }
 
-func TestSet_Empty(t *testing.T) {
+func TestSetEmpty(t *testing.T) {
 	assert := assert.New(t)
 	s := NewOrderedSet()
 	assert.True(s.Empty())
@@ -108,7 +108,7 @@ func TestSet_Empty(t *testing.T) {
 	assert.True(s.Empty())
 }
 
-func TestSet_Values(t *testing.T) {
+func TestSetValues(t *testing.T) {
 	assert := assert.New(t)
 
 	s := NewOrderedSet()
@@ -124,7 +124,7 @@ func TestSet_Values(t *testing.T) {
 	assert.Equal(expectedOutput, vs)
 }
 
-func TestSet_Size(t *testing.T) {
+func TestSetSize(t *testing.T) {
 	assert := assert.New(t)
 	s := NewOrderedSet()
 
@@ -138,7 +138,7 @@ func TestSet_Size(t *testing.T) {
 	assert.Equal(0, s.Size())
 }
 
-func TestSet_String(t *testing.T) {
+func TestSetString(t *testing.T) {
 	assert := assert.New(t)
 	s := NewOrderedSet()
 
