@@ -215,7 +215,7 @@ func (d *DAG) Predecessors(vertex *Vertex) ([]*Vertex, error) {
 // Prints an string representation of this instance.
 func (d *DAG) String() string {
 	result := fmt.Sprintf("DAG Vertices: %d - Edges: %d\n", d.Order(), d.Size())
-	result += fmt.Sprintf("Vertices:\n")
+	result = result + "Vertices:\n"
 	for _, vertex := range d.vertices.Values() {
 		vertex = vertex.(*Vertex)
 		result += fmt.Sprintf("%s", vertex)

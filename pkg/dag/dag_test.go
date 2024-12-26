@@ -273,3 +273,32 @@ func TestDAGPredecessorsVertexNotFound(t *testing.T) {
 	assert.NotNil(err)
 	assert.Len(predecessors, 0)
 }
+
+func TestDAGString(t *testing.T) {
+	assert := assert.New(t)
+	dag1 := NewDAG()
+
+	vertex1 := NewVertex("1", nil)
+	vertex2 := NewVertex("2", nil)
+	vertex3 := NewVertex("3", nil)
+	vertex4 := NewVertex("4", nil)
+
+	assert.Nil(dag1.AddVertex(vertex1))
+	assert.Nil(dag1.AddVertex(vertex2))
+	assert.Nil(dag1.AddVertex(vertex3))
+	assert.Nil(dag1.AddVertex(vertex4))
+
+	assert.Equal(0, dag1.Size())
+
+	assert.Nil(dag1.AddEdge(vertex1, vertex2))
+	assert.Nil(dag1.AddEdge(vertex2, vertex3))
+
+	expected := `DAG Vertices: 4 - Edges: 2
+Vertices:
+ID: 1 - Parents: 0 - Children: 1 - Value: <nil>
+ID: 2 - Parents: 1 - Children: 1 - Value: <nil>
+ID: 3 - Parents: 1 - Children: 0 - Value: <nil>
+ID: 4 - Parents: 0 - Children: 0 - Value: <nil>
+`
+	assert.Equal(expected, dag1.String())
+}
