@@ -62,7 +62,5 @@ func (v *Vertex) OutDegree() int {
 // String implements stringer interface and prints an string representation
 // of this instance.
 func (v *Vertex) String() string {
-	result := fmt.Sprintf("ID: %s - Parents: %d - Children: %d - Value: %v\n", v.ID, v.Parents.Size(), v.Children.Size(), v.Value)
-
-	return result
+	return fmt.Sprintf("ID: %s - Parents: %d - Children: %d - Value: %v\n", v.ID, v.Parents.Size(), v.Children.Size(), v.Value)
 }

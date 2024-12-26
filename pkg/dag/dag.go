@@ -217,8 +217,7 @@ func (d *DAG) String() string {
 	result := fmt.Sprintf("DAG Vertices: %d - Edges: %d\n", d.Order(), d.Size())
 	result = result + "Vertices:\n"
 	for _, vertex := range d.vertices.Values() {
-		vertex = vertex.(*Vertex)
-		result += fmt.Sprintf("%s", vertex)
+		result = result + vertex.(*Vertex).String()
 	}
 
 	return result
