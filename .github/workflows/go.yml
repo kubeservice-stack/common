@@ -39,6 +39,7 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v5.2.0
         with:
+          cache: false
           go-version: ${{ env.GO_VERSION }}
 
       - name: Checkout
