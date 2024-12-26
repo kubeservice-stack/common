@@ -98,7 +98,7 @@ func (d *DAG) AddEdge(tailVertex *Vertex, headVertex *Vertex) error {
 	// Check if edge already exists.
 	for _, childVertex := range tailVertex.Children.Values() {
 		if childVertex == headVertex {
-			return fmt.Errorf("Edge (%v,%v) already exists", tailVertex.ID, headVertex.ID)
+			return fmt.Errorf("Edge (%s,%s) already exists", tailVertex.ID, headVertex.ID)
 		}
 	}
 
