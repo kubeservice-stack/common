@@ -138,7 +138,7 @@ func TestSet_Size(t *testing.T) {
 	assert.Equal(0, s.Size())
 }
 
-func TestOrderedSet_String(t *testing.T) {
+func TestSet_String(t *testing.T) {
 	assert := assert.New(t)
 	s := NewOrderedSet()
 
