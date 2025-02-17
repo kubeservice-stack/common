@@ -79,6 +79,27 @@ func (s *EtcdClusterTestSuite) TestWriteRead() {
 	err3 := ed.Close()
 	s.Nil(err3)
 }
+func (s *EtcdClusterTestSuite) TestWriteReadWithPrefix() {
+	ed, err := newEtedDiscovery(config.Discovery{
+		Endpoints: s.Cluster.Endpoints,
+		Prefix:    "test-",
+	}, "nobody")
+
+	s.Nil(err)
+
+	err = ed.Put(context.TODO(), "/test/key1", []byte("dongjiang"))
+	s.Nil(err)
+
+	d1, err1 := ed.Get(context.TODO(), "/test/key1")
+	s.Nil(err1)
+	s.Equal(string(d1), "dongjiang")
+
+	err2 := ed.Delete(context.TODO(), "/test/key1")
+	s.Nil(err2)
+
+	err3 := ed.Close()
+	s.Nil(err3)
+}
 
 func (s *EtcdClusterTestSuite) TestList() {
 	ed, err := newEtedDiscovery(config.Discovery{

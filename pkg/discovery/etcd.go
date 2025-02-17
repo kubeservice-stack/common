@@ -21,32 +21,44 @@ import (
 	"fmt"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/kubeservice-stack/common/pkg/config"
 	"github.com/kubeservice-stack/common/pkg/logger"
 
 	etcdcliv3 "go.etcd.io/etcd/clientv3"
+	etcdcliv3namespace "go.etcd.io/etcd/clientv3/namespace"
 )
 
 type etcdDiscovery struct {
 	namespace string
 	client    *etcdcliv3.Client
+	prefix    string
 	logger    *logger.Logger
 }
 
 func newEtedDiscovery(cfg config.Discovery, owner string) (Discovery, error) {
 	cf := etcdcliv3.Config{
-		Endpoints: cfg.Endpoints,
-		// TODO: maybe bug dongjiang
-		// DialTimeout: config.DialTimeout * time.Second,
+		Endpoints:          cfg.Endpoints,
+		MaxCallSendMsgSize: 100 * 1024 * 1024, // 100MiB
+		MaxCallRecvMsgSize: 0,                 // math.MaxInt32
+		DialTimeout:        cfg.DialTimeout.Duration() * time.Second,
 	}
 	cli, err := etcdcliv3.New(cf)
 	if err != nil {
 		return nil, fmt.Errorf("create etc client error:%s", err)
 	}
+	// prefix string
+	if cfg.Prefix != "" {
+		cli.KV = etcdcliv3namespace.NewKV(cli.KV, cfg.Prefix)
+		cli.Watcher = etcdcliv3namespace.NewWatcher(cli.Watcher, cfg.Prefix)
+		cli.Lease = etcdcliv3namespace.NewLease(cli.Lease, cfg.Prefix)
+	}
+
 	ed := etcdDiscovery{
 		namespace: cfg.Namespace,
 		client:    cli,
+		prefix:    cfg.Prefix,
 		logger:    logger.GetLogger(owner, "ETCD"),
 	}
 

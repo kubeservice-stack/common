@@ -78,7 +78,7 @@ func ExampleStorage_InsertRows() {
 }
 
 // simulates writing and reading in concurrent.
-func ExampleStorage_InsertRows_Select_concurrent() {
+func ExampleStorage_InsertRows_select_concurrent() {
 	stg, err := NewStorage(
 		WithPartitionDuration(5*time.Hour),
 		WithTimestampPrecision(Seconds),

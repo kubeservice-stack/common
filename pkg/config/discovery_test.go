@@ -33,5 +33,7 @@ func Test_Discovery(t *testing.T) {
   ## etcd 集群配置
   endpoints = ["http://127.0.0.1:2379"]
   ## ETCD连接 timeout时间
-  dial_timeout = "0s"`)
+  dial_timeout = "0s"
+  ## ETCD前缀key
+  prefix = ""`)
 }
