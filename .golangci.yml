@@ -45,8 +45,8 @@ linters-settings:
       forbid-pkg-errors:
         deny:
         - pkg: "github.com/pkg/errors"
-          dsc: Should be replaced with standard lib errors or fmt.Errorf
+          desc: Should be replaced with standard lib errors or fmt.Errorf
         - pkg: "io/ioutil"
-          dsc: Use corresponding 'os' or 'io' functions instead.
+          desc: Use corresponding 'os' or 'io' functions instead.
         - pkg: "github.com/pkg/errors"
-          dsc: Use 'errors' or 'fmt' instead of github.com/pkg/errors
+          desc: Use 'errors' or 'fmt' instead of github.com/pkg/errors
