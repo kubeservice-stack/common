@@ -48,7 +48,7 @@ jobs:
           submodules: true
 
       - name: Install StaticCheck
-        run: go install honnef.co/go/tools/cmd/staticcheck@2024.1.1
+        run: go install honnef.co/go/tools/cmd/staticcheck@2025.1
 
       - name: Static Check
         run: staticcheck -tests=false ./...
