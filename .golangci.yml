@@ -34,7 +34,7 @@ linters-settings:
       - suite-extra-assert-call
       - suite-thelper
   errcheck:
-    exclude: scripts/errcheck_excludes.txt
+    exclude-functions: scripts/errcheck_excludes.txt
   gci:
     sections:
       - standard
