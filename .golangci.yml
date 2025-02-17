@@ -34,7 +34,8 @@ linters-settings:
       - suite-extra-assert-call
       - suite-thelper
   errcheck:
-    exclude-functions: scripts/errcheck_excludes.txt
+    exclude-functions: 
+      - scripts/errcheck_excludes.txt
   gci:
     sections:
       - standard
@@ -46,6 +47,6 @@ linters-settings:
         - pkg: "github.com/pkg/errors"
           dsc: Should be replaced with standard lib errors or fmt.Errorf
         - pkg: "io/ioutil"
-          desc: Use corresponding 'os' or 'io' functions instead.
+          dsc: Use corresponding 'os' or 'io' functions instead.
         - pkg: "github.com/pkg/errors"
-          desc: Use 'errors' or 'fmt' instead of github.com/pkg/errors
+          dsc: Use 'errors' or 'fmt' instead of github.com/pkg/errors
