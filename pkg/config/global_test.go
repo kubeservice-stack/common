@@ -81,6 +81,8 @@ func Test_global(t *testing.T) {
   endpoints = []
   ## ETCD连接 timeout时间
   dial_timeout = "0s"
+  ## ETCD前缀key
+  prefix = ""
 [gin]
   ## APP name
   app = "server-override"
