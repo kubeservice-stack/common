@@ -25,7 +25,7 @@ require (
 	gorm.io/driver/postgres v1.5.11
 	gorm.io/gorm v1.25.12
 	gorm.io/plugin/opentelemetry v0.1.11
-	k8s.io/client-go v0.32.2
+	k8s.io/client-go v0.32.3
 )
 
 require (
