@@ -61,9 +61,11 @@ func Test_NewTemporaryFile(t *testing.T) {
 
 	abs, err := tf.Seek(0, 8)
 	assert.Error(ErrBufferSeekInvalidWhence)
+	assert.NotNil(err)
 	assert.Equal(abs, int64(0))
 
 	abs, err = tf.Seek(-1, io.SeekCurrent)
 	assert.Error(ErrBufferSeekInvalidWhence)
+	assert.Nil(err)
 	assert.Equal(abs, int64(1))
 }

@@ -51,10 +51,12 @@ func Test_NewTemporary(t *testing.T) {
 
 	abs, err := aa.Seek(0, 8)
 	assert.Error(ErrBufferSeekInvalidWhence)
+	assert.NotNil(err)
 	assert.Equal(abs, int64(0))
 
 	abs, err = aa.Seek(-1, io.SeekCurrent)
 	assert.Error(ErrBufferSeekInvalidWhence)
+	assert.NotNil(err)
 	assert.Equal(abs, int64(-1))
 }
 
@@ -83,9 +85,11 @@ func Test_NewAsyncTemporary(t *testing.T) {
 
 	abs, err := aa.Seek(0, 8)
 	assert.Error(ErrBufferSeekInvalidWhence)
+	assert.NotNil(err)
 	assert.Equal(abs, int64(0))
 
 	abs, err = aa.Seek(-1, io.SeekCurrent)
 	assert.Error(ErrBufferSeekInvalidWhence)
+	assert.NotNil(err)
 	assert.Equal(abs, int64(-1))
 }

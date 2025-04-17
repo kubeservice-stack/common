@@ -26,8 +26,8 @@ import (
 
 func TestEnvOverrides(t *testing.T) {
 	var (
-		envKey   string = "GIN_APP"
-		expected string = "server-override"
+		envKey   = "GIN_APP"
+		expected = "server-override"
 	)
 	os.Setenv(envKey, expected)
 	defer func() { os.Unsetenv(envKey) }()
@@ -40,8 +40,8 @@ func TestEnvOverrides(t *testing.T) {
 	}
 	err := env.Parse(&GlobalCfg)
 	assert.Equal(t, err, nil)
-	assert.Equal(t, GlobalCfg.GinConfig.App, expected)
-	assert.Equal(t, GlobalCfg.GinConfig.EnablePprof, true)
+	assert.Equal(t, GlobalCfg.App, expected)
+	assert.Equal(t, GlobalCfg.EnablePprof, true)
 }
 
 func Test_global(t *testing.T) {

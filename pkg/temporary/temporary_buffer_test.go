@@ -50,9 +50,11 @@ func Test_NewTemporaryBuffer(t *testing.T) {
 
 	abs, err := tb.Seek(0, 8)
 	assert.Error(ErrBufferSeekInvalidWhence)
+	assert.NotNil(err)
 	assert.Equal(abs, int64(0))
 
 	abs, err = tb.Seek(-1, io.SeekCurrent)
 	assert.Error(ErrBufferSeekInvalidWhence)
+	assert.Nil(err)
 	assert.Equal(abs, int64(1))
 }

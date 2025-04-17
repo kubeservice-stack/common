@@ -81,7 +81,7 @@ func (tb *temporaryBuffer) Sync() (err error) {
 }
 
 func (tb *temporaryBuffer) tryGrowByReslice(n int) (int, bool) {
-	var l int = len(tb.buffer)
+	var l = len(tb.buffer)
 	if l+n <= cap(tb.buffer) {
 		tb.buffer = tb.buffer[:l+n]
 		return l, true
@@ -103,7 +103,7 @@ func (tb *temporaryBuffer) grow(n int) (_ int, err error) {
 		}
 		return 0, nil
 	}
-	var m, c int = len(tb.buffer), cap(tb.buffer)
+	var m, c = len(tb.buffer), cap(tb.buffer)
 	if n <= c/2-m { // 需要的长度比开辟的容量一半还少
 	} else if c > maxInt-c-n {
 		err = ErrBufferTooLarge
