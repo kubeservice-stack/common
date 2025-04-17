@@ -73,7 +73,7 @@ type temporary struct {
 }
 
 func NewTemporary(reader io.Reader, maxBufferSize int64, fileDir string, filePattern string) (_ Temporary, err error) {
-	var temp *temporary = &temporary{
+	var temp = &temporary{
 		item:        newTemporaryBuffer(),
 		itemConvert: false,
 		itemWg:      new(sync.WaitGroup),
@@ -92,7 +92,7 @@ func NewTemporary(reader io.Reader, maxBufferSize int64, fileDir string, filePat
 }
 
 func NewAsyncTemporary(reader io.Reader, maxBufferSize int64, fileDir string, filePattern string) (_ Temporary) {
-	var temp *temporary = &temporary{
+	var temp = &temporary{
 		item:        newTemporaryBuffer(),
 		itemConvert: false,
 		itemWg:      new(sync.WaitGroup),
@@ -116,7 +116,7 @@ func NewAsyncTemporary(reader io.Reader, maxBufferSize int64, fileDir string, fi
 }
 
 func NewMustCloseReaderAsyncTemporary(readcloser io.ReadCloser, maxBufferSize int64, fileDir string, filePattern string) (_ Temporary) {
-	var temp *temporary = &temporary{
+	var temp = &temporary{
 		item:        newTemporaryBuffer(),
 		itemConvert: false,
 		itemWg:      new(sync.WaitGroup),

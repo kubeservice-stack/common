@@ -56,6 +56,6 @@ func Test_GinConfig(t *testing.T) {
 
 func Test_GinConfigListenAddr(t *testing.T) {
 	assert := assert.New(t)
-	aa := GlobalCfg.GinConfig.ListenAddr()
+	aa := GlobalCfg.ListenAddr()
 	assert.Equal(aa, "0.0.0.0:9445")
 }

@@ -1,52 +1,64 @@
-run:
-  timeout: 10m
-
+version: "2"
 linters:
-  disable-all: true
+  default: none
   enable:
-  - gosimple
-  - typecheck
-  - unused
-  - depguard
-  - unconvert
-
-issues:
-  exclude-rules:
-  # Disable errcheck linter for test files.
-  - path: _test.go
-    linters:
-    - errcheck
-
-linters-settings:
-  testifylint:
-    disable:
-      - require-error
-      - expected-actual
-    enable:
-      - bool-compare
-      - compares
-      - empty
-      - error-is-as
-      - error-nil
-      - float-compare
-      - len
-      - suite-dont-use-pkg
-      - suite-extra-assert-call
-      - suite-thelper
-  errcheck:
-    exclude-functions: 
-      - scripts/errcheck_excludes.txt
-  gci:
-    sections:
-      - standard
-      - default
-  depguard:
+    - depguard
+    - staticcheck
+    - unconvert
+    - unused
+  settings:
+    depguard:
+      rules:
+        forbid-pkg-errors:
+          deny:
+            - pkg: github.com/pkg/errors
+              desc: Should be replaced with standard lib errors or fmt.Errorf
+            - pkg: io/ioutil
+              desc: Use corresponding 'os' or 'io' functions instead.
+            - pkg: github.com/pkg/errors
+              desc: Use 'errors' or 'fmt' instead of github.com/pkg/errors
+    errcheck:
+      exclude-functions:
+        - scripts/errcheck_excludes.txt
+    testifylint:
+      enable:
+        - bool-compare
+        - compares
+        - empty
+        - error-is-as
+        - error-nil
+        - float-compare
+        - len
+        - suite-dont-use-pkg
+        - suite-extra-assert-call
+        - suite-thelper
+      disable:
+        - require-error
+        - expected-actual
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
     rules:
-      forbid-pkg-errors:
-        deny:
-        - pkg: "github.com/pkg/errors"
-          desc: Should be replaced with standard lib errors or fmt.Errorf
-        - pkg: "io/ioutil"
-          desc: Use corresponding 'os' or 'io' functions instead.
-        - pkg: "github.com/pkg/errors"
-          desc: Use 'errors' or 'fmt' instead of github.com/pkg/errors
+      - linters:
+          - errcheck
+        path: _test.go
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
+formatters:
+  settings:
+    gci:
+      sections:
+        - standard
+        - default
+  exclusions:
+    generated: lax
+    paths:
+      - third_party$
+      - builtin$
+      - examples$

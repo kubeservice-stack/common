@@ -75,7 +75,7 @@ var unmarshalTests = []unmarshalTest{
 		ptr: &UU{},
 		out: &UU{Data: []byte{MCPACKV2_OBJECT, 0, 20, 0, 0, 0, 1, 0, 0, 0, MCPACKV2_STRING, 6, 4, 0, 0, 0, 'a', 'l', 'p', 'h', 'a', 0, 'a', '-', 'z', 0}},
 		equalFunc: func(l, r interface{}) bool {
-			var ll, rr *UU = l.(*UU), r.(*UU)
+			var ll, rr = l.(*UU), r.(*UU)
 			return bytes.Equal(ll.Data, rr.Data)
 		},
 	},

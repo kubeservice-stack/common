@@ -204,7 +204,7 @@ func (j *Task) roundToMidnight(t time.Time) time.Time {
 // scheduleNextRun Compute the instant when this job should run next
 func (j *Task) scheduleNextRun() error {
 	now := time.Now()
-	if j.lastRun == time.Unix(0, 0) {
+	if j.lastRun.Equal(time.Unix(0, 0)) {
 		j.lastRun = now
 	}
 

@@ -121,13 +121,13 @@ func NewBufferWriter(buffer *bytes.Buffer) *BufferWriter {
 
 // Reset resets the underling buffer
 func (bw *BufferWriter) Reset() {
-	bw.writer.err = nil
+	bw.err = nil
 	bw.buf.Reset()
 }
 
 // SwitchBuffer switches to write a new buffer
 func (bw *BufferWriter) SwitchBuffer(newBuffer *bytes.Buffer) {
-	bw.writer.err = nil
+	bw.err = nil
 	bw.buf = newBuffer
 }
 

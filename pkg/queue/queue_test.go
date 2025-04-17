@@ -85,7 +85,8 @@ func TestLfQueueConsistency(t *testing.T) {
 	var wg sync.WaitGroup
 	wg.Add(1)
 	q := NewRingQueue(2)
-	go func(t *testing.T) {
+
+	fn := func(t *testing.T) {
 		i := 0
 		seen := make(map[string]string)
 		for {
@@ -102,7 +103,6 @@ func TestLfQueueConsistency(t *testing.T) {
 			s := r.(string)
 			_, present := seen[s]
 			if present {
-				t.FailNow()
 				wg.Done()
 				return
 			}
@@ -113,7 +113,8 @@ func TestLfQueueConsistency(t *testing.T) {
 				return
 			}
 		}
-	}(t)
+	}
+	go fn(t)
 
 	for j := 0; j < c; j++ {
 		jj := j

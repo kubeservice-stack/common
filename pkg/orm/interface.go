@@ -70,7 +70,8 @@ func NewDBConn(cfg config.DBConfig) (*DBConn, error) {
 		return nil, err
 	}
 
-	if cfg.Cache.CacheType == config.CACHEREDIS {
+	switch cfg.Cache.CacheType {
+	case config.CACHEREDIS:
 		c, err := cache.NewRedisCache(&cfg.Cache)
 		if err != nil {
 			return nil, err
@@ -79,7 +80,7 @@ func NewDBConn(cfg config.DBConfig) (*DBConn, error) {
 		if err != nil {
 			return nil, err
 		}
-	} else if cfg.Cache.CacheType == config.CACHEMEMORY {
+	case config.CACHEMEMORY:
 		c, err := cache.NewMemoryCache(&cfg.Cache)
 		if err != nil {
 			return nil, err

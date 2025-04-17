@@ -182,12 +182,12 @@ func TestSimpleGetIFPresent(t *testing.T) {
 			}).
 		Setting()
 
-	v, err := cache.GetIFPresent("key")
+	_, err := cache.GetIFPresent("key")
 	assert.Equal(err, ErrCacheKeyNotFind)
 
 	time.Sleep(2 * time.Millisecond)
 
-	v, err = cache.GetIFPresent("key")
+	v, err := cache.GetIFPresent("key")
 	assert.Nil(err)
 
 	assert.Equal(v, "value")

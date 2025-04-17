@@ -12,7 +12,7 @@ on:
 env:
   # Common versions
   GO_VERSION: '1.24'
-  GOLANGCI_VERSION: 'v1.64.5'
+  GOLANGCI_VERSION: 'v2.0.2'
 
 jobs:
 
@@ -74,10 +74,9 @@ jobs:
       # version, but we prefer this action because it leaves 'annotations' (i.e.
       # it comments on PRs to point out linter violations).
       - name: Lint
-        uses: golangci/golangci-lint-action@v6.5.1
+        uses: golangci/golangci-lint-action@v7
         with:
           version: ${{ env.GOLANGCI_VERSION }}
-          args: --timeout 10m0s --go ${{ env.GO_VERSION }}
 
   unittest-report:
     runs-on: ubuntu-latest
