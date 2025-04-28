@@ -23,7 +23,7 @@ require (
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 	gorm.io/driver/mysql v1.5.7
 	gorm.io/driver/postgres v1.5.11
-	gorm.io/gorm v1.25.12
+	gorm.io/gorm v1.26.0
 	gorm.io/plugin/opentelemetry v0.1.13
 	k8s.io/client-go v0.32.3
 )
