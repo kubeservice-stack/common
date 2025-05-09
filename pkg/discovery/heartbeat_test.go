@@ -23,7 +23,7 @@ import (
 
 	"github.com/stretchr/testify/suite"
 
-	etcdcliv3 "go.etcd.io/etcd/clientv3"
+	etcdcliv3 "go.etcd.io/etcd/client/v3"
 )
 
 type EtcdHeartbeatTestSuite struct {
@@ -32,7 +32,7 @@ type EtcdHeartbeatTestSuite struct {
 }
 
 func (s *EtcdHeartbeatTestSuite) SetupTest() {
-	s.Cluster = StartEtcdMockCluster(s.T())
+	s.Cluster = StartEtcdMockCluster(s.T(), "http://localhost:8701")
 }
 
 func (s *EtcdHeartbeatTestSuite) TearDownTest() {

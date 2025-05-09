@@ -19,7 +19,7 @@ package discovery
 import (
 	"fmt"
 
-	etcdcliv3 "go.etcd.io/etcd/clientv3"
+	etcdcliv3 "go.etcd.io/etcd/client/v3"
 )
 
 var (

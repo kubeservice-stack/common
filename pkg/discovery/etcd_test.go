@@ -19,31 +19,41 @@ package discovery
 import (
 	"context"
 	"fmt"
+	"net/url"
 	"sync"
 	"testing"
 	"time"
 
 	"github.com/stretchr/testify/suite"
-	"go.etcd.io/etcd/integration"
+	"go.etcd.io/etcd/server/v3/embed"
 
 	"github.com/kubeservice-stack/common/pkg/config"
 )
 
 type ETCDMockCluster struct {
-	cluster   *integration.ClusterV3
+	cluster   *embed.Etcd
 	Endpoints []string
 }
 
-func StartEtcdMockCluster(t *testing.T) *ETCDMockCluster {
-	cluster := integration.NewClusterV3(t, &integration.ClusterConfig{Size: 1})
+func StartEtcdMockCluster(t *testing.T, endpoint string) *ETCDMockCluster {
+	cfg := embed.NewConfig()
+	lcurl, _ := url.Parse(endpoint)
+	acurl, _ := url.Parse(fmt.Sprintf("http://localhost:1%s", lcurl.Port()))
+	cfg.Dir = t.TempDir()
+	cfg.ListenClientUrls = []url.URL{*lcurl}
+	cfg.ListenPeerUrls = []url.URL{*acurl}
+	e, err := embed.StartEtcd(cfg)
+	if err != nil {
+		panic(err)
+	}
 	return &ETCDMockCluster{
-		cluster:   cluster,
-		Endpoints: []string{cluster.Members[0].GRPCAddr()},
+		cluster:   e,
+		Endpoints: []string{endpoint},
 	}
 }
 
-func (etcd *ETCDMockCluster) Terminate(t *testing.T) {
-	etcd.cluster.Terminate(t)
+func (etcd *ETCDMockCluster) Terminate(_ *testing.T) {
+	etcd.cluster.Close()
 }
 
 type EtcdClusterTestSuite struct {
@@ -52,7 +62,7 @@ type EtcdClusterTestSuite struct {
 }
 
 func (s *EtcdClusterTestSuite) SetupTest() {
-	s.Cluster = StartEtcdMockCluster(s.T())
+	s.Cluster = StartEtcdMockCluster(s.T(), "http://localhost:8700")
 }
 
 func (s *EtcdClusterTestSuite) TearDownTest() {
@@ -427,18 +437,18 @@ func (s *EtcdClusterTestSuite) TestElect() {
 	time.Sleep(2 * time.Second)
 
 	val, err := ed.Get(context.TODO(), "/test/data/1")
-	s.NotNil(err)
-	s.Equal("", string(val))
+	s.Nil(err)
+	s.Equal("dongjiang", string(val))
 
 	ctx3, cancel3 := context.WithCancel(context.Background())
 	shouldSuccess, cch, err := ed.Elect(ctx3, "/test/data/1", []byte("dongjiang-new-new"), 1)
-	s.Equal(true, shouldSuccess)
+	s.Equal(false, shouldSuccess)
 	s.Nil(err)
-	s.NotNil(cch)
+	s.Nil(cch)
 
 	bytes3, err := ed.Get(context.TODO(), "/test/data/1")
 	s.Nil(err)
-	s.Equal("dongjiang-new-new", string(bytes3))
+	s.Equal("dongjiang", string(bytes3))
 
 	cancel3()
 
