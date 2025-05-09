@@ -23,7 +23,7 @@ import (
 
 	"github.com/kubeservice-stack/common/pkg/logger"
 
-	etcd "go.etcd.io/etcd/clientv3"
+	etcd "go.etcd.io/etcd/client/v3"
 )
 
 const defaultTTL = 10 // 默认heartbeat 时间间隔10s

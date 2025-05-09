@@ -26,8 +26,8 @@ import (
 	"github.com/kubeservice-stack/common/pkg/config"
 	"github.com/kubeservice-stack/common/pkg/logger"
 
-	etcdcliv3 "go.etcd.io/etcd/clientv3"
-	etcdcliv3namespace "go.etcd.io/etcd/clientv3/namespace"
+	etcdcliv3 "go.etcd.io/etcd/client/v3"
+	etcdcliv3namespace "go.etcd.io/etcd/client/v3/namespace"
 )
 
 type etcdDiscovery struct {
