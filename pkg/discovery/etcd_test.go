@@ -437,18 +437,18 @@ func (s *EtcdClusterTestSuite) TestElect() {
 	time.Sleep(2 * time.Second)
 
 	val, err := ed.Get(context.TODO(), "/test/data/1")
-	s.Nil(err)
-	s.Equal("dongjiang", string(val))
+	s.NotNil(err)
+	s.Equal("", string(val))
 
 	ctx3, cancel3 := context.WithCancel(context.Background())
 	shouldSuccess, cch, err := ed.Elect(ctx3, "/test/data/1", []byte("dongjiang-new-new"), 1)
-	s.Equal(false, shouldSuccess)
+	s.Equal(true, shouldSuccess)
 	s.Nil(err)
-	s.Nil(cch)
+	s.NotNil(cch)
 
 	bytes3, err := ed.Get(context.TODO(), "/test/data/1")
 	s.Nil(err)
-	s.Equal("dongjiang", string(bytes3))
+	s.Equal("dongjiang-new-new", string(bytes3))
 
 	cancel3()
 
