@@ -24,7 +24,7 @@ import (
 )
 
 // ForceTracingAttributeKey is used to signalize a span should be traced.
-const ForceTracingAttributeKey = "thanos.force_tracing"
+const ForceTracingAttributeKey = "force_tracing"
 
 type samplerWithOverride struct {
 	baseSampler tracesdk.Sampler

@@ -25,10 +25,7 @@ import (
 
 const (
 	// ForceTracingBaggageKey is a request header name that forces tracing sampling.
-	ForceTracingBaggageKey = "X-Thanos-Force-Tracing"
-
-	// traceIdResponseHeader is a response header name that stores trace ID.
-	traceIDResponseHeader = "X-Thanos-Trace-Id"
+	ForceTracingBaggageKey = "X-Force-Tracing"
 )
 
 // Aliases to avoid spreading opentracing package to Thanos code.

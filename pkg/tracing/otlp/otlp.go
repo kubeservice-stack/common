@@ -18,6 +18,7 @@ package otlp
 
 import (
 	"context"
+	"errors"
 	"strconv"
 	"strings"
 
@@ -27,7 +28,6 @@ import (
 
 	"github.com/go-kit/log"
 	"github.com/go-kit/log/level"
-	"github.com/pkg/errors"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp"
