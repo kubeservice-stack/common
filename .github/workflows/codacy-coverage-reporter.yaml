@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     name: codacy-coverage-reporter
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         
       - name: Test
         run: go test -coverprofile=cover.out -coverpkg=./... ./...
