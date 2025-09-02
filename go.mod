@@ -42,7 +42,7 @@ require (
 	gorm.io/driver/postgres v1.5.11
 	gorm.io/gorm v1.30.0
 	gorm.io/plugin/opentelemetry v0.1.14
-	k8s.io/client-go v0.33.1
+	k8s.io/client-go v0.34.0
 )
 
 require (
@@ -107,7 +107,7 @@ require (
 	github.com/m3db/prometheus_common v0.34.6 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.4 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
-	github.com/modern-go/reflect2 v1.0.2 // indirect
+	github.com/modern-go/reflect2 v1.0.3-0.20250322232337-35a7c28c31ee // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/paulmach/orb v0.11.1 // indirect
 	github.com/pelletier/go-toml/v2 v2.2.2 // indirect
@@ -122,7 +122,7 @@ require (
 	github.com/shopspring/decimal v1.4.0 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/soheilhy/cmux v0.1.5 // indirect
-	github.com/spf13/pflag v1.0.5 // indirect
+	github.com/spf13/pflag v1.0.6 // indirect
 	github.com/tmc/grpc-websocket-proxy v0.0.0-20201229170055-e5319fda7802 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/twmb/murmur3 v1.1.6 // indirect
@@ -143,6 +143,7 @@ require (
 	go.opentelemetry.io/otel/metric v1.38.0 // indirect
 	go.opentelemetry.io/proto/otlp v1.7.1 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
+	go.yaml.in/yaml/v2 v2.4.2 // indirect
 	golang.org/x/arch v0.8.0 // indirect
 	golang.org/x/crypto v0.41.0 // indirect
 	golang.org/x/net v0.43.0 // indirect
@@ -155,12 +156,12 @@ require (
 	google.golang.org/protobuf v1.36.8 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	gorm.io/driver/clickhouse v0.6.1 // indirect
-	k8s.io/utils v0.0.0-20241104100929-3ea5e8cea738 // indirect
+	k8s.io/utils v0.0.0-20250604170112-4c0f3b243397 // indirect
 	modernc.org/libc v1.22.5 // indirect
 	modernc.org/mathutil v1.5.0 // indirect
 	modernc.org/memory v1.5.0 // indirect
 	modernc.org/sqlite v1.23.1 // indirect
-	sigs.k8s.io/yaml v1.4.0 // indirect
+	sigs.k8s.io/yaml v1.6.0 // indirect
 )
 
 replace google.golang.org/grpc => google.golang.org/grpc v1.63.2
