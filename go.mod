@@ -15,7 +15,7 @@ require (
 	github.com/mcuadros/go-version v0.0.0-20190830083331-035f6764e8d2
 	github.com/opentracing/opentracing-go v1.2.0
 	github.com/prometheus/client_golang v1.22.0
-	github.com/redis/go-redis/v9 v9.8.0
+	github.com/redis/go-redis/v9 v9.13.0
 	github.com/stretchr/testify v1.11.1
 	github.com/uber-go/tally v3.5.0+incompatible
 	github.com/vmihailenco/msgpack/v5 v5.4.1
