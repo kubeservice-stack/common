@@ -3,6 +3,7 @@
 [![Last Commit](https://img.shields.io/github/last-commit/kubeservice-stack/common)](https://github.com/kubeservice-stack/common)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fkubeservice-stack%2Fcommon.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fkubeservice-stack%2Fcommon?ref=badge_shield)
 [![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/avelino/awesome-go#uncategorized)
+[![Codacy Coverage Reporter](https://github.com/kubeservice-stack/common/actions/workflows/codacy-coverage-reporter.yaml/badge.svg?branch=main)](https://github.com/kubeservice-stack/common/actions/workflows/codacy-coverage-reporter.yaml)
 
 [EN README](README.EN.md)
 
