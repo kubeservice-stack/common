@@ -26,7 +26,7 @@ require (
 	go.opentelemetry.io/contrib/samplers/jaegerremote v0.23.0
 	go.opentelemetry.io/otel v1.38.0
 	go.opentelemetry.io/otel/bridge/opentracing v1.36.0
-	go.opentelemetry.io/otel/exporters/jaeger v1.16.0
+	go.opentelemetry.io/otel/exporters/jaeger v1.17.0
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.38.0
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.38.0
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp v1.36.0
