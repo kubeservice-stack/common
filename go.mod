@@ -1,6 +1,6 @@
 module github.com/kubeservice-stack/common
 
-go 1.24.0
+go 1.26
 
 require (
 	github.com/BurntSushi/toml v1.5.0
