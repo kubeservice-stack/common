@@ -31,14 +31,14 @@ func TestNew(t *testing.T) {
 
 	assert.Equal(t1, t2)
 
-	assert.Equal(t1.status, 0)
-	assert.Equal(t1.message, "ok")
+	assert.Equal(t1.Status, 0)
+	assert.Equal(t1.Message, "ok")
 
-	assert.Equal(t1.Status(), 0)
-	assert.Equal(t1.Message(), "ok")
+	assert.Equal(t2.Status, 0)
+	assert.Equal(t2.Message, "ok")
 
-	assert.Equal(t3.status, -1)
-	assert.Equal(t3.message, "message")
+	assert.Equal(t3.Status, -1)
+	assert.Equal(t3.Message, "message")
 }
 
 func TestNewCode(t *testing.T) {
@@ -49,14 +49,14 @@ func TestNewCode(t *testing.T) {
 
 	assert.Equal(t1, t2)
 
-	assert.Equal(t1.status, 0)
-	assert.Equal(t1.message, "")
+	assert.Equal(t1.Status, 0)
+	assert.Equal(t1.Message, "")
 
-	assert.Equal(t2.status, 0)
-	assert.Equal(t2.message, "")
+	assert.Equal(t2.Status, 0)
+	assert.Equal(t2.Message, "")
 
-	assert.Equal(t3.status, -1)
-	assert.Equal(t3.message, "")
+	assert.Equal(t3.Status, -1)
+	assert.Equal(t3.Message, "")
 }
 
 func TestErrno_Error(t *testing.T) {
