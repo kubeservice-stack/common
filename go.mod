@@ -4,7 +4,7 @@ go 1.26
 
 require (
 	github.com/BurntSushi/toml v1.5.0
-	github.com/asjdf/gorm-cache v1.2.3
+	github.com/asjdf/gorm-cache v1.3.0
 	github.com/caarlos0/env/v10 v10.0.0
 	github.com/efficientgo/core v1.0.0-rc.3
 	github.com/gin-gonic/gin v1.11.0
