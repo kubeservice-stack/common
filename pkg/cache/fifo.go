@@ -20,7 +20,6 @@ import (
 	"container/list"
 
 	"github.com/kubeservice-stack/common/pkg/cache/item"
-	"github.com/kubeservice-stack/common/pkg/utils"
 )
 
 // NewFIFOPlugin returns a new plugin.
@@ -170,42 +169,34 @@ func (c *FIFOPlugin) removeElement(e *list.Element) {
 func (c *FIFOPlugin) keys() []interface{} {
 	c.mu.RLock()
 	defer c.mu.RUnlock()
-	keys := make([]interface{}, len(c.items))
-	i := 0
+	keys := make([]interface{}, 0, len(c.items))
 	for k := range c.items {
-		keys[i] = k
-		i++
+		keys = append(keys, k)
 	}
 	return keys
 }
 
 // Returns a slice of the keys in the cache.
 func (c *FIFOPlugin) Keys() []interface{} {
-	keys := []interface{}{}
-	for _, k := range c.keys() {
-		_, err := c.GetIFPresent(k)
-		if err == nil {
-			keys = append(keys, k)
-		}
-	}
-	return keys
+	return c.keys()
 }
 
 // Returns all key-value pairs in the cache.
 func (c *FIFOPlugin) GetALL() map[interface{}]interface{} {
-	m := make(map[interface{}]interface{})
-	for _, k := range c.keys() {
-		v, err := c.GetIFPresent(k)
-		if err == nil {
-			m[k] = v
-		}
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+	m := make(map[interface{}]interface{}, len(c.items))
+	for k, el := range c.items {
+		m[k] = el.Value.(*item.FIFOItem).Value
 	}
 	return m
 }
 
 // Returns the number of items in the cache.
 func (c *FIFOPlugin) Len() int {
-	return len(c.GetALL())
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+	return c.evictList.Len()
 }
 
 // Completely clear the cache
@@ -217,7 +208,10 @@ func (c *FIFOPlugin) Purge() {
 }
 
 func (c *FIFOPlugin) HasKey(key interface{}) bool {
-	return utils.InSliceIface(key, c.Keys())
+	c.mu.RLock()
+	_, ok := c.items[key]
+	c.mu.RUnlock()
+	return ok
 }
 
 // init

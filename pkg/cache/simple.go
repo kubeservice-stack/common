@@ -20,7 +20,6 @@ import (
 	"time"
 
 	"github.com/kubeservice-stack/common/pkg/cache/item"
-	"github.com/kubeservice-stack/common/pkg/utils"
 )
 
 func NewSimplePlugin(cb *Setting) Cache {
@@ -179,42 +178,47 @@ func (c *SimplePlugin) remove(key interface{}) bool {
 func (c *SimplePlugin) keys() []interface{} {
 	c.mu.RLock()
 	defer c.mu.RUnlock()
-	keys := make([]interface{}, len(c.items))
-	i := 0
-	for k := range c.items {
-		keys[i] = k
-		i++
-	}
-	return keys
-}
-
-// Returns a slice of the keys in the cache.
-func (c *SimplePlugin) Keys() []interface{} {
-	keys := []interface{}{}
-	for _, k := range c.keys() {
-		_, err := c.GetIFPresent(k)
-		if err == nil {
+	now := time.Now()
+	keys := make([]interface{}, 0, len(c.items))
+	for k, it := range c.items {
+		if !it.IsExpired(&now) {
 			keys = append(keys, k)
 		}
 	}
 	return keys
 }
 
+// Returns a slice of the keys in the cache.
+func (c *SimplePlugin) Keys() []interface{} {
+	return c.keys()
+}
+
 // Returns all key-value pairs in the cache.
 func (c *SimplePlugin) GetALL() map[interface{}]interface{} {
-	m := make(map[interface{}]interface{})
-	for _, k := range c.keys() {
-		v, err := c.GetIFPresent(k)
-		if err == nil {
-			m[k] = v
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+	now := time.Now()
+	m := make(map[interface{}]interface{}, len(c.items))
+	for k, it := range c.items {
+		if !it.IsExpired(&now) {
+			m[k] = it.Value
 		}
 	}
 	return m
 }
 
-// Returns the number of items in the cache.
+// Returns the number of non-expired items in the cache.
 func (c *SimplePlugin) Len() int {
-	return len(c.GetALL())
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+	now := time.Now()
+	count := 0
+	for _, it := range c.items {
+		if !it.IsExpired(&now) {
+			count++
+		}
+	}
+	return count
 }
 
 // Completely clear the cache
@@ -225,7 +229,13 @@ func (c *SimplePlugin) Purge() {
 }
 
 func (c *SimplePlugin) HasKey(key interface{}) bool {
-	return utils.InSliceIface(key, c.Keys())
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+	it, ok := c.items[key]
+	if !ok {
+		return false
+	}
+	return !it.IsExpired(nil)
 }
 
 // init

@@ -306,3 +306,40 @@ func Test_FIFONew(t *testing.T) {
 
 	cache.Purge()
 }
+
+func TestFIFOPurge(t *testing.T) {
+	assert := assert.New(t)
+
+	cache := New(10).FIFO().Setting()
+	cache.Set("key1", "value1")
+	cache.Set("key2", "value2")
+	cache.Set("key3", "value3")
+	assert.Equal(3, cache.Len())
+
+	cache.Purge()
+	assert.Equal(0, cache.Len())
+	assert.Empty(cache.Keys())
+
+	_, err := cache.Get("key1")
+	assert.Error(err)
+}
+
+func TestFIFOKeys(t *testing.T) {
+	assert := assert.New(t)
+
+	cache := New(10).FIFO().Setting()
+	cache.Set("a", 1)
+	cache.Set("b", 2)
+	cache.Set("c", 3)
+
+	keys := cache.Keys()
+	assert.Len(keys, 3)
+
+	keySet := make(map[interface{}]bool)
+	for _, k := range keys {
+		keySet[k] = true
+	}
+	assert.True(keySet["a"])
+	assert.True(keySet["b"])
+	assert.True(keySet["c"])
+}

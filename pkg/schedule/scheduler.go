@@ -193,11 +193,13 @@ func (s *Scheduler) Clear() {
 
 // Start all the pending jobs
 // Add seconds ticker
-func (s *Scheduler) Start() chan bool {
-	stopped := make(chan bool, 1)
+func (s *Scheduler) Start() (stopped chan bool, done <-chan struct{}) {
+	stopped = make(chan bool, 1)
+	doneCh := make(chan struct{})
 	ticker := time.NewTicker(1 * time.Second)
 
 	go func() {
+		defer close(doneCh)
 		for {
 			select {
 			case <-ticker.C:
@@ -209,7 +211,7 @@ func (s *Scheduler) Start() chan bool {
 		}
 	}()
 
-	return stopped
+	return stopped, doneCh
 }
 
 // The following methods are shortcuts for not having to
@@ -246,7 +248,7 @@ func RunAllwithDelay(d int) {
 }
 
 // Start run all jobs that are scheduled to run
-func Start() chan bool {
+func Start() (chan bool, <-chan struct{}) {
 	return defaultScheduler.Start()
 }
 

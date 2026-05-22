@@ -6,7 +6,36 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
-- No changes yet.
+
+### Security Fixes
+
+- Fix concurrency issues in `ratelimiter`: TOCTOU race condition between `TryAccept` and `UpdateRateLimit` (use single lock to protect check-and-create)
+- Fix infinite loop in `connpool.ClearPool`: removed dead loop waiting for `activeNum == 0` and ineffective `p = nil` assignment
+- Fix busy-wait sleep in `workpool.mustGetWorker`: replaced `time.Sleep(sleepInterval)` with blocking channel wait
+
+### Performance Improvements
+
+- Optimize cache `Len()` from O(n) to O(1): avoid creating temporary map by directly using internal data structure size
+- Optimize cache `HasKey()` from O(n) to O(1): use direct map lookup instead of `Keys()` + linear search
+- Optimize cache `Keys()` and `GetALL()`: reduce from N lock acquisitions to single lock acquisition
+- Fix `GetBetweenStr` unnecessary byte-to-string conversions
+- Fix `SliceShuffle` to use Fisher-Yates algorithm for uniform randomness
+- Fix `SliceRandList` weak seed: use `UnixNano()` instead of `Nanosecond()`
+- Fix `connpool.Pop()` idle cleanup: collect connections to disconnect first, then release lock before disconnecting
+
+### CI/CD Improvements
+
+- Add race detector to unittest workflow (`go test -race`)
+- Add dependency caching to CI workflows for faster builds
+- Update dependabot schedule from daily to weekly with better grouping (k8s, otel, prometheus libs)
+- Update issue templates with version and Go version fields
+
+### Code Quality
+
+- Remove unused `utils` imports from cache plugins (lru, lfu, fifo, simple)
+- Add `ArcList.Keys()` method to support proper key iteration in ARC plugin
+- Fix unsafe type assertions in `utils.ToStringDict`, `utils.InterfacesToStrings`, `utils.ToStrings`, `utils.ToMapStrings`, `utils.Strings`: replace direct type assertions with ok-check pattern to prevent panic
+- Add safety documentation to `utils.String2Bytes` and `utils.Bytes2String`: clarify that returned slices share memory with original data and must not be modified
 
 ## [v1.0.2](https://github.com/kubeservice-stack/common/compare/v1.0.1...v1.0.2) - 2023-01-05
 

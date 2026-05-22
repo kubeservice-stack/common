@@ -104,3 +104,12 @@ func (al *ArcList) RemoveTail() interface{} {
 func (al *ArcList) Len() int {
 	return al.l.Len()
 }
+
+// Keys returns all keys in order from front to back
+func (al *ArcList) Keys() []interface{} {
+	keys := make([]interface{}, 0, al.l.Len())
+	for elt := al.l.Front(); elt != nil; elt = elt.Next() {
+		keys = append(keys, elt.Value)
+	}
+	return keys
+}

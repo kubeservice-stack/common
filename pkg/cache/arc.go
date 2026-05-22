@@ -271,42 +271,57 @@ func (c *ARCPlugin) remove(key interface{}) bool {
 func (c *ARCPlugin) keys() []interface{} {
 	c.mu.RLock()
 	defer c.mu.RUnlock()
-	keys := make([]interface{}, len(c.items))
-	i := 0
-	for k := range c.items {
-		keys[i] = k
-		i++
+	now := time.Now()
+	result := make([]interface{}, 0, len(c.items))
+	for _, key := range c.t1.Keys() {
+		if it, ok := c.items[key]; ok && !it.IsExpired(&now) {
+			result = append(result, key)
+		}
 	}
-	return keys
+	for _, key := range c.t2.Keys() {
+		if it, ok := c.items[key]; ok && !it.IsExpired(&now) {
+			result = append(result, key)
+		}
+	}
+	return result
 }
 
 // Keys returns a slice of the keys in the cache.
 func (c *ARCPlugin) Keys() []interface{} {
-	keys := []interface{}{}
-	for _, k := range c.keys() {
-		_, err := c.GetIFPresent(k)
-		if err == nil {
-			keys = append(keys, k)
-		}
-	}
-	return keys
+	return c.keys()
 }
 
 // Returns all key-value pairs in the cache.
 func (c *ARCPlugin) GetALL() map[interface{}]interface{} {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+	now := time.Now()
 	m := make(map[interface{}]interface{})
-	for _, k := range c.keys() {
-		v, err := c.GetIFPresent(k)
-		if err == nil {
-			m[k] = v
+	for _, key := range c.t1.Keys() {
+		if it, ok := c.items[key]; ok && !it.IsExpired(&now) {
+			m[key] = it.Value
+		}
+	}
+	for _, key := range c.t2.Keys() {
+		if it, ok := c.items[key]; ok && !it.IsExpired(&now) {
+			m[key] = it.Value
 		}
 	}
 	return m
 }
 
-// Len returns the number of items in the cache.
+// Len returns the number of non-expired items in the cache.
 func (c *ARCPlugin) Len() int {
-	return len(c.GetALL())
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+	now := time.Now()
+	count := 0
+	for _, it := range c.items {
+		if !it.IsExpired(&now) {
+			count++
+		}
+	}
+	return count
 }
 
 // Purge is used to completely clear the cache
@@ -317,7 +332,20 @@ func (c *ARCPlugin) Purge() {
 }
 
 func (c *ARCPlugin) HasKey(key interface{}) bool {
-	return utils.InSliceIface(key, c.Keys())
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+	// ARC stores items in t1/t2 lists, not just c.items
+	if c.t1.Lookup(key) != nil {
+		if it, ok := c.items[key]; ok {
+			return !it.IsExpired(nil)
+		}
+	}
+	if c.t2.Lookup(key) != nil {
+		if it, ok := c.items[key]; ok {
+			return !it.IsExpired(nil)
+		}
+	}
+	return false
 }
 
 // init

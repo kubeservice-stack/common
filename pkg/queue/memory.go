@@ -54,8 +54,8 @@ func (q *UnLockQueue) IsEmpty() bool {
 func (q *UnLockQueue) Length() int64 {
 	var putB, getB uint64
 	var max uint64
-	getB = q.getB
-	putB = q.putB
+	getB = atomic.LoadUint64(&q.getB)
+	putB = atomic.LoadUint64(&q.putB)
 
 	if putB >= getB {
 		max = putB - getB
@@ -72,8 +72,8 @@ func (q *UnLockQueue) Push(val interface{}) bool {
 	var men *Item
 	capM := q.capM
 	for {
-		getB = q.getB
-		putB = q.putB
+		getB = atomic.LoadUint64(&q.getB)
+		putB = atomic.LoadUint64(&q.putB)
 
 		if putB >= getB {
 			posCnt = putB - getB
@@ -109,8 +109,8 @@ func (q *UnLockQueue) Pop() (val interface{}, ok bool) {
 	var men *Item
 	capM := q.capM
 	for {
-		putB = q.putB
-		getB = q.getB
+		putB = atomic.LoadUint64(&q.putB)
+		getB = atomic.LoadUint64(&q.getB)
 
 		if putB >= getB {
 			posCnt = putB - getB

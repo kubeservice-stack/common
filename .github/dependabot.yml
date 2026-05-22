@@ -3,7 +3,8 @@ updates:
   - package-ecosystem: gomod
     directory: /
     schedule:
-      interval: daily
+      interval: weekly
+    open-pull-requests-limit: 10
     groups:
       k8s-libs:
         patterns:
@@ -12,13 +13,33 @@ updates:
           - "k8s.io/apimachinery"
           - "k8s.io/client-go"
           - "k8s.io/component-base"
+      otel-libs:
+        patterns:
+          - "go.opentelemetry.io/*"
+      prometheus-libs:
+        patterns:
+          - "github.com/prometheus/*"
 
   - package-ecosystem: github-actions
     directory: /
     schedule:
-      interval: daily
+      interval: weekly
+    open-pull-requests-limit: 5
     groups:
       github-actions-deps:
         applies-to: version-updates
         patterns:
           - "*"
+
+  - package-ecosystem: gomod
+    directory: /
+    schedule:
+      interval: weekly
+    target-branch: main
+    groups:
+      security-updates:
+        patterns:
+          - "*"
+        update-types:
+          - "patch"
+          - "minor"

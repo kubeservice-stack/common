@@ -223,3 +223,20 @@ func TestSimpleGetALL(t *testing.T) {
 	assert.True(ok)
 	assert.Equal(v1, size*size)
 }
+
+func TestSimplePurge(t *testing.T) {
+	assert := assert.New(t)
+
+	cache := New(10).Simple().Setting()
+	cache.Set("key1", "value1")
+	cache.Set("key2", "value2")
+	cache.Set("key3", "value3")
+	assert.Equal(3, cache.Len())
+
+	cache.Purge()
+	assert.Equal(0, cache.Len())
+	assert.Empty(cache.Keys())
+
+	_, err := cache.Get("key1")
+	assert.Error(err)
+}

@@ -82,3 +82,33 @@ func Test_WildcardMatch_LengthAtLeastTwo(t *testing.T) {
 	assert.True(t, WildcardMatch("??*", "aa"))
 	assert.True(t, WildcardMatch("??*", "aaa"))
 }
+
+func TestWildcardMatchSimple_MatchingEmpty(t *testing.T) {
+	assert.True(t, WildcardMatchSimple("", ""))
+	assert.False(t, WildcardMatchSimple("", "42"))
+	assert.True(t, WildcardMatchSimple("*", ""))
+}
+
+func TestWildcardMatchSimple_SingleWildcard(t *testing.T) {
+	// In simple mode, '?' requires a character
+	assert.False(t, WildcardMatchSimple("f?o", "boo"))
+	assert.True(t, WildcardMatchSimple("fo?", "foo"))
+	assert.True(t, WildcardMatchSimple("?", "a"))
+}
+
+func TestWildcardMatchSimple_GlobMatch(t *testing.T) {
+	assert.True(t, WildcardMatchSimple("*", "foo"))
+	assert.True(t, WildcardMatchSimple("*o?", "foo"))
+	assert.True(t, WildcardMatchSimple("*oo", "foo"))
+	assert.True(t, WildcardMatchSimple("f?o*ba*", "foobazbar"))
+}
+
+func TestWildcardMatchSimple_GlobMismatch(t *testing.T) {
+	assert.False(t, WildcardMatchSimple("foo*", "fo0"))
+	assert.False(t, WildcardMatchSimple("fo*obar", "foobaz"))
+}
+
+func TestWildcardMatchSimple_OnlyGlob(t *testing.T) {
+	assert.True(t, WildcardMatchSimple("*", "anything"))
+	assert.True(t, WildcardMatchSimple("*******", "Envoy"))
+}

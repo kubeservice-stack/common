@@ -220,3 +220,23 @@ func TestWrappedTimstamp_Time(t *testing.T) {
 
 	assert.Equal(time.Time{}.String(), "0001-01-01 00:00:00 +0000 UTC")
 }
+
+func TestTimestamp_String(t *testing.T) {
+	assert := assert.New(t)
+	ts := Timestamp{referenceTime}
+	assert.Equal("2006-01-02 15:04:05 +0000 UTC", ts.String())
+}
+
+func TestToTime(t *testing.T) {
+	assert := assert.New(t)
+	tm, err := ToTime("2023-06-15 14:30:00")
+	assert.Nil(err)
+	assert.Equal(2023, tm.Year())
+	assert.Equal(time.June, tm.Month())
+	assert.Equal(15, tm.Day())
+	assert.Equal(14, tm.Hour())
+	assert.Equal(30, tm.Minute())
+
+	_, err = ToTime("invalid-date")
+	assert.NotNil(err)
+}

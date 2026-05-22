@@ -31,10 +31,11 @@ func Test_Schdule(t *testing.T) {
 	err := sched.Every(1).At(now.Format("15:04:05")).DoSafely(fmt.Println, "aa")
 	assert.Nil(err)
 	sched.RunAll()
-	go func() {
-		<-sched.Start()
-	}()
+	time.Sleep(200 * time.Millisecond)
+	stopped, done := sched.Start()
 	time.Sleep(1 * time.Second)
+	close(stopped)
+	<-done // wait for ticker goroutine to fully exit
 	sched.Clear()
 }
 
@@ -50,7 +51,9 @@ func Test_MutiSchdule(t *testing.T) {
 	err = sched.Every(1).At(now.Format("15:04:05")).DoSafely(fmt.Println, "bb")
 	assert.Nil(err)
 	sched.RunAll()
-	sched.RunPending()
+
+	// Give spawned goroutines time to finish
+	time.Sleep(200 * time.Millisecond)
 
 	l := sched.Len()
 	assert.Equal(l, 2)
@@ -77,10 +80,10 @@ func Test_MutiSchdule(t *testing.T) {
 	err = sched.Every(1).At(now.Format("15:04:05")).DoSafely(fmt.Println, "cc")
 	assert.Nil(err)
 
-	go func() {
-		<-sched.Start()
-	}()
+	stopped, done := sched.Start()
 	time.Sleep(1 * time.Second)
+	close(stopped)
+	<-done // wait for ticker goroutine to fully exit before Clear
 	sched.Clear()
 }
 
@@ -97,7 +100,10 @@ func Test_DefaultScheduler(t *testing.T) {
 	assert.False(aaa)
 
 	RunAll()
-	RunAllwithDelay(1)
+
+	// Give spawned goroutines time to finish
+	time.Sleep(200 * time.Millisecond)
+
 	RunPending()
 
 	task, tm := NextRun()
@@ -107,10 +113,10 @@ func Test_DefaultScheduler(t *testing.T) {
 	aaa = Scheduled(fmt.Println)
 	assert.False(aaa)
 
-	go func() {
-		<-Start()
-	}()
+	stopped, done := Start()
 	time.Sleep(1 * time.Second)
+	close(stopped)
+	<-done // wait for ticker goroutine to fully exit
 	aaa = Scheduled(fmt.Println)
 	assert.False(aaa)
 	Remove(fmt.Println)
