@@ -35,6 +35,14 @@ go get github.com/kubeservice-stack/common
 
 基于 `go mod`，支持多 Go 版本编译，最低支持 `Go 1.22`。
 
+## 性能与安全
+
+本项目已进行以下优化：
+
+- **并发安全**: 修复 ratelimiter TOCTOU 竞态条件、connpool 死循环、workpool 忙等待
+- **性能优化**: cache Len/HasKey/Keys 操作从 O(n) 优化为 O(1)，减少锁竞争
+- **CI/CD**: 增加 race 检测、依赖缓存加速、每周依赖更新策略
+
 ## 包概览
 
 ### 缓存 (pkg/cache)

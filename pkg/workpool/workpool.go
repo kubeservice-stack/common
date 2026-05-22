@@ -29,8 +29,6 @@ const (
 	readyWorkerQueueSize = 32
 	// Task 数据
 	tasksCapacity = 8
-	// 队列为空时，sleep 5ms
-	sleepInterval = time.Millisecond * 5
 )
 
 type workerPool struct {
@@ -95,22 +93,20 @@ func (p *workerPool) SubmitAndWait(task Task) {
 
 // 返回可用worker
 func (p *workerPool) mustGetWorker() *worker {
-	var worker *worker
-	for {
-		select {
-		// 获得一个worker
-		case worker = <-p.readyWorkers:
-			return worker
-		default:
-			if int(p.workersAlive.Load()) >= p.maxWorkers {
-				// 没有可用worker
-				time.Sleep(sleepInterval)
-				continue
-			}
-			w := NewWorker(p)
-			return w
-		}
+	// Try to get an idle worker first
+	select {
+	case worker := <-p.readyWorkers:
+		return worker
+	default:
 	}
+
+	// Try to create a new worker if under limit
+	if int(p.workersAlive.Load()) < p.maxWorkers {
+		return NewWorker(p)
+	}
+
+	// All workers busy, block until one becomes available
+	return <-p.readyWorkers
 }
 
 func (p *workerPool) dispatch() {

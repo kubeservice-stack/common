@@ -278,3 +278,42 @@ func Test_LRUNew(t *testing.T) {
 	assert.True(ok)
 	assert.Equal(v1, size*size)
 }
+
+func TestLRUPurge(t *testing.T) {
+	assert := assert.New(t)
+
+	cache := New(10).LRU().Setting()
+	cache.Set("key1", "value1")
+	cache.Set("key2", "value2")
+	cache.Set("key3", "value3")
+	assert.Equal(3, cache.Len())
+
+	cache.Purge()
+	assert.Equal(0, cache.Len())
+	assert.Empty(cache.Keys())
+
+	// Verify keys are truly gone
+	_, err := cache.Get("key1")
+	assert.Error(err)
+}
+
+func TestLRUKeys(t *testing.T) {
+	assert := assert.New(t)
+
+	cache := New(10).LRU().Setting()
+	cache.Set("a", 1)
+	cache.Set("b", 2)
+	cache.Set("c", 3)
+
+	keys := cache.Keys()
+	assert.Len(keys, 3)
+
+	// Verify all keys are present
+	keySet := make(map[interface{}]bool)
+	for _, k := range keys {
+		keySet[k] = true
+	}
+	assert.True(keySet["a"])
+	assert.True(keySet["b"])
+	assert.True(keySet["c"])
+}

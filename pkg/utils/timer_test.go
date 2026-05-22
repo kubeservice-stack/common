@@ -27,10 +27,11 @@ func Test_Timer(t *testing.T) {
 	assert := assert.New(t)
 	tp := NewTimerPool()
 	a := tp.Get(time.Second)
+	assert.NotNil(a)
 	tp.Put(a)
 	b := tp.Get(time.Second)
-	assert.NotNil(a)
-	assert.Equal(a, b)
+	assert.NotNil(b)
+	// Note: sync.Pool does not guarantee reuse after Put, so we only verify non-nil
 }
 
 func Test_TimerTimeout(t *testing.T) {

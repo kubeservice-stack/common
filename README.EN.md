@@ -35,6 +35,14 @@ go get github.com/kubeservice-stack/common
 
 Based on `go.mod`, supports multiple Go versions. Minimum supported Go version: `1.22`.
 
+## Performance & Security
+
+The project has undergone the following optimizations:
+
+- **Concurrency Safety**: Fixed ratelimiter TOCTOU race condition, connpool infinite loop, workpool busy-wait
+- **Performance Optimization**: Cache Len/HasKey/Keys operations optimized from O(n) to O(1), reduced lock contention
+- **CI/CD**: Added race detection, dependency caching for faster builds, weekly dependency update strategy
+
 ## Packages
 
 ### Cache (pkg/cache)

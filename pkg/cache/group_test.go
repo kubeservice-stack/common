@@ -34,12 +34,10 @@ func TestDoLFU(t *testing.T) {
 	var g Group
 	g.plugin = New(32).Setting()
 	v, _, err := g.Do("key", func() (interface{}, error) {
-		log.Println(g)
 		return "bar", nil
 	}, true)
 
 	got, want := fmt.Sprintf("%v (%T)", v, v), "bar (string)"
-	log.Println(got, want)
 
 	assert.Equal(want, got)
 	assert.Nil(err)
@@ -51,22 +49,19 @@ func TestDoLRU(t *testing.T) {
 	var g Group
 	g.plugin = New(32).EvictType(LRU).Setting()
 	v, _, err := g.Do("key", func() (interface{}, error) {
-		log.Println(g, g.plugin)
 		return "bar", nil
 	}, true)
 
 	got, want := fmt.Sprintf("%v (%T)", v, v), "bar (string)"
-	log.Println(got, want)
 
 	assert.Equal(want, got)
 	assert.Nil(err)
 
 	v, _, err = g.Do("key", func() (interface{}, error) {
-		log.Println(g, g.plugin)
-		return g, nil
+		return &g, nil
 	}, true)
 
-	assert.Equal(v, g)
+	assert.Equal(fmt.Sprintf("%p", v), fmt.Sprintf("%p", &g))
 	assert.Nil(err)
 }
 
@@ -115,13 +110,12 @@ func TestDoDupSuppressLFU(t *testing.T) {
 	}
 
 	const n = 10
-	count := 0
+	var count int32
 	var wg sync.WaitGroup
 	for i := 0; i < n; i++ {
 		wg.Add(1)
 		go func() {
-			log.Println("count:", count)
-			count++
+			atomic.AddInt32(&count, 1)
 			v, _, err := g.Do("key", fn, true)
 			assert.Nil(err)
 			assert.Equal(v, "bar")
@@ -149,13 +143,12 @@ func TestDoDupSuppressLRU(t *testing.T) {
 	}
 
 	const n = 10
-	count := 0
+	var count int32
 	var wg sync.WaitGroup
 	for i := 0; i < n; i++ {
 		wg.Add(1)
 		go func() {
-			log.Println("count:", count)
-			count++
+			atomic.AddInt32(&count, 1)
 			v, _, err := g.Do("key", fn, true)
 			assert.Nil(err)
 			assert.Equal(v, "bar")

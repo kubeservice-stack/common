@@ -63,3 +63,21 @@ func Test_RateLimitersTryAccept(t *testing.T) {
 		}
 	}
 }
+
+func Test_AddLimiter(t *testing.T) {
+	assert := assert.New(t)
+	l := (adapters[RATELIMITER])()
+	ret := l.addLimiter("test.add.limiter", 50, 10)
+	assert.True(ret)
+	// Verify the limiter works
+	b := l.TryAccept("test.add.limiter", 50, 10)
+	assert.True(b)
+}
+
+func Test_UpdateRateLimitNewKey(t *testing.T) {
+	assert := assert.New(t)
+	l := (adapters[RATELIMITER])()
+	l.UpdateRateLimit("test.update.new.key", 200, 20)
+	b := l.TryAccept("test.update.new.key", 200, 20)
+	assert.True(b)
+}

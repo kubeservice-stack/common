@@ -89,22 +89,29 @@ func (p *ConnPool) Pop() (*Conn, error) {
 	tryed := false
 	p.mu.Lock()
 
-	// for loop to close idle timeout conn and close them
+	// Collect idle connections to disconnect, release lock before disconnecting
+	var toDisconnect []interface{}
 	if timeout := p.IdleTimeout; timeout > 0 {
 		for i, n := p.ReservedIdleNum, p.idlePool.Len(); i < n; i++ {
 			e := p.idlePool.Back()
 			if e == nil {
 				break
 			}
-			c := e.Value.(*Conn)
-			if c.t.Add(timeout).After(NowFunc()) {
+			conn := e.Value.(*Conn)
+			if conn.t.Add(timeout).After(NowFunc()) {
 				break
 			}
 			p.idlePool.Remove(e)
-			p.mu.Unlock()
-			go p.DisConnect(c.Inst)
-			p.mu.Lock()
+			toDisconnect = append(toDisconnect, conn.Inst)
 		}
+	}
+	// Release lock before disconnecting
+	if len(toDisconnect) > 0 {
+		p.mu.Unlock()
+		for _, inst := range toDisconnect {
+			go p.DisConnect(inst)
+		}
+		p.mu.Lock()
 	}
 
 	for {
@@ -202,22 +209,18 @@ func (p *ConnPool) Push(c *Conn) error {
 func (p *ConnPool) ClearPool() {
 	p.mu.Lock()
 	p.closed = true
-	p.mu.Unlock()
-
-	p.mu.Lock()
-	for {
-		if p.waitNum == 0 && p.activeNum == 0 {
-			e := p.idlePool.Back()
-			if e == nil {
-				break
-			}
-			c := e.Value.(*Conn)
-			p.idlePool.Remove(e)
-			p.DisConnect(c.Inst)
-		}
+	// Collect idle connections to disconnect, release lock before disconnecting
+	var toDisconnect []interface{}
+	for e := p.idlePool.Back(); e != nil; e = p.idlePool.Back() {
+		c := e.Value.(*Conn)
+		p.idlePool.Remove(e)
+		toDisconnect = append(toDisconnect, c.Inst)
 	}
 	p.mu.Unlock()
-	p = nil
+
+	for _, inst := range toDisconnect {
+		p.DisConnect(inst)
+	}
 }
 
 func (p *ConnPool) GetActiveNum() int {

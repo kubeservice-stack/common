@@ -70,5 +70,6 @@ func main() {
 	schedule.SetLocker(l)
 
 	schedule.Every(1).Second().Lock().Do(ExampleTask, name)
-	<-schedule.Start()
+	_, done := schedule.Start()
+	<-done
 }

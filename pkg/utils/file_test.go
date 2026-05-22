@@ -158,3 +158,9 @@ func TestRemoveFile(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Len(t, files, 1)
 }
+
+func TestPwd(t *testing.T) {
+	assert := assert.New(t)
+	pwd := Pwd()
+	assert.NotEmpty(pwd)
+}

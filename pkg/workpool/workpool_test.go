@@ -17,7 +17,6 @@ limitations under the License.
 package workpool
 
 import (
-	"runtime"
 	"testing"
 	"time"
 
@@ -27,10 +26,10 @@ import (
 
 func Test_PoolSubmit(t *testing.T) {
 	assert := assert.New(t)
-	grNum := runtime.NumGoroutine()
 	pool := NewDefaultPool("test", 2, time.Second*5)
-	// 1个dispatcher goroutine + N个 work goroutine
-	assert.Equal(grNum+1, runtime.NumGoroutine())
+
+	// Wait for dispatcher goroutine to be ready
+	time.Sleep(50 * time.Millisecond)
 
 	var c atomic.Int32
 
@@ -45,12 +44,19 @@ func Test_PoolSubmit(t *testing.T) {
 	}
 	go do(100)
 	<-finished
-	assert.True(grNum+2+1 <= runtime.NumGoroutine())
+
+	// Wait for all tasks to be processed
+	assert.Eventually(func() bool {
+		return c.Load() == 100
+	}, time.Second*5, time.Millisecond*10)
+
 	pool.Stop()
 	pool.Stop()
-	// reject all task
+
+	// After stop, submit 100 more tasks — all should be rejected
 	go do(100)
 	<-finished
+	// Counter should still be 100 since pool was stopped
 	assert.Equal(int32(100), c.Load())
 }
 

@@ -266,3 +266,58 @@ func TestARCGetALL(t *testing.T) {
 	assert.True(ok)
 	assert.Equal(v1, size*size)
 }
+
+func TestARCPurge(t *testing.T) {
+	assert := assert.New(t)
+
+	cache := New(10).ARC().Setting()
+	cache.Set("key1", "value1")
+	cache.Set("key2", "value2")
+	cache.Set("key3", "value3")
+	assert.Equal(3, cache.Len())
+
+	cache.Purge()
+	assert.Equal(0, cache.Len())
+	assert.Empty(cache.Keys())
+
+	_, err := cache.Get("key1")
+	assert.Error(err)
+}
+
+func Test_ARCNew(t *testing.T) {
+	assert := assert.New(t)
+	size := 8
+	cache := NewARCPlugin(New(size).
+		ARC().
+		EvictedFunc(evictedFuncForARC).
+		Expiration(100 * time.Millisecond))
+
+	for i := 0; i < size; i++ {
+		cache.Set(i, i*i)
+	}
+
+	ret, err := cache.Get(0)
+	assert.Nil(err)
+	assert.Equal(ret, 0)
+
+	m := cache.GetALL()
+	for i := 0; i < size; i++ {
+		v, ok := m[i]
+		assert.True(ok)
+		assert.Equal(v, i*i)
+	}
+	r := cache.HasKey(1)
+	assert.True(r)
+	r = cache.Remove(1)
+	assert.True(r)
+	time.Sleep(time.Millisecond)
+
+	cache.Set(size, size*size)
+	m = cache.GetALL()
+
+	assert.Equal(len(m), 8)
+
+	v1, ok := m[size]
+	assert.True(ok)
+	assert.Equal(v1, size*size)
+}

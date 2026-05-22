@@ -156,3 +156,86 @@ func Test_SliceMerge(t *testing.T) {
 	aa := SliceMerge([]interface{}{"aa", "123", "3dv3"}, []interface{}{"aa", "123", "3dv3"})
 	assert.Equal([]interface{}{"aa", "123", "3dv3", "aa", "123", "3dv3"}, aa)
 }
+
+func Test_ReplayMaxStr(t *testing.T) {
+	assert := assert.New(t)
+	r := ReplayMaxStr(3)
+	assert.Equal("999", r)
+
+	r = ReplayMaxStr(10)
+	assert.Equal("9999999999", r)
+}
+
+func Test_SliceShuffle_Range(t *testing.T) {
+	assert := assert.New(t)
+	slice := []interface{}{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+	result := SliceShuffle(slice)
+	assert.Len(result, 10)
+	// Same elements should be present
+	orig := make(map[interface{}]int)
+	for _, v := range slice {
+		orig[v]++
+	}
+	for _, v := range result {
+		orig[v]--
+		assert.True(orig[v] >= 0)
+	}
+}
+
+func Test_SliceRandList_Range(t *testing.T) {
+	assert := assert.New(t)
+	list := SliceRandList(1, 10)
+	assert.Len(list, 10)
+	// All values in range [1, 10]
+	for _, v := range list {
+		assert.True(v >= 1 && v <= 10)
+	}
+	// No duplicates
+	seen := make(map[int]bool)
+	for _, v := range list {
+		assert.False(seen[v])
+		seen[v] = true
+	}
+
+	// min > max should swap
+	list2 := SliceRandList(10, 1)
+	assert.Len(list2, 10)
+}
+
+func Test_SliceDiff_Distinct(t *testing.T) {
+	assert := assert.New(t)
+	diff := SliceDiff([]interface{}{1, 2, 3}, []interface{}{2, 3, 4})
+	assert.Equal([]interface{}{1, 4}, diff)
+}
+
+func Test_ToStrings_SkipNil(t *testing.T) {
+	assert := assert.New(t)
+	result := ToStrings([]interface{}{"a", nil, "b"})
+	assert.Equal([]string{"a", "b"}, result)
+}
+
+func Test_ToStrings_SkipNonString(t *testing.T) {
+	assert := assert.New(t)
+	result := ToStrings([]interface{}{"a", 123, "b"})
+	assert.Equal([]string{"a", "b"}, result)
+}
+
+func Test_InterfacesToStrings_SkipNonString(t *testing.T) {
+	assert := assert.New(t)
+	result := InterfacesToStrings([]interface{}{"a", 123, "b"})
+	assert.Equal([]string{"a", "b"}, result)
+}
+
+func Test_ToStringDict_ErrorPaths(t *testing.T) {
+	assert := assert.New(t)
+
+	// Non-map item should return error
+	items := []interface{}{"not a map"}
+	_, err := ToStringDict(items, "key")
+	assert.NotNil(err)
+
+	// Map with non-string value should return error
+	items2 := []interface{}{map[string]interface{}{"key": 123}}
+	_, err = ToStringDict(items2, "key")
+	assert.NotNil(err)
+}

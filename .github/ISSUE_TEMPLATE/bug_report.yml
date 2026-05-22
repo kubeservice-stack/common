@@ -1,9 +1,9 @@
 name: Bug Report
 description: Create a report to help us improve
-title: "[name of bug] Issue Title"
+title: "[Bug] Issue Title"
 labels: [bug]
 assignees:
-  - 
+  -
 body:
   - type: markdown
     attributes:
@@ -12,7 +12,8 @@ body:
   - type: textarea
     id: desc
     attributes:
-      label: Describe the bug a clear and concise description of what the bug is.
+      label: Describe the bug
+      description: A clear and concise description of what the bug is.
     validations:
       required: true
 
@@ -40,21 +41,21 @@ body:
     validations:
       required: false
 
-  - type: textarea
-    id: changed-values
+  - type: input
+    id: version
     attributes:
-      label: Enter the changed values of values.yaml?
-      description: Please enter only values which differ from the defaults. Enter `NONE` if nothing's changed.
-      placeholder: 'key: value'
+      label: Version
+      description: Which version of the library are you using?
+      placeholder: e.g., v1.0.0
     validations:
-      required: false
+      required: true
 
-  - type: textarea
-    id: helm-command
+  - type: input
+    id: go-version
     attributes:
-      label: Enter the command that you execute and failing/misfunctioning.
-      description: Enter the command as-is as how you executed.
-      placeholder: 'key: value'
+      label: Go Version
+      description: Which Go version are you using?
+      placeholder: e.g., go1.26.0
     validations:
       required: true
 

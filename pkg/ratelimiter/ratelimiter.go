@@ -27,8 +27,8 @@ const (
 )
 
 type RateLimiters struct {
-	sync.RWMutex // 协程 安全
-	m            map[string]flowcontrol.RateLimiter
+	sync.Mutex         // protects m
+	m      map[string]flowcontrol.RateLimiter
 }
 
 var (
@@ -44,33 +44,42 @@ func NewRateLimiters() Limiter {
 }
 
 func (l *RateLimiters) TryAccept(name string, qps, burst int) bool {
-	l.RLock()
-	limiter, ok := l.m[name]
-	if !ok {
-		l.RUnlock()
-		return l.addLimiter(name, qps, burst) // 新增
-	}
-	l.RUnlock()
+	limiter := l.getOrCreateLimiter(name, qps, burst)
 	return limiter.TryAccept()
 }
 
-func (l *RateLimiters) addLimiter(name string, qps, burst int) bool {
+func (l *RateLimiters) getOrCreateLimiter(name string, qps, burst int) flowcontrol.RateLimiter {
+	l.Lock()
+	defer l.Unlock()
+	if limiter, ok := l.m[name]; ok {
+		return limiter
+	}
+	l.m[name] = newRateLimiter(qps, burst)
+	return l.m[name]
+}
+
+func newRateLimiter(qps, burst int) flowcontrol.RateLimiter {
 	var bucketSize int
 	if qps >= 1 {
 		bucketSize = qps
 	} else {
 		bucketSize = DefaultRate
 	}
+	return flowcontrol.NewTokenBucketRateLimiter(float32(bucketSize), burst)
+}
+
+// addLimiter is required by Limiter interface; use UpdateRateLimit for external callers
+func (l *RateLimiters) addLimiter(name string, qps, burst int) bool {
 	l.Lock()
-	// 新建token bucket
-	r := flowcontrol.NewTokenBucketRateLimiter(float32(bucketSize), burst)
-	l.m[name] = r
+	l.m[name] = newRateLimiter(qps, burst)
 	l.Unlock()
-	return r.TryAccept()
+	return true
 }
 
 func (l *RateLimiters) UpdateRateLimit(name string, qps, burst int) {
-	l.addLimiter(name, qps, burst)
+	l.Lock()
+	l.m[name] = newRateLimiter(qps, burst)
+	l.Unlock()
 }
 
 func (l *RateLimiters) DeleteRateLimiter(name string) {
