@@ -96,7 +96,7 @@ jobs:
           cache: true
 
       - name: Cache dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/go/pkg/mod
@@ -109,7 +109,7 @@ jobs:
         run: go test -race -coverprofile=coverage.out -coverpkg=./... ./... -count=1
 
       - name: Upload coverage to codecov.io
-        uses: codecov/codecov-action@v6.0.0
+        uses: codecov/codecov-action@v7.0.0
         with:
           files: coverage.out
           fail_ci_if_error: false
@@ -132,7 +132,7 @@ jobs:
           cache: true
 
       - name: Cache dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/go/pkg/mod
@@ -148,4 +148,4 @@ jobs:
         run: go test -coverprofile=cover.out -coverpkg=./... ./... && go tool cover -html=cover.out -o cover.html && true
 
       - name: Upload coverage to codecov.io
-        uses: codecov/codecov-action@v6.0.0
+        uses: codecov/codecov-action@v7.0.0
