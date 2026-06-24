@@ -3,7 +3,7 @@ module github.com/kubeservice-stack/common
 go 1.26.0
 
 require (
-	github.com/BurntSushi/toml v1.5.0
+	github.com/BurntSushi/toml v1.6.0
 	github.com/asjdf/gorm-cache v1.3.0
 	github.com/caarlos0/env/v10 v10.0.0
 	github.com/efficientgo/core v1.0.0-rc.3
